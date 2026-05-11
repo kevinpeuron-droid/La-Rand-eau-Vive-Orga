@@ -56,6 +56,19 @@ export default function EventsAndPlanningView() {
     setExpandedCategories(prev => ({ ...prev, [catIndex]: true }));
   };
 
+  const duplicatePosition = async (catIndex: number, posIndex: number) => {
+    if (!selectedEvent) return;
+    const newCats = [...selectedEvent.categories];
+    const posToCopy = newCats[catIndex].positions[posIndex];
+    const duplicatedPos = {
+      ...posToCopy,
+      name: `${posToCopy.name} (copie)`,
+      timeSlots: posToCopy.timeSlots.map(ts => ({ ...ts, volunteer: [] })) // clear volunteers
+    };
+    newCats[catIndex].positions.splice(posIndex + 1, 0, duplicatedPos);
+    await updateEvent(selectedEvent.id, { categories: newCats });
+  };
+
   const removePosition = async (catIndex: number, posIndex: number) => {
     if (!selectedEvent) return;
     const newCats = [...selectedEvent.categories];
@@ -297,7 +310,10 @@ export default function EventsAndPlanningView() {
                                 <button onClick={() => addTimeSlot(ci, pi)} className="text-xs bg-teal-500/20 text-teal-300 border border-teal-500/30 px-3 py-2 rounded-lg hover:bg-teal-500/30 hover:text-white transition-colors font-medium whitespace-nowrap">
                                   + Créneau
                                 </button>
-                                <button onClick={() => { if(confirm('Supprimer ce poste ?')) removePosition(ci, pi); }} className="text-xs px-2 py-2 text-rose-400 hover:bg-rose-500/20 rounded-lg transition-colors border border-transparent hover:border-rose-500/10">
+                                <button onClick={() => duplicatePosition(ci, pi)} className="text-xs px-2 py-2 text-indigo-400 hover:bg-indigo-500/20 rounded-lg transition-colors border border-transparent hover:border-indigo-500/10" title="Dupliquer le poste">
+                                  📄
+                                </button>
+                                <button onClick={() => { if(confirm('Supprimer ce poste ?')) removePosition(ci, pi); }} className="text-xs px-2 py-2 text-rose-400 hover:bg-rose-500/20 rounded-lg transition-colors border border-transparent hover:border-rose-500/10" title="Supprimer le poste">
                                   🗑️
                                 </button>
                               </div>

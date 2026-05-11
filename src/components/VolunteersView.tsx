@@ -199,19 +199,49 @@ export default function VolunteersView() {
 }
 
 function VolunteerCard({ volunteer: v, onUpdate, onDelete, allChildren }: any) {
+  const [isEditing, setIsEditing] = useState(false);
+  const [editForm, setEditForm] = useState(v);
+
   const isOrg = v.isOrganizer;
   const isRef = v.isReferent;
   
   const borderClass = isOrg ? 'border-amber-400' : isRef ? 'border-rose-400' : 'border-indigo-400';
   const titleClass = isOrg ? 'text-amber-400' : isRef ? 'text-rose-400' : 'text-indigo-400';
 
+  const handleSave = () => {
+    onUpdate(v.id, editForm);
+    setIsEditing(false);
+  };
+
+  if (isEditing) {
+    return (
+      <div className={`bg-slate-800 p-5 rounded-2xl border border-indigo-400 border-l-[4px] shadow-sm`}>
+        <div className="space-y-3">
+           <input value={editForm.firstName} onChange={e=>setEditForm({...editForm, firstName: e.target.value})} className="w-full p-2 border border-white/10 rounded-lg bg-white/5 text-white text-sm outline-none focus:border-indigo-500" placeholder="Prénom" />
+           <input value={editForm.lastName} onChange={e=>setEditForm({...editForm, lastName: e.target.value})} className="w-full p-2 border border-white/10 rounded-lg bg-white/5 text-white text-sm outline-none focus:border-indigo-500" placeholder="Nom" />
+           <input value={editForm.email} onChange={e=>setEditForm({...editForm, email: e.target.value})} className="w-full p-2 border border-white/10 rounded-lg bg-white/5 text-white text-sm outline-none focus:border-indigo-500" placeholder="Email" />
+           <input value={editForm.phone} onChange={e=>setEditForm({...editForm, phone: e.target.value})} className="w-full p-2 border border-white/10 rounded-lg bg-white/5 text-white text-sm outline-none focus:border-indigo-500" placeholder="Téléphone" />
+           <input value={editForm.license} onChange={e=>setEditForm({...editForm, license: e.target.value})} className="w-full p-2 border border-white/10 rounded-lg bg-white/5 text-white text-sm outline-none focus:border-indigo-500" placeholder="Permis / Licence" />
+           <input value={editForm.lastRole} onChange={e=>setEditForm({...editForm, lastRole: e.target.value})} className="w-full p-2 border border-white/10 rounded-lg bg-white/5 text-white text-sm outline-none focus:border-indigo-500" placeholder="Dernier Rôle" />
+        </div>
+        <div className="mt-4 flex gap-2">
+          <button onClick={handleSave} className="flex-1 bg-indigo-600 hover:bg-indigo-500 text-white py-2 rounded-xl text-xs font-semibold transition-colors">💾 Enregistrer</button>
+          <button onClick={() => { setEditForm(v); setIsEditing(false); }} className="flex-1 bg-white/10 hover:bg-white/20 text-slate-300 py-2 rounded-xl text-xs font-semibold transition-colors">✕ Annuler</button>
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <div className={`bg-white/5 backdrop-blur-lg p-5 rounded-2xl border border-white/10 border-l-[4px] ${borderClass} hover:bg-white/10 transition-all`}>
-      <h3 className={`font-semibold text-lg mb-2 flex items-center gap-2 ${titleClass}`}>
-        {v.firstName} {v.lastName}
-        {isOrg && <span className="bg-amber-500/20 text-amber-300 px-2 py-0.5 rounded-full text-[10px] font-bold">👔</span>}
-        {isRef && !isOrg && <span className="bg-rose-500/20 text-rose-300 px-2 py-0.5 rounded-full text-[10px] font-bold">⭐</span>}
-      </h3>
+    <div className={`bg-white/5 backdrop-blur-lg p-5 rounded-2xl border border-white/10 border-l-[4px] ${borderClass} hover:bg-white/10 transition-all group`}>
+      <div className="flex justify-between items-start">
+        <h3 className={`font-semibold text-lg mb-2 flex flex-wrap items-center gap-2 ${titleClass}`}>
+          {v.firstName} {v.lastName}
+          {isOrg && <span className="bg-amber-500/20 text-amber-300 px-2 py-0.5 rounded-full text-[10px] font-bold">👔</span>}
+          {isRef && !isOrg && <span className="bg-rose-500/20 text-rose-300 px-2 py-0.5 rounded-full text-[10px] font-bold">⭐</span>}
+        </h3>
+        <button onClick={() => setIsEditing(true)} className="opacity-0 group-hover:opacity-100 transition-opacity text-slate-400 hover:text-white p-1">📝</button>
+      </div>
       {v.email && <p className="text-sm text-slate-300 mb-1">📧 {v.email}</p>}
       {v.phone && <p className="text-sm text-slate-300 mb-1">📱 {v.phone}</p>}
       {v.license && <p className="text-sm text-slate-300 mb-1">🪪 {v.license}</p>}
