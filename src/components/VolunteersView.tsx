@@ -1,0 +1,139 @@
+import { useState } from 'react';
+import { useData } from '../contexts/DataContext';
+import { Volunteer } from '../types';
+
+export default function VolunteersView() {
+  const { volunteers, children, addVolunteer, deleteVolunteer, updateVolunteer } = useData();
+  const [search, setSearch] = useState('');
+  const [form, setForm] = useState({ firstName: '', lastName: '', email: '', phone: '', lastRole: '' });
+
+  const handleAdd = async () => {
+    if (!form.firstName || !form.lastName) return alert('Prénom et nom requis');
+    await addVolunteer({
+      firstName: form.firstName,
+      lastName: form.lastName,
+      email: form.email,
+      phone: form.phone,
+      lastRole: form.lastRole,
+      isOrganizer: false,
+      isReferent: false,
+      availability: [],
+      childIds: []
+    });
+    setForm({ firstName: '', lastName: '', email: '', phone: '', lastRole: '' });
+  };
+
+  const filtered = volunteers.filter(v => 
+    v.firstName.toLowerCase().includes(search.toLowerCase()) || 
+    v.lastName.toLowerCase().includes(search.toLowerCase())
+  ).sort((a,b) => a.lastName.localeCompare(b.lastName, 'fr'));
+
+  const organizers = filtered.filter(v => v.isOrganizer);
+  const referents = filtered.filter(v => v.isReferent && !v.isOrganizer);
+  const regular = filtered.filter(v => !v.isOrganizer && !v.isReferent);
+
+  const renderList = (title: string, list: Volunteer[], themeClass: string) => {
+    if (list.length === 0) return null;
+    return (
+      <div className="mb-6 animate-in fade-in slide-in-from-bottom-2">
+        <div className={`${themeClass} text-white px-5 py-3 rounded-lg mb-4 font-bold flex justify-between items-center`}>
+          <span>{title}</span>
+          <span className="bg-white/20 px-3 py-1 rounded-full text-sm">{list.length}</span>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+          {list.map(v => (
+            <VolunteerCard key={v.id} volunteer={v} onUpdate={updateVolunteer} onDelete={deleteVolunteer} allChildren={children} />
+          ))}
+        </div>
+      </div>
+    );
+  };
+
+  return (
+    <div className="space-y-8">
+      <div>
+        <h2 className="text-2xl font-semibold text-white mb-4">Ajouter un Bénévole</h2>
+        <div className="bg-white/5 backdrop-blur-lg p-6 rounded-2xl border border-white/10 shadow-sm space-y-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label className="block text-sm font-semibold text-slate-300 mb-1">Prénom *</label>
+              <input value={form.firstName} onChange={e=>setForm({...form, firstName: e.target.value})} className="w-full p-2.5 border border-white/10 rounded-xl bg-white/5 text-white focus:border-indigo-500 outline-none transition-colors" placeholder="Jean" />
+            </div>
+            <div>
+              <label className="block text-sm font-semibold text-slate-300 mb-1">Nom *</label>
+              <input value={form.lastName} onChange={e=>setForm({...form, lastName: e.target.value})} className="w-full p-2.5 border border-white/10 rounded-xl bg-white/5 text-white focus:border-indigo-500 outline-none transition-colors" placeholder="Dupont" />
+            </div>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label className="block text-sm font-semibold text-slate-300 mb-1">Email</label>
+              <input value={form.email} onChange={e=>setForm({...form, email: e.target.value})} type="email" className="w-full p-2.5 border border-white/10 rounded-xl bg-white/5 text-white focus:border-indigo-500 outline-none transition-colors" placeholder="jean@email.com" />
+            </div>
+            <div>
+              <label className="block text-sm font-semibold text-slate-300 mb-1">Téléphone</label>
+              <input value={form.phone} onChange={e=>setForm({...form, phone: e.target.value})} className="w-full p-2.5 border border-white/10 rounded-xl bg-white/5 text-white focus:border-indigo-500 outline-none transition-colors" placeholder="06 12 34 56 78" />
+            </div>
+          </div>
+          <div>
+            <label className="block text-sm font-semibold text-slate-300 mb-1">Dernier rôle</label>
+            <input value={form.lastRole} onChange={e=>setForm({...form, lastRole: e.target.value})} className="w-full p-2.5 border border-white/10 rounded-xl bg-white/5 text-white focus:border-indigo-500 outline-none transition-colors" placeholder="Signaleur" />
+          </div>
+          <div className="pt-2 flex flex-wrap gap-2">
+            <button onClick={handleAdd} className="bg-indigo-600 shadow-lg shadow-indigo-600/20 text-white px-6 py-2.5 rounded-xl font-medium hover:bg-indigo-500 transition-colors">➕ Ajouter</button>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <h2 className="text-2xl font-semibold text-white mb-4">Liste des Bénévoles</h2>
+        <input 
+          value={search} onChange={e => setSearch(e.target.value)}
+          placeholder="🔍 Rechercher un bénévole..." 
+          className="w-full p-4 mb-6 border border-white/10 rounded-2xl bg-white/5 text-white focus:border-indigo-500 outline-none shadow-sm transition-colors"
+        />
+        
+        {renderList('👔 Organisateurs', organizers, 'bg-amber-500/20')}
+        {renderList('⭐ Référents', referents, 'bg-rose-500/20')}
+        {renderList('👥 Bénévoles', regular, 'bg-indigo-500/20')}
+        
+        {filtered.length === 0 && <p className="text-center text-slate-500 py-10 italic">Aucun résultat trouvé.</p>}
+      </div>
+    </div>
+  );
+}
+
+function VolunteerCard({ volunteer: v, onUpdate, onDelete, allChildren }: any) {
+  const isOrg = v.isOrganizer;
+  const isRef = v.isReferent;
+  
+  const borderClass = isOrg ? 'border-amber-400' : isRef ? 'border-rose-400' : 'border-indigo-400';
+  const titleClass = isOrg ? 'text-amber-400' : isRef ? 'text-rose-400' : 'text-indigo-400';
+
+  return (
+    <div className={`bg-white/5 backdrop-blur-lg p-5 rounded-2xl border border-white/10 border-l-[4px] ${borderClass} hover:bg-white/10 transition-all`}>
+      <h3 className={`font-semibold text-lg mb-2 flex items-center gap-2 ${titleClass}`}>
+        {v.firstName} {v.lastName}
+        {isOrg && <span className="bg-amber-500/20 text-amber-300 px-2 py-0.5 rounded-full text-[10px] font-bold">👔</span>}
+        {isRef && !isOrg && <span className="bg-rose-500/20 text-rose-300 px-2 py-0.5 rounded-full text-[10px] font-bold">⭐</span>}
+      </h3>
+      {v.email && <p className="text-sm text-slate-300 mb-1">📧 {v.email}</p>}
+      {v.phone && <p className="text-sm text-slate-300 mb-1">📱 {v.phone}</p>}
+      {v.lastRole && <p className="text-sm text-slate-300 mb-2">🎯 {v.lastRole}</p>}
+      
+      <div className="flex gap-2 p-3 mt-4 bg-white/5 rounded-xl flex-wrap">
+        <label className="flex items-center gap-2 text-xs text-slate-300 cursor-pointer hover:text-white">
+          <input type="checkbox" checked={v.isOrganizer} onChange={e => onUpdate(v.id, { isOrganizer: e.target.checked })} className="accent-indigo-500" />
+          👔 Organisateur
+        </label>
+        <label className="flex items-center gap-2 text-xs text-slate-300 cursor-pointer hover:text-white">
+          <input type="checkbox" checked={v.isReferent} onChange={e => onUpdate(v.id, { isReferent: e.target.checked })} className="accent-indigo-500" />
+          ⭐ Référent
+        </label>
+      </div>
+
+      <div className="mt-4 flex gap-2">
+        <button onClick={() => { if(confirm('Supprimer ?')) onDelete(v.id); }} className="flex-1 bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 py-2 rounded-xl text-xs font-semibold transition-colors border border-rose-500/10 hover:border-rose-500/30">🗑️ Supprimer</button>
+      </div>
+    </div>
+  );
+}

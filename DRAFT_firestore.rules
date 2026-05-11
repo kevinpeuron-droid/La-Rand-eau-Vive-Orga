@@ -1,0 +1,68 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    function isSignedIn() {
+      return request.auth != null && request.auth.token.email_verified == true;
+    }
+
+    function isAdmin() {
+      return isSignedIn() && exists(/databases/$(database)/documents/admins/$(request.auth.uid));
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    function incoming() { return request.resource.data; }
+    function existing() { return resource.data; }
+
+    function isValidVolunteer(data) {
+      return data.keys().hasAll(['firstName', 'lastName', 'createdAt', 'updatedAt']) &&
+             data.firstName is string && data.firstName.size() <= 100 &&
+             data.lastName is string && data.lastName.size() <= 100 &&
+             data.createdAt is number && data.updatedAt is number;
+    }
+
+    function isValidEvent(data) {
+      return data.keys().hasAll(['name', 'createdAt', 'updatedAt']) &&
+             data.name is string && data.name.size() <= 200 &&
+             data.createdAt is number && data.updatedAt is number;
+    }
+
+    function isValidChild(data) {
+      return data.keys().hasAll(['firstName', 'lastName', 'createdAt', 'updatedAt']) &&
+             data.firstName is string && data.firstName.size() <= 100 &&
+             data.lastName is string && data.lastName.size() <= 100 &&
+             data.createdAt is number && data.updatedAt is number;
+    }
+
+    match /admins/{userId} {
+      allow read: if isSignedIn() && request.auth.uid == userId;
+    }
+
+    match /volunteers/{volunteerId} {
+      allow read: if isAdmin();
+      allow create: if isAdmin() && isValidId(volunteerId) && isValidVolunteer(incoming()) && incoming().createdAt == request.time.toMillis() && incoming().updatedAt == request.time.toMillis();
+      allow update: if isAdmin() && isValidId(volunteerId) && isValidVolunteer(incoming()) && incoming().createdAt == existing().createdAt && incoming().updatedAt == request.time.toMillis();
+      allow delete: if isAdmin() && isValidId(volunteerId);
+    }
+
+    match /events/{eventId} {
+      allow read: if isAdmin();
+      allow create: if isAdmin() && isValidId(eventId) && isValidEvent(incoming()) && incoming().createdAt == request.time.toMillis() && incoming().updatedAt == request.time.toMillis();
+      allow update: if isAdmin() && isValidId(eventId) && isValidEvent(incoming()) && incoming().createdAt == existing().createdAt && incoming().updatedAt == request.time.toMillis();
+      allow delete: if isAdmin() && isValidId(eventId);
+    }
+
+    match /children/{childId} {
+      allow read: if isAdmin();
+      allow create: if isAdmin() && isValidId(childId) && isValidChild(incoming()) && incoming().createdAt == request.time.toMillis() && incoming().updatedAt == request.time.toMillis();
+      allow update: if isAdmin() && isValidId(childId) && isValidChild(incoming()) && incoming().createdAt == existing().createdAt && incoming().updatedAt == request.time.toMillis();
+      allow delete: if isAdmin() && isValidId(childId);
+    }
+  }
+}

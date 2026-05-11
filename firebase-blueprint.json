@@ -1,0 +1,79 @@
+{
+  "entities": {
+    "Volunteer": {
+      "title": "Volunteer",
+      "description": "A volunteer registered in the system",
+      "type": "object",
+      "properties": {
+        "firstName": { "type": "string" },
+        "lastName": { "type": "string" },
+        "email": { "type": "string" },
+        "phone": { "type": "string" },
+        "license": { "type": "string" },
+        "lastRole": { "type": "string" },
+        "notes": { "type": "string" },
+        "isOrganizer": { "type": "boolean" },
+        "isReferent": { "type": "boolean" },
+        "availability": {
+          "type": "array",
+          "items": { "type": "object" }
+        },
+        "childIds": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "createdAt": { "type": "number" },
+        "updatedAt": { "type": "number" }
+      },
+      "required": ["firstName", "lastName"]
+    },
+    "Event": {
+      "title": "Event",
+      "description": "An event with its planning logic",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "priority": { "type": "boolean" },
+        "availableVolunteers": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "categories": {
+          "type": "array",
+          "items": { "type": "object" }
+        },
+        "createdAt": { "type": "number" },
+        "updatedAt": { "type": "number" }
+      },
+      "required": ["name"]
+    },
+    "Child": {
+      "title": "Child",
+      "description": "A child (élève) registered in the system",
+      "type": "object",
+      "properties": {
+        "firstName": { "type": "string" },
+        "lastName": { "type": "string" },
+        "class": { "type": "string" },
+        "volunteerId": { "type": "string" },
+        "createdAt": { "type": "number" },
+        "updatedAt": { "type": "number" }
+      },
+      "required": ["firstName", "lastName"]
+    }
+  },
+  "firestore": {
+    "volunteers/{volunteerId}": {
+      "schema": { "$ref": "#/entities/Volunteer" },
+      "description": "Collection of all volunteers"
+    },
+    "events/{eventId}": {
+      "schema": { "$ref": "#/entities/Event" },
+      "description": "Collection of all events"
+    },
+    "children/{childId}": {
+      "schema": { "$ref": "#/entities/Child" },
+      "description": "Collection of children (élèves)"
+    }
+  }
+}
