@@ -53,24 +53,24 @@ service cloud.firestore {
     }
 
     match /volunteers/{volunteerId} {
-      allow read: if isAdmin();
-      allow create: if isAdmin() && isValidId(volunteerId) && isValidVolunteer(incoming());
-      allow update: if isAdmin() && isValidId(volunteerId) && isValidVolunteer(incoming()) && incoming().createdAt == existing().createdAt;
-      allow delete: if isAdmin() && isValidId(volunteerId);
+      allow read: if true;
+      allow create: if isValidId(volunteerId) && isValidVolunteer(incoming());
+      allow update: if isValidId(volunteerId) && isValidVolunteer(incoming()) && incoming().createdAt == existing().createdAt;
+      allow delete: if true;
     }
 
     match /events/{eventId} {
-      allow read: if isAdmin();
-      allow create: if isAdmin() && isValidId(eventId) && isValidEvent(incoming());
-      allow update: if isAdmin() && isValidId(eventId) && isValidEvent(incoming()) && incoming().createdAt == existing().createdAt;
-      allow delete: if isAdmin() && isValidId(eventId);
+      allow read: if true;
+      allow create: if isValidId(eventId) && isValidEvent(incoming());
+      allow update: if isValidId(eventId) && isValidEvent(incoming()) && incoming().createdAt == existing().createdAt;
+      allow delete: if true;
     }
 
     match /children/{childId} {
-      allow read: if isAdmin();
-      allow create: if isAdmin() && isValidId(childId) && isValidChild(incoming());
-      allow update: if isAdmin() && isValidId(childId) && isValidChild(incoming()) && incoming().createdAt == existing().createdAt;
-      allow delete: if isAdmin() && isValidId(childId);
+      allow read: if true;
+      allow create: if isValidId(childId) && isValidChild(incoming());
+      allow update: if isValidId(childId) && isValidChild(incoming()) && incoming().createdAt == existing().createdAt;
+      allow delete: if true;
     }
   }
 }
