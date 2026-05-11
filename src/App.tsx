@@ -3,8 +3,7 @@ import { BrowserRouter, Routes, Route, NavLink, Navigate } from 'react-router-do
 import { DataProvider } from './contexts/DataContext';
 import Dashboard from './components/Dashboard';
 import VolunteersView from './components/VolunteersView';
-import EventsView from './components/EventsView';
-import PlanningView from './components/PlanningView';
+import EventsAndPlanningView from './components/EventsAndPlanningView';
 import ChildrenView from './components/ChildrenView';
 
 function Layout({ children }: { children: React.ReactNode }) {
@@ -29,21 +28,18 @@ function Layout({ children }: { children: React.ReactNode }) {
             </div>
             
             <nav className="flex flex-wrap gap-2">
-              <NavLink to="/" className={({isActive}) => `px-4 py-2 text-sm font-medium transition-colors rounded-xl flex items-center gap-2 ${isActive ? 'bg-white/10 text-white' : 'text-slate-400 hover:text-white hover:bg-white/5'}`}>
-                📊 Dashboard
-              </NavLink>
-              <NavLink to="/volunteers" className={({isActive}) => `px-4 py-2 text-sm font-medium transition-colors rounded-xl flex items-center gap-2 ${isActive ? 'bg-white/10 text-white' : 'text-slate-400 hover:text-white hover:bg-white/5'}`}>
-                👥 Bénévoles
-              </NavLink>
-              <NavLink to="/events" className={({isActive}) => `px-4 py-2 text-sm font-medium transition-colors rounded-xl flex items-center gap-2 ${isActive ? 'bg-white/10 text-white' : 'text-slate-400 hover:text-white hover:bg-white/5'}`}>
-                📅 Événements
-              </NavLink>
-              <NavLink to="/planning" className={({isActive}) => `px-4 py-2 text-sm font-medium transition-colors rounded-xl flex items-center gap-2 ${isActive ? 'bg-white/10 text-white' : 'text-slate-400 hover:text-white hover:bg-white/5'}`}>
-                🗓️ Planning & Pilotage
-              </NavLink>
-              <NavLink to="/children" className={({isActive}) => `px-4 py-2 text-sm font-medium transition-colors rounded-xl flex items-center gap-2 ${isActive ? 'bg-white/10 text-white' : 'text-slate-400 hover:text-white hover:bg-white/5'}`}>
-                🧒 Élèves
-              </NavLink>
+          <NavLink to="/" className={({isActive}) => `px-4 py-2 text-sm font-medium transition-colors rounded-xl flex items-center gap-2 ${isActive ? 'bg-white/10 text-white' : 'text-slate-400 hover:text-white hover:bg-white/5'}`}>
+            📊 Dashboard
+          </NavLink>
+          <NavLink to="/volunteers" className={({isActive}) => `px-4 py-2 text-sm font-medium transition-colors rounded-xl flex items-center gap-2 ${isActive ? 'bg-white/10 text-white' : 'text-slate-400 hover:text-white hover:bg-white/5'}`}>
+            👥 Bénévoles
+          </NavLink>
+          <NavLink to="/events-planning" className={({isActive}) => `px-4 py-2 text-sm font-medium transition-colors rounded-xl flex items-center gap-2 ${isActive ? 'bg-white/10 text-white' : 'text-slate-400 hover:text-white hover:bg-white/5'}`}>
+            📅 Événements & Planning
+          </NavLink>
+          <NavLink to="/children" className={({isActive}) => `px-4 py-2 text-sm font-medium transition-colors rounded-xl flex items-center gap-2 ${isActive ? 'bg-white/10 text-white' : 'text-slate-400 hover:text-white hover:bg-white/5'}`}>
+            🧒 Élèves
+          </NavLink>
             </nav>
           </div>
         </header>
@@ -64,8 +60,7 @@ export default function App() {
           <Routes>
             <Route path="/" element={<Dashboard />} />
             <Route path="/volunteers" element={<VolunteersView />} />
-            <Route path="/events" element={<EventsView />} />
-            <Route path="/planning" element={<PlanningView />} />
+            <Route path="/events-planning" element={<EventsAndPlanningView />} />
             <Route path="/children" element={<ChildrenView />} />
             <Route path="*" element={<Navigate to="/" />} />
           </Routes>
