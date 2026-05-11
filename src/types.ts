@@ -31,6 +31,8 @@ export interface TimeSlot {
 
 export interface Position {
   name: string;
+  details?: string;
+  equipment?: string;
   timeSlots: TimeSlot[];
 }
 
