@@ -19,6 +19,25 @@ export default function Dashboard() {
   const childPct = children.length > 0 ? Math.round(representedChildren / children.length * 100) : 0;
   const childColor = childPct >= 75 ? '#34d399' : childPct >= 40 ? '#fbbf24' : '#fb7185';
   
+  const incompleteEvents = events.map(e => {
+    let requiredSlots = 0;
+    let filledSlots = 0;
+    const missingDetails: string[] = [];
+    (e.categories || []).forEach(c => {
+       (c.positions || []).forEach(p => {
+         (p.timeSlots || []).forEach(ts => {
+           requiredSlots++;
+           if (ts.volunteer && ts.volunteer.length > 0) {
+             filledSlots++;
+           } else {
+             missingDetails.push(`${c.name} > ${p.name} (${ts.timeSlot})`);
+           }
+         })
+       })
+    });
+    return { ...e, requiredSlots, filledSlots, missing: requiredSlots - filledSlots, missingDetails };
+  }).filter(e => e.missing > 0);
+  
   const priorityEvent = events.find(e => e.priority);
   
   return (
@@ -51,6 +70,36 @@ export default function Dashboard() {
                  `${representedChildren} élève${representedChildren>1?'s':''} sur ${children.length} ${representedChildren>1?'sont':'est'} représenté${representedChildren>1?'s':''}.`}
               </span>
             </div>
+          </div>
+        </div>
+      )}
+
+      {/* Incomplete events banner */}
+      {incompleteEvents.length > 0 && (
+        <div className="bg-rose-500/10 border border-rose-500/20 shadow p-5 rounded-2xl">
+          <h3 className="text-rose-400 text-lg font-bold mb-3 flex items-center gap-2">
+            <span>🚨</span> Action requise : Postes non pourvus
+          </h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {incompleteEvents.map(evt => (
+              <div key={evt.id} className="bg-white/5 border border-white/10 rounded-xl p-4">
+                <div className="flex justify-between items-start mb-2">
+                  <h4 className="font-semibold text-rose-200">{evt.name}</h4>
+                  <span className="bg-rose-500 text-white rounded-md px-2 py-0.5 text-xs font-bold shadow-sm">{evt.missing} manquants</span>
+                </div>
+                <div className="w-full bg-slate-800 rounded-full h-1.5 mb-2 overflow-hidden flex">
+                  <div className="bg-teal-500 h-1.5" style={{ width: `${(evt.filledSlots / evt.requiredSlots) * 100}%` }}></div>
+                </div>
+                <ul className="text-xs text-slate-300 space-y-1 mt-3 px-1 custom-scrollbar max-h-24 overflow-y-auto">
+                  {evt.missingDetails.slice(0, 5).map((d, i) => (
+                    <li key={i} className="whitespace-nowrap overflow-hidden text-ellipsis">- {d}</li>
+                  ))}
+                  {evt.missingDetails.length > 5 && (
+                    <li className="text-rose-400 italic mt-1 font-medium">+ {evt.missingDetails.length - 5} autres...</li>
+                  )}
+                </ul>
+              </div>
+            ))}
           </div>
         </div>
       )}

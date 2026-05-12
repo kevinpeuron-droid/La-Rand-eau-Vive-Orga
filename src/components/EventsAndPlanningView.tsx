@@ -30,6 +30,74 @@ function DebouncedInput({ value, onChange, placeholder, className }: any) {
   );
 }
 
+function VolunteerCombobox({ volunteers, currentSlot, onSelect, eventDetails }: any) {
+  const [isOpen, setIsOpen] = useState(false);
+  const [search, setSearch] = useState('');
+
+  // Find all volunteers already assigned to the same day and time across the whole event
+  const busyVolunteerIds = new Set<string>();
+  if (currentSlot.day && currentSlot.timeSlot) {
+    eventDetails.categories?.forEach((cat: any) => {
+      cat.positions?.forEach((pos: any) => {
+        pos.timeSlots?.forEach((ts: any) => {
+          if (ts.day === currentSlot.day && ts.timeSlot === currentSlot.timeSlot) {
+            if (Array.isArray(ts.volunteer)) {
+              ts.volunteer.forEach((vid: string) => busyVolunteerIds.add(vid));
+            }
+          }
+        });
+      });
+    });
+  }
+
+  // Also ensuring we hide the ones already locally assigned to THIS slot even if time/day is empty
+  if (Array.isArray(currentSlot.volunteer)) {
+    currentSlot.volunteer.forEach((vid: string) => busyVolunteerIds.add(vid));
+  }
+
+  const availableVolunteers = volunteers.filter((v: any) => !busyVolunteerIds.has(v.id));
+
+  const filtered = availableVolunteers.filter((v: any) => 
+    `${v.firstName} ${v.lastName}`.toLowerCase().includes(search.toLowerCase())
+  ).sort((a: any, b: any) => a.lastName.localeCompare(b.lastName, 'fr'));
+
+  return (
+    <div className="relative inline-block w-48">
+      <input
+        type="text"
+        placeholder="+ BÉNÉVOLE..."
+        value={search}
+        onChange={e => { setSearch(e.target.value); setIsOpen(true); }}
+        onFocus={() => setIsOpen(true)}
+        onBlur={() => setTimeout(() => setIsOpen(false), 200)}
+        className="p-1 px-1.5 w-full text-[10px] uppercase font-bold tracking-wider rounded-sm border border-dashed border-white/20 bg-transparent text-slate-300 outline-none focus:bg-slate-800 transition-colors"
+      />
+      {isOpen && (
+        <div className="absolute z-50 mt-1 w-full sm:w-64 bg-slate-800 border border-white/10 rounded-lg shadow-xl max-h-48 overflow-y-auto custom-scrollbar">
+          {filtered.length === 0 ? (
+            <div className="p-2 text-xs text-slate-400 italic">Aucun bénévole dispo</div>
+          ) : (
+            filtered.map((v: any) => (
+              <div
+                key={v.id}
+                onMouseDown={(e) => {
+                  e.preventDefault(); // prevent blur
+                  onSelect(v.id);
+                  setSearch('');
+                  setIsOpen(false);
+                }}
+                className="p-1.5 px-2 hover:bg-indigo-500 hover:text-white cursor-pointer text-xs text-slate-200"
+              >
+                {v.firstName} {v.lastName} {v.group ? `(${v.group})` : ''}
+              </div>
+            ))
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
+
 export default function EventsAndPlanningView() {
   const { events, volunteers, addEvent, updateEvent, deleteEvent } = useData();
   const [selectedEventId, setSelectedEventId] = useState<string>('');
@@ -474,18 +542,12 @@ export default function EventsAndPlanningView() {
                                         </span>
                                       ) : null;
                                     })}
-                                    <select 
-                                      onChange={e => {
-                                        updateTimeSlot(ci, pi, si, 'volunteer', e.target.value);
-                                        e.target.value = "";
-                                      }} 
-                                      className="p-0.5 px-1 text-[9px] uppercase font-bold tracking-wider rounded-sm border border-dashed border-white/20 bg-transparent text-slate-400 outline-none hover:text-white transition-colors"
-                                    >
-                                      <option value="">+ BÉNÉVOLE</option>
-                                      {volunteers.map(v => (
-                                        <option key={v.id} value={v.id} className="bg-slate-800 normal-case font-normal text-xs">{v.firstName} {v.lastName}</option>
-                                      ))}
-                                    </select>
+                                    <VolunteerCombobox 
+                                      volunteers={volunteers}
+                                      currentSlot={slot}
+                                      eventDetails={selectedEvent}
+                                      onSelect={(val: string) => updateTimeSlot(ci, pi, si, 'volunteer', val)}
+                                    />
                                   </div>
 
                                   <select value={slot.day} onChange={e => updateTimeSlot(ci, pi, si, 'day', e.target.value)} className="p-0.5 px-1 text-[11px] rounded-sm border border-white/10 bg-slate-800 text-white outline-none focus:border-indigo-500 transition-colors w-[80px]">
@@ -517,23 +579,6 @@ export default function EventsAndPlanningView() {
           </div>
         )}
       </div>
-      
-      <style>{`
-        .custom-scrollbar::-webkit-scrollbar {
-          width: 8px;
-        }
-        .custom-scrollbar::-webkit-scrollbar-track {
-          background: rgba(255, 255, 255, 0.02);
-          border-radius: 4px;
-        }
-        .custom-scrollbar::-webkit-scrollbar-thumb {
-          background: rgba(255, 255, 255, 0.1);
-          border-radius: 4px;
-        }
-        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-          background: rgba(255, 255, 255, 0.2);
-        }
-      `}</style>
     </div>
   );
 }

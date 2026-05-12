@@ -1,13 +1,14 @@
 import { createContext, useContext, useEffect, useState, ReactNode } from 'react';
 import { collection, onSnapshot, query, setDoc, doc, updateDoc, deleteDoc } from 'firebase/firestore';
 import { db } from '../lib/firebase';
-import { Volunteer, EventEntity, Child } from '../types';
+import { Volunteer, EventEntity, Child, Association } from '../types';
 import { handleFirestoreError, OperationType } from '../lib/firestoreErrorHandler';
 
 interface DataContextType {
   volunteers: Volunteer[];
   events: EventEntity[];
   children: Child[];
+  associations: Association[];
   loading: boolean;
   syncing: boolean;
   addVolunteer: (vol: Omit<Volunteer, 'id' | 'createdAt' | 'updatedAt'>) => Promise<void>;
@@ -19,6 +20,9 @@ interface DataContextType {
   addChild: (child: Omit<Child, 'id' | 'createdAt' | 'updatedAt'>) => Promise<void>;
   updateChild: (id: string, child: Partial<Child>) => Promise<void>;
   deleteChild: (id: string) => Promise<void>;
+  addAssociation: (assoc: Omit<Association, 'id'>) => Promise<void>;
+  updateAssociation: (id: string, assoc: Partial<Association>) => Promise<void>;
+  deleteAssociation: (id: string) => Promise<void>;
 }
 
 const DataContext = createContext<DataContextType | null>(null);
@@ -27,6 +31,7 @@ export function DataProvider({ children: childrenProp }: { children: ReactNode }
   const [volunteers, setVolunteers] = useState<Volunteer[]>([]);
   const [events, setEvents] = useState<EventEntity[]>([]);
   const [childrenData, setChildrenData] = useState<Child[]>([]);
+  const [associations, setAssociations] = useState<Association[]>([]);
   const [loading, setLoading] = useState(true);
   const [pendingWrites, setPendingWrites] = useState(0);
 
@@ -37,9 +42,10 @@ export function DataProvider({ children: childrenProp }: { children: ReactNode }
     let volsLoaded = false;
     let eventsLoaded = false;
     let childrenLoaded = false;
+    let associationsLoaded = false;
 
     const checkLoaded = () => {
-      if (volsLoaded && eventsLoaded && childrenLoaded) setLoading(false);
+      if (volsLoaded && eventsLoaded && childrenLoaded && associationsLoaded) setLoading(false);
     };
 
     // Volunteers
@@ -66,11 +72,20 @@ export function DataProvider({ children: childrenProp }: { children: ReactNode }
       childrenLoaded = true; checkLoaded();
     }, (error) => handleFirestoreError(error, OperationType.GET, 'children'));
 
+    // Associations
+    const unsubAssociations = onSnapshot(collection(db, 'associations'), (snapshot) => {
+      if (!isSubscribed) return;
+      const data = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Association));
+      setAssociations(data);
+      associationsLoaded = true; checkLoaded();
+    }, (error) => handleFirestoreError(error, OperationType.GET, 'associations'));
+
     return () => {
       isSubscribed = false;
       unsubVolunteers();
       unsubEvents();
       unsubChildren();
+      unsubAssociations();
     };
   }, []);
 
@@ -179,12 +194,44 @@ export function DataProvider({ children: childrenProp }: { children: ReactNode }
     });
   };
 
+  const addAssociation = async (assoc: Omit<Association, 'id'>) => {
+    await wrapWrite(async () => {
+      try {
+        const newDoc = doc(collection(db, 'associations'));
+        await setDoc(newDoc, assoc);
+      } catch (e) {
+        handleFirestoreError(e, OperationType.CREATE, 'associations');
+      }
+    });
+  };
+
+  const updateAssociation = async (id: string, assoc: Partial<Association>) => {
+    await wrapWrite(async () => {
+      try {
+        await updateDoc(doc(db, 'associations', id), assoc);
+      } catch (e) {
+        handleFirestoreError(e, OperationType.UPDATE, `associations/${id}`);
+      }
+    });
+  };
+
+  const deleteAssociation = async (id: string) => {
+    await wrapWrite(async () => {
+      try {
+        await deleteDoc(doc(db, 'associations', id));
+      } catch (e) {
+        handleFirestoreError(e, OperationType.DELETE, `associations/${id}`);
+      }
+    });
+  };
+
   return (
     <DataContext.Provider value={{
-      volunteers, events, children: childrenData, loading, syncing,
+      volunteers, events, children: childrenData, associations, loading, syncing,
       addVolunteer, updateVolunteer, deleteVolunteer,
       addEvent, updateEvent, deleteEvent,
-      addChild, updateChild, deleteChild
+      addChild, updateChild, deleteChild,
+      addAssociation, updateAssociation, deleteAssociation
     }}>
       {childrenProp}
     </DataContext.Provider>

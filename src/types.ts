@@ -1,3 +1,8 @@
+export interface Association {
+  id: string; // Firestore document ID
+  name: string;
+}
+
 export interface Availability {
   day: string; // e.g. "Lundi", "Mardi", or "" for all days
   start?: number;
@@ -14,6 +19,7 @@ export interface Volunteer {
   phone?: string;
   license?: string;
   lastRole?: string;
+  group?: string; // Association partenaire
   notes?: string;
   isOrganizer: boolean;
   isReferent: boolean;
