@@ -343,22 +343,10 @@ export default function EventsAndPlanningView() {
                             </div>
 
                             <div className="p-2 space-y-1">
-                              {pos.timeSlots.length === 0 && <p className="text-xs text-slate-500 italic px-2 pb-1">Aucun créneau affecté.</p>}
+                              {pos.timeSlots.length === 0 && <p className="text-xs text-slate-500 italic px-2 pb-1">Aucun bénévole affecté.</p>}
                               {(pos.timeSlots || []).map((slot, si) => (
                                 <div key={si} className="bg-black/20 p-1.5 rounded-md border border-white/5 flex flex-wrap items-center gap-2 hover:border-white/10 transition-colors">
-                                  <select value={slot.day} onChange={e => updateTimeSlot(ci, pi, si, 'day', e.target.value)} className="p-1 px-1.5 text-xs rounded border border-white/10 bg-slate-800 text-white outline-none focus:border-indigo-500 transition-colors hover:bg-slate-700 min-w-[90px]">
-                                    <option value="">Jour</option>
-                                    {DAYS.map(d => <option key={d} value={d}>{d}</option>)}
-                                  </select>
-                                  
-                                  <DebouncedInput 
-                                    value={slot.timeSlot} 
-                                    onChange={(val: string) => updateTimeSlot(ci, pi, si, 'timeSlot', val)}
-                                    placeholder="09h00-12h00"
-                                    className="p-1 px-1.5 text-xs rounded border border-white/10 bg-slate-800 text-white w-24 outline-none focus:border-indigo-500 transition-colors hover:bg-slate-700 text-center"
-                                  />
-                                  
-                                  <div className="flex-1 flex flex-wrap gap-1 items-center min-w-[200px] sm:ml-2 sm:pl-2 sm:border-l border-white/10">
+                                  <div className="flex-1 flex flex-wrap gap-1 items-center min-w-[200px] sm:mr-2 sm:pr-2 sm:border-r border-white/10">
                                     {Array.isArray(slot.volunteer) && slot.volunteer.map(vid => {
                                       const v = volunteers.find(x => x.id === vid);
                                       return v ? (
@@ -381,6 +369,18 @@ export default function EventsAndPlanningView() {
                                       ))}
                                     </select>
                                   </div>
+
+                                  <select value={slot.day} onChange={e => updateTimeSlot(ci, pi, si, 'day', e.target.value)} className="p-1 px-1.5 text-xs rounded border border-white/10 bg-slate-800 text-white outline-none focus:border-indigo-500 transition-colors hover:bg-slate-700 min-w-[90px]">
+                                    <option value="">Jour</option>
+                                    {DAYS.map(d => <option key={d} value={d}>{d}</option>)}
+                                  </select>
+                                  
+                                  <DebouncedInput 
+                                    value={slot.timeSlot} 
+                                    onChange={(val: string) => updateTimeSlot(ci, pi, si, 'timeSlot', val)}
+                                    placeholder="09h00-12h00"
+                                    className="p-1 px-1.5 text-xs rounded border border-white/10 bg-slate-800 text-white w-24 outline-none focus:border-indigo-500 transition-colors hover:bg-slate-700 text-center"
+                                  />
                                   
                                   <button onClick={() => deleteTimeSlot(ci, pi, si)} className="text-rose-400/50 hover:text-rose-400 p-1 rounded transition-colors ml-auto text-xs" title="Supprimer créneau">
                                     ✕
