@@ -1,9 +1,7 @@
 import { useData } from '../contexts/DataContext';
 
 export default function Dashboard() {
-  const { volunteers, events, children, loading } = useData();
-
-  if (loading) return <div className="text-slate-500 text-center py-10">Chargement des données...</div>;
+  const { volunteers, events, children } = useData();
 
   let totalCategories = 0;
   let totalPositions = 0;

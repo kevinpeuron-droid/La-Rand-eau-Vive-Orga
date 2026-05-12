@@ -1,12 +1,15 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route, NavLink, Navigate } from 'react-router-dom';
-import { DataProvider } from './contexts/DataContext';
+import { DataProvider, useData } from './contexts/DataContext';
 import Dashboard from './components/Dashboard';
 import VolunteersView from './components/VolunteersView';
 import EventsAndPlanningView from './components/EventsAndPlanningView';
 import ChildrenView from './components/ChildrenView';
 
 function Layout({ children }: { children: React.ReactNode }) {
+  const { syncing, loading } = useData();
+  const isSyncing = syncing || loading;
+
   return (
     <div className="min-h-screen bg-[#0f172a] text-slate-100 font-sans relative overflow-x-hidden flex flex-col">
       <div className="fixed inset-0 z-0 pointer-events-none">
@@ -21,9 +24,22 @@ function Layout({ children }: { children: React.ReactNode }) {
               <div className="w-10 h-10 bg-indigo-500 rounded-lg flex items-center justify-center shadow-lg shadow-indigo-500/20">
                 <span className="font-bold text-white text-xl">V</span>
               </div>
-              <div>
-                <h1 className="text-xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-white to-slate-400 m-0">Voluntree</h1>
-                <p className="text-xs text-slate-400">Gestionnaire de Bénévoles</p>
+              <div className="flex items-end gap-3">
+                <div>
+                  <h1 className="text-xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-white to-slate-400 m-0">Voluntree</h1>
+                  <p className="text-xs text-slate-400">Gestionnaire de Bénévoles</p>
+                </div>
+                {isSyncing ? (
+                  <div className="flex items-center gap-1.5 px-2 py-0.5 bg-amber-500/10 border border-amber-500/20 text-amber-300 text-[10px] uppercase font-bold tracking-wider rounded-full ml-2 mb-1 shadow-sm">
+                    <span className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse"></span>
+                    Synchronisation...
+                  </div>
+                ) : (
+                  <div className="flex items-center gap-1.5 px-2 py-0.5 bg-teal-500/10 border border-teal-500/20 text-teal-300 text-[10px] uppercase font-bold tracking-wider rounded-full ml-2 mb-1 shadow-sm">
+                    <span className="w-1.5 h-1.5 rounded-full bg-teal-500"></span>
+                    À jour
+                  </div>
+                )}
               </div>
             </div>
             
