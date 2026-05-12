@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import Papa from 'papaparse';
 import { useData } from '../contexts/DataContext';
 import { Volunteer } from '../types';
 
@@ -47,62 +48,45 @@ export default function VolunteersView() {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    const reader = new FileReader();
-    reader.onload = async (event) => {
-      const text = event.target?.result as string;
-      const lines = text.split('\n');
-      if (lines.length < 2) return;
-      
-      const firstLine = lines[0];
-      const separator = firstLine.includes(';') ? ';' : ',';
-      const headers = firstLine.split(separator).map(h => h.trim().replace(/^"|"$/g, ''));
-      
-      const importPromises = [];
-      for (let i = 1; i < lines.length; i++) {
-        if (!lines[i].trim()) continue;
-        
-        const values: string[] = [];
-        let inQuotes = false;
-        let currentValue = "";
-        for (let j = 0; j < lines[i].length; j++) {
-            const char = lines[i][j];
-            if (char === '"' && lines[i][j+1] === '"') {
-                currentValue += '"'; j++;
-            } else if (char === '"') {
-                inQuotes = !inQuotes;
-            } else if (char === separator && !inQuotes) {
-                values.push(currentValue);
-                currentValue = "";
-            } else {
-                currentValue += char;
-            }
+    Papa.parse(file, {
+      header: true,
+      skipEmptyLines: true,
+      complete: async (results) => {
+        const importPromises = [];
+        for (const row of results.data as any[]) {
+          if (row.firstName && row.lastName) {
+            importPromises.push(
+              addVolunteer({
+                firstName: row.firstName.trim(),
+                lastName: row.lastName.trim(),
+                email: row.email?.trim() || '',
+                phone: row.phone?.trim() || '',
+                license: row.license?.trim() || '',
+                lastRole: row.lastRole?.trim() || '',
+                isOrganizer: row.isOrganizer === '1' || row.isOrganizer?.toString().toLowerCase() === 'true',
+                isReferent: row.isReferent === '1' || row.isReferent?.toString().toLowerCase() === 'true',
+                availability: [],
+                childIds: [],
+              })
+            );
+          }
         }
-        values.push(currentValue);
-
-        const row = values;
-        const vol: any = {};
-        headers.forEach((h, index) => vol[h] = row[index] || '');
-        
-        if (vol.firstName && vol.lastName) {
-           importPromises.push(addVolunteer({
-              firstName: vol.firstName,
-              lastName: vol.lastName,
-              email: vol.email || '',
-              phone: vol.phone || '',
-              license: vol.license || '',
-              lastRole: vol.lastRole || '',
-              isOrganizer: vol.isOrganizer === '1',
-              isReferent: vol.isReferent === '1',
-              availability: [],
-              childIds: []
-           }));
+        try {
+          await Promise.all(importPromises);
+          alert('Import terminé !');
+        } catch (error) {
+          console.error("Erreur lors de l'import:", error);
+          alert("Erreur lors de l'import des données. Veuillez vérifier le format de votre fichier.");
+        } finally {
+          e.target.value = ''; // reset
         }
+      },
+      error: (error) => {
+        console.error("Erreur de parsing CSV:", error);
+        alert("Le format du fichier n'a pas pu être lu.");
+        e.target.value = '';
       }
-      await Promise.all(importPromises);
-      e.target.value = ''; // reset
-      alert('Import terminé !');
-    };
-    reader.readAsText(file);
+    });
   };
 
   const filtered = volunteers.filter(v => 
