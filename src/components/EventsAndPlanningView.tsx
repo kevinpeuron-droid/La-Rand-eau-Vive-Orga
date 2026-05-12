@@ -1,4 +1,5 @@
 import { useState, useEffect, KeyboardEvent } from 'react';
+import Papa from 'papaparse';
 import { useData } from '../contexts/DataContext';
 import { Position } from '../types';
 
@@ -178,6 +179,116 @@ export default function EventsAndPlanningView() {
 
   const stats = computeStats();
 
+  const handleImportCSV = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!selectedEvent) return;
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    Papa.parse(file, {
+      header: true,
+      skipEmptyLines: true,
+      complete: async (results) => {
+        const data = results.data as any[];
+        const newCats = [...(selectedEvent.categories || [])];
+
+        for (const row of data) {
+          let catName = row['Catégorie']?.trim() || row['Categorie']?.trim() || row['category']?.trim();
+          let posName = row['Poste']?.trim() || row['poste']?.trim();
+          let timeSlotStr = row['Créneau']?.trim() || row['Creneau']?.trim() || row['timeSlot']?.trim() || '';
+
+          if (!catName || !posName) continue;
+
+          let cat = newCats.find(c => c.name.toLowerCase() === catName.toLowerCase());
+          if (!cat) {
+            cat = { name: catName, expanded: true, positions: [] };
+            newCats.push(cat);
+          }
+
+          let pos = cat.positions.find(p => p.name.toLowerCase() === posName.toLowerCase());
+          if (!pos) {
+            pos = { name: posName, details: '', equipment: '', timeSlots: [] };
+            cat.positions.push(pos);
+          }
+
+          pos.timeSlots.push({ day: '', timeSlot: timeSlotStr, volunteer: [] });
+        }
+
+        try {
+          await updateEvent(selectedEvent.id, { categories: newCats });
+          alert('Planning importé avec succès !');
+        } catch(err) {
+          console.error(err);
+          alert('Erreur lors de la sauvegarde.');
+        } finally {
+          e.target.value = '';
+        }
+      },
+      error: (error) => {
+          console.error("Erreur de parsing CSV:", error);
+          alert("Le format du fichier n'a pas pu être lu.");
+          e.target.value = '';
+      }
+    });
+  };
+
+  const handleExportCSV = () => {
+    if (!selectedEvent) return;
+
+    const exportData: any[] = [];
+    selectedEvent.categories?.forEach(cat => {
+      cat.positions?.forEach(pos => {
+        if (pos.timeSlots && pos.timeSlots.length > 0) {
+          pos.timeSlots.forEach(slot => {
+            if (slot.volunteer && slot.volunteer.length > 0) {
+                slot.volunteer.forEach(vid => {
+                    const v = volunteers.find(x => x.id === vid);
+                    exportData.push({
+                        'Catégorie': cat.name,
+                        'Poste': pos.name,
+                        'Détails': pos.details || '',
+                        'Jour': slot.day || '',
+                        'Créneau': slot.timeSlot || '',
+                        'Bénévole': v ? `${v.firstName} ${v.lastName}` : '',
+                        'Contact': v ? (v.phone || v.email || '') : ''
+                    });
+                });
+            } else {
+                exportData.push({
+                    'Catégorie': cat.name,
+                    'Poste': pos.name,
+                    'Détails': pos.details || '',
+                    'Jour': slot.day || '',
+                    'Créneau': slot.timeSlot || '',
+                    'Bénévole': '',
+                    'Contact': ''
+                });
+            }
+          });
+        } else {
+            exportData.push({
+                'Catégorie': cat.name,
+                'Poste': pos.name,
+                'Détails': pos.details || '',
+                'Jour': '',
+                'Créneau': '',
+                'Bénévole': '',
+                'Contact': ''
+            });
+        }
+      });
+    });
+
+    const csvData = Papa.unparse(exportData, { delimiter: ';' });
+    const blob = new Blob([new Uint8Array([0xEF, 0xBB, 0xBF]), csvData], { type: "text/csv;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.setAttribute("href", url);
+    link.setAttribute("download", `Export_${selectedEvent.name}.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   return (
     <div className="flex flex-col lg:flex-row gap-6 h-full min-h-[80vh] animate-in fade-in duration-500">
       
@@ -266,9 +377,18 @@ export default function EventsAndPlanningView() {
               )}
             </header>
 
-            <div className="mb-4">
+            <div className="mb-4 flex flex-wrap gap-3 items-center">
               <button onClick={addCategory} className="bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 px-4 py-2 rounded-xl text-sm font-semibold hover:bg-indigo-500/30 hover:text-white transition-colors">
                 ➕ Nouvelle Catégorie
+              </button>
+              
+              <label className="cursor-pointer bg-slate-800 text-slate-300 border border-white/10 px-4 py-2 rounded-xl text-sm font-semibold hover:bg-slate-700 transition-colors shadow-sm mb-0">
+                📥 Importer Modèle CSV
+                <input type="file" accept=".csv" onChange={handleImportCSV} className="hidden" />
+              </label>
+
+              <button onClick={handleExportCSV} className="bg-slate-800 text-slate-300 border border-white/10 px-4 py-2 rounded-xl text-sm font-semibold hover:bg-slate-700 transition-colors shadow-sm sm:ml-auto">
+                📤 Exporter CSV
               </button>
             </div>
 
