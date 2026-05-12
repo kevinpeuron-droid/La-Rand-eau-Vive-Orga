@@ -1,6 +1,33 @@
-import { useState } from 'react';
+import { useState, useEffect, KeyboardEvent } from 'react';
 import { useData } from '../contexts/DataContext';
 import { Position } from '../types';
+
+function DebouncedInput({ value, onChange, placeholder, className }: any) {
+  const [localValue, setLocalValue] = useState(value);
+
+  useEffect(() => {
+    setLocalValue(value);
+  }, [value]);
+
+  const handleBlur = () => {
+    if (localValue !== value) onChange(localValue);
+  };
+
+  const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') e.currentTarget.blur();
+  };
+
+  return (
+    <input 
+      value={localValue} 
+      onChange={e => setLocalValue(e.target.value)} 
+      onBlur={handleBlur}
+      onKeyDown={handleKeyDown}
+      placeholder={placeholder}
+      className={className}
+    />
+  );
+}
 
 export default function EventsAndPlanningView() {
   const { events, volunteers, addEvent, updateEvent, deleteEvent } = useData();
@@ -276,72 +303,68 @@ export default function EventsAndPlanningView() {
                         {cat.positions.length === 0 && <p className="text-xs text-slate-500 italic pl-6">Aucun poste dans cette catégorie.</p>}
                         
                         {(cat.positions || []).map((pos, pi) => (
-                          <div key={pi} className="bg-white/5 rounded-xl border border-white/10 p-4">
-                            <div className="flex flex-col xl:flex-row xl:items-start gap-4 mb-4">
-                              <div className="flex-1 w-full space-y-2">
-                                <input 
+                          <div key={pi} className="bg-white/5 border-l-[3px] border-l-indigo-500 rounded-r-xl border-y border-r border-white/10 mb-3 shadow-[0_4px_20px_-10px_rgba(0,0,0,0.5)]">
+                            <div className="flex flex-col xl:flex-row xl:items-center gap-3 p-3 bg-black/20">
+                              <div className="flex-1 w-full flex flex-col md:flex-row gap-3">
+                                <DebouncedInput 
                                   value={pos.name} 
-                                  onChange={e => updatePositionField(ci, pi, 'name', e.target.value)}
+                                  onChange={(val: string) => updatePositionField(ci, pi, 'name', val)}
                                   placeholder="Nom du Poste"
-                                  className="w-full font-bold text-lg text-indigo-300 bg-transparent outline-none border-b border-transparent hover:border-white/10 focus:border-indigo-500 px-1 transition-colors"
+                                  className="flex-1 font-bold text-sm md:text-base text-indigo-300 bg-transparent outline-none border-b border-transparent hover:border-white/10 focus:border-indigo-500 px-1 transition-colors min-w-[150px]"
                                 />
-                                <div className="flex flex-col md:flex-row gap-3">
-                                  <div className="flex-1 relative">
-                                    <span className="absolute left-3 top-2.5 text-xs text-slate-500">📝</span>
-                                    <input 
-                                      value={pos.details || ''} 
-                                      onChange={e => updatePositionField(ci, pi, 'details', e.target.value)}
-                                      placeholder="Détails (ex: Carrefour A)"
-                                      className="w-full pl-8 pr-3 py-2 text-sm text-slate-300 bg-black/30 rounded-lg outline-none border border-white/5 focus:border-indigo-500/50 hover:bg-black/40 transition-colors"
-                                    />
-                                  </div>
-                                  <div className="flex-1 relative">
-                                    <span className="absolute left-3 top-2.5 text-xs text-slate-500">🦺</span>
-                                    <input 
-                                      value={pos.equipment || ''} 
-                                      onChange={e => updatePositionField(ci, pi, 'equipment', e.target.value)}
-                                      placeholder="Matériel (ex: Gilet, Radio)"
-                                      className="w-full pl-8 pr-3 py-2 text-sm text-slate-300 bg-black/30 rounded-lg outline-none border border-white/5 focus:border-amber-500/50 hover:bg-black/40 transition-colors"
-                                    />
-                                  </div>
+                                <div className="flex flex-1 gap-2 relative">
+                                  <span className="absolute left-2.5 top-1.5 text-[10px] text-slate-500">📝</span>
+                                  <DebouncedInput 
+                                    value={pos.details || ''} 
+                                    onChange={(val: string) => updatePositionField(ci, pi, 'details', val)}
+                                    placeholder="Détails"
+                                    className="w-1/2 pl-7 pr-2 py-1 text-xs text-slate-300 bg-black/40 rounded-md outline-none border border-white/5 focus:border-indigo-500/50 hover:bg-black/60 transition-colors"
+                                  />
+                                  <span className="absolute left-[calc(50%+10px)] top-1.5 text-[10px] text-amber-500/70">🦺</span>
+                                  <DebouncedInput 
+                                    value={pos.equipment || ''} 
+                                    onChange={(val: string) => updatePositionField(ci, pi, 'equipment', val)}
+                                    placeholder="Matériel"
+                                    className="w-1/2 pl-7 pr-2 py-1 text-xs text-slate-300 bg-black/40 rounded-md outline-none border border-white/5 focus:border-amber-500/50 hover:bg-black/60 transition-colors"
+                                  />
                                 </div>
                               </div>
-                              <div className="flex gap-2">
-                                <button onClick={() => addTimeSlot(ci, pi)} className="text-xs bg-teal-500/20 text-teal-300 border border-teal-500/30 px-3 py-2 rounded-lg hover:bg-teal-500/30 hover:text-white transition-colors font-medium whitespace-nowrap">
+                              <div className="flex gap-1 xl:ml-auto">
+                                <button onClick={() => addTimeSlot(ci, pi)} className="text-[11px] bg-teal-500/20 text-teal-300 border border-teal-500/30 px-2.5 py-1.5 rounded-md hover:bg-teal-500/30 hover:text-white transition-colors font-medium whitespace-nowrap">
                                   + Créneau
                                 </button>
-                                <button onClick={() => duplicatePosition(ci, pi)} className="text-xs px-2 py-2 text-indigo-400 hover:bg-indigo-500/20 rounded-lg transition-colors border border-transparent hover:border-indigo-500/10" title="Dupliquer le poste">
+                                <button onClick={() => duplicatePosition(ci, pi)} className="text-[11px] px-2 py-1.5 text-indigo-400 hover:bg-indigo-500/20 rounded-md transition-colors" title="Dupliquer le poste">
                                   📄
                                 </button>
-                                <button onClick={() => { if(confirm('Supprimer ce poste ?')) removePosition(ci, pi); }} className="text-xs px-2 py-2 text-rose-400 hover:bg-rose-500/20 rounded-lg transition-colors border border-transparent hover:border-rose-500/10" title="Supprimer le poste">
+                                <button onClick={() => { if(confirm('Supprimer ce poste ?')) removePosition(ci, pi); }} className="text-[11px] px-2 py-1.5 text-rose-400 hover:bg-rose-500/20 rounded-md transition-colors" title="Supprimer le poste">
                                   🗑️
                                 </button>
                               </div>
                             </div>
 
-                            <div className="space-y-2 mt-2">
-                              {pos.timeSlots.length === 0 && <p className="text-xs text-slate-500 italic">Aucun créneau affecté.</p>}
+                            <div className="p-2 space-y-1">
+                              {pos.timeSlots.length === 0 && <p className="text-xs text-slate-500 italic px-2 pb-1">Aucun créneau affecté.</p>}
                               {(pos.timeSlots || []).map((slot, si) => (
-                                <div key={si} className="bg-black/30 p-2.5 rounded-lg border border-white/5 flex flex-wrap items-center gap-2 hover:border-white/10 transition-colors">
-                                  <select value={slot.day} onChange={e => updateTimeSlot(ci, pi, si, 'day', e.target.value)} className="p-1.5 text-xs rounded-md border border-white/10 bg-slate-800 text-white outline-none focus:border-indigo-500 transition-colors hover:bg-slate-700">
-                                    <option value="">-- Jour --</option>
+                                <div key={si} className="bg-black/20 p-1.5 rounded-md border border-white/5 flex flex-wrap items-center gap-2 hover:border-white/10 transition-colors">
+                                  <select value={slot.day} onChange={e => updateTimeSlot(ci, pi, si, 'day', e.target.value)} className="p-1 px-1.5 text-xs rounded border border-white/10 bg-slate-800 text-white outline-none focus:border-indigo-500 transition-colors hover:bg-slate-700 min-w-[90px]">
+                                    <option value="">Jour</option>
                                     {DAYS.map(d => <option key={d} value={d}>{d}</option>)}
                                   </select>
                                   
-                                  <input 
+                                  <DebouncedInput 
                                     value={slot.timeSlot} 
-                                    onChange={e => updateTimeSlot(ci, pi, si, 'timeSlot', e.target.value)}
-                                    placeholder="Ex: 09h00-12h00"
-                                    className="p-1.5 text-xs rounded-md border border-white/10 bg-slate-800 text-white w-28 outline-none focus:border-indigo-500 transition-colors hover:bg-slate-700"
+                                    onChange={(val: string) => updateTimeSlot(ci, pi, si, 'timeSlot', val)}
+                                    placeholder="09h00-12h00"
+                                    className="p-1 px-1.5 text-xs rounded border border-white/10 bg-slate-800 text-white w-24 outline-none focus:border-indigo-500 transition-colors hover:bg-slate-700 text-center"
                                   />
                                   
-                                  <div className="flex-1 flex flex-wrap gap-1.5 items-center min-w-[200px] ml-2 pl-2 border-l border-white/10">
+                                  <div className="flex-1 flex flex-wrap gap-1 items-center min-w-[200px] sm:ml-2 sm:pl-2 sm:border-l border-white/10">
                                     {Array.isArray(slot.volunteer) && slot.volunteer.map(vid => {
                                       const v = volunteers.find(x => x.id === vid);
                                       return v ? (
-                                        <span key={vid} className="bg-indigo-500/30 border border-indigo-500/50 text-indigo-100 text-[11px] px-2 py-1 rounded-md flex items-center gap-1 font-medium shadow-sm">
+                                        <span key={vid} className="bg-indigo-500/20 border border-indigo-500/30 text-indigo-200 text-[10px] px-1.5 py-0.5 rounded flex items-center gap-1 font-medium">
                                           {v.firstName} {v.lastName}
-                                          <button onClick={() => removeVolunteerFromSlot(ci, pi, si, vid)} className="text-indigo-300 hover:text-rose-400 ml-1 transition-colors">✕</button>
+                                          <button onClick={() => removeVolunteerFromSlot(ci, pi, si, vid)} className="text-indigo-400 hover:text-rose-400 ml-0.5 transition-colors">✕</button>
                                         </span>
                                       ) : null;
                                     })}
@@ -350,7 +373,7 @@ export default function EventsAndPlanningView() {
                                         updateTimeSlot(ci, pi, si, 'volunteer', e.target.value);
                                         e.target.value = "";
                                       }} 
-                                      className="p-1.5 text-xs rounded-md border border-white/10 bg-slate-800/80 text-slate-300 outline-none hover:text-white hover:bg-slate-700 transition-colors"
+                                      className="p-1 px-1.5 text-[10px] uppercase font-bold tracking-wider rounded border border-white/10 bg-slate-800/80 text-slate-400 outline-none hover:text-white hover:bg-slate-700 transition-colors"
                                     >
                                       <option value="">+ Bénévole</option>
                                       {volunteers.map(v => (
@@ -359,7 +382,7 @@ export default function EventsAndPlanningView() {
                                     </select>
                                   </div>
                                   
-                                  <button onClick={() => deleteTimeSlot(ci, pi, si)} className="text-rose-400/70 hover:text-rose-400 p-1.5 rounded transition-colors ml-auto" title="Supprimer créneau">
+                                  <button onClick={() => deleteTimeSlot(ci, pi, si)} className="text-rose-400/50 hover:text-rose-400 p-1 rounded transition-colors ml-auto text-xs" title="Supprimer créneau">
                                     ✕
                                   </button>
                                 </div>
