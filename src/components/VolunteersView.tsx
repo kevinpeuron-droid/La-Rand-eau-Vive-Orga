@@ -53,8 +53,11 @@ export default function VolunteersView() {
       const lines = text.split('\n');
       if (lines.length < 2) return;
       
-      const headers = lines[0].split(',').map(h => h.trim().replace(/^"|"$/g, ''));
+      const firstLine = lines[0];
+      const separator = firstLine.includes(';') ? ';' : ',';
+      const headers = firstLine.split(separator).map(h => h.trim().replace(/^"|"$/g, ''));
       
+      const importPromises = [];
       for (let i = 1; i < lines.length; i++) {
         if (!lines[i].trim()) continue;
         
@@ -67,7 +70,7 @@ export default function VolunteersView() {
                 currentValue += '"'; j++;
             } else if (char === '"') {
                 inQuotes = !inQuotes;
-            } else if (char === ',' && !inQuotes) {
+            } else if (char === separator && !inQuotes) {
                 values.push(currentValue);
                 currentValue = "";
             } else {
@@ -81,7 +84,7 @@ export default function VolunteersView() {
         headers.forEach((h, index) => vol[h] = row[index] || '');
         
         if (vol.firstName && vol.lastName) {
-           await addVolunteer({
+           importPromises.push(addVolunteer({
               firstName: vol.firstName,
               lastName: vol.lastName,
               email: vol.email || '',
@@ -92,9 +95,10 @@ export default function VolunteersView() {
               isReferent: vol.isReferent === '1',
               availability: [],
               childIds: []
-           });
+           }));
         }
       }
+      await Promise.all(importPromises);
       e.target.value = ''; // reset
       alert('Import terminé !');
     };

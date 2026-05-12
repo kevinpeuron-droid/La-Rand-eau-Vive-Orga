@@ -303,56 +303,54 @@ export default function EventsAndPlanningView() {
                         {cat.positions.length === 0 && <p className="text-xs text-slate-500 italic pl-6">Aucun poste dans cette catégorie.</p>}
                         
                         {(cat.positions || []).map((pos, pi) => (
-                          <div key={pi} className="bg-white/5 border-l-[3px] border-l-indigo-500 rounded-r-xl border-y border-r border-white/10 mb-3 shadow-[0_4px_20px_-10px_rgba(0,0,0,0.5)]">
-                            <div className="flex flex-col xl:flex-row xl:items-center gap-3 p-3 bg-black/20">
-                              <div className="flex-1 w-full flex flex-col md:flex-row gap-3">
+                          <div key={pi} className="bg-white/5 border-l-[3px] border-l-indigo-500 rounded-r-md border-y border-r border-white/10 mb-2 shadow-sm">
+                            <div className="flex flex-col lg:flex-row lg:items-center gap-2 p-2 bg-black/20">
+                              <div className="flex-1 w-full flex flex-col sm:flex-row gap-2">
                                 <DebouncedInput 
                                   value={pos.name} 
                                   onChange={(val: string) => updatePositionField(ci, pi, 'name', val)}
                                   placeholder="Nom du Poste"
-                                  className="flex-1 font-bold text-sm md:text-base text-indigo-300 bg-transparent outline-none border-b border-transparent hover:border-white/10 focus:border-indigo-500 px-1 transition-colors min-w-[150px]"
+                                  className="flex-1 font-bold text-sm text-indigo-300 bg-transparent outline-none border-b border-transparent hover:border-white/10 focus:border-indigo-500 transition-colors min-w-[120px]"
                                 />
-                                <div className="flex flex-1 gap-2 relative">
-                                  <span className="absolute left-2.5 top-1.5 text-[10px] text-slate-500">📝</span>
+                                <div className="flex flex-1 gap-1 relative">
                                   <DebouncedInput 
                                     value={pos.details || ''} 
                                     onChange={(val: string) => updatePositionField(ci, pi, 'details', val)}
-                                    placeholder="Détails"
-                                    className="w-1/2 pl-7 pr-2 py-1 text-xs text-slate-300 bg-black/40 rounded-md outline-none border border-white/5 focus:border-indigo-500/50 hover:bg-black/60 transition-colors"
+                                    placeholder="📝 Détails..."
+                                    className="w-1/2 px-2 py-0.5 text-[11px] text-slate-300 bg-black/40 rounded outline-none border border-white/5 focus:border-indigo-500/50 hover:bg-black/60 transition-colors"
                                   />
-                                  <span className="absolute left-[calc(50%+10px)] top-1.5 text-[10px] text-amber-500/70">🦺</span>
                                   <DebouncedInput 
                                     value={pos.equipment || ''} 
                                     onChange={(val: string) => updatePositionField(ci, pi, 'equipment', val)}
-                                    placeholder="Matériel"
-                                    className="w-1/2 pl-7 pr-2 py-1 text-xs text-slate-300 bg-black/40 rounded-md outline-none border border-white/5 focus:border-amber-500/50 hover:bg-black/60 transition-colors"
+                                    placeholder="🦺 Matériel..."
+                                    className="w-1/2 px-2 py-0.5 text-[11px] text-slate-300 bg-black/40 rounded outline-none border border-white/5 focus:border-amber-500/50 hover:bg-black/60 transition-colors"
                                   />
                                 </div>
                               </div>
-                              <div className="flex gap-1 xl:ml-auto">
-                                <button onClick={() => addTimeSlot(ci, pi)} className="text-[11px] bg-teal-500/20 text-teal-300 border border-teal-500/30 px-2.5 py-1.5 rounded-md hover:bg-teal-500/30 hover:text-white transition-colors font-medium whitespace-nowrap">
+                              <div className="flex gap-1 lg:ml-auto shrink-0">
+                                <button onClick={() => addTimeSlot(ci, pi)} className="text-[10px] bg-teal-500/20 text-teal-300 border border-teal-500/30 px-2 py-1 rounded hover:bg-teal-500/30 hover:text-white transition-colors font-medium whitespace-nowrap">
                                   + Créneau
                                 </button>
-                                <button onClick={() => duplicatePosition(ci, pi)} className="text-[11px] px-2 py-1.5 text-indigo-400 hover:bg-indigo-500/20 rounded-md transition-colors" title="Dupliquer le poste">
+                                <button onClick={() => duplicatePosition(ci, pi)} className="text-[10px] px-1.5 py-1 text-indigo-400 hover:bg-indigo-500/20 rounded transition-colors" title="Dupliquer">
                                   📄
                                 </button>
-                                <button onClick={() => { if(confirm('Supprimer ce poste ?')) removePosition(ci, pi); }} className="text-[11px] px-2 py-1.5 text-rose-400 hover:bg-rose-500/20 rounded-md transition-colors" title="Supprimer le poste">
+                                <button onClick={() => { if(confirm('Supprimer ce poste ?')) removePosition(ci, pi); }} className="text-[10px] px-1.5 py-1 text-rose-400 hover:bg-rose-500/20 rounded transition-colors" title="Supprimer">
                                   🗑️
                                 </button>
                               </div>
                             </div>
 
-                            <div className="p-2 space-y-1">
-                              {pos.timeSlots.length === 0 && <p className="text-xs text-slate-500 italic px-2 pb-1">Aucun bénévole affecté.</p>}
+                            <div className="p-1.5 space-y-1 bg-black/10">
+                              {pos.timeSlots.length === 0 && <p className="text-[10px] text-slate-500 italic px-1">Aucun bénévole affecté.</p>}
                               {(pos.timeSlots || []).map((slot, si) => (
-                                <div key={si} className="bg-black/20 p-1.5 rounded-md border border-white/5 flex flex-wrap items-center gap-2 hover:border-white/10 transition-colors">
-                                  <div className="flex-1 flex flex-wrap gap-1 items-center min-w-[200px] sm:mr-2 sm:pr-2 sm:border-r border-white/10">
+                                <div key={si} className="bg-black/20 p-1 rounded-sm border border-white/5 flex flex-wrap items-center gap-1.5 hover:border-white/10 transition-colors">
+                                  <div className="flex-1 flex flex-wrap gap-1 items-center min-w-[150px] sm:mr-1 sm:pr-1 sm:border-r border-white/10">
                                     {Array.isArray(slot.volunteer) && slot.volunteer.map(vid => {
                                       const v = volunteers.find(x => x.id === vid);
                                       return v ? (
-                                        <span key={vid} className="bg-indigo-500/20 border border-indigo-500/30 text-indigo-200 text-[10px] px-1.5 py-0.5 rounded flex items-center gap-1 font-medium">
+                                        <span key={vid} className="bg-indigo-500/20 border border-indigo-500/30 text-indigo-200 text-[10px] px-1 py-0.5 rounded-sm flex items-center gap-1 font-medium">
                                           {v.firstName} {v.lastName}
-                                          <button onClick={() => removeVolunteerFromSlot(ci, pi, si, vid)} className="text-indigo-400 hover:text-rose-400 ml-0.5 transition-colors">✕</button>
+                                          <button onClick={() => removeVolunteerFromSlot(ci, pi, si, vid)} className="text-indigo-400 hover:text-rose-400 ml-0.5 transition-colors leading-none">✕</button>
                                         </span>
                                       ) : null;
                                     })}
@@ -361,16 +359,16 @@ export default function EventsAndPlanningView() {
                                         updateTimeSlot(ci, pi, si, 'volunteer', e.target.value);
                                         e.target.value = "";
                                       }} 
-                                      className="p-1 px-1.5 text-[10px] uppercase font-bold tracking-wider rounded border border-white/10 bg-slate-800/80 text-slate-400 outline-none hover:text-white hover:bg-slate-700 transition-colors"
+                                      className="p-0.5 px-1 text-[9px] uppercase font-bold tracking-wider rounded-sm border border-dashed border-white/20 bg-transparent text-slate-400 outline-none hover:text-white transition-colors"
                                     >
-                                      <option value="">+ Bénévole</option>
+                                      <option value="">+ BÉNÉVOLE</option>
                                       {volunteers.map(v => (
-                                        <option key={v.id} value={v.id}>{v.firstName} {v.lastName}</option>
+                                        <option key={v.id} value={v.id} className="bg-slate-800 normal-case font-normal text-xs">{v.firstName} {v.lastName}</option>
                                       ))}
                                     </select>
                                   </div>
 
-                                  <select value={slot.day} onChange={e => updateTimeSlot(ci, pi, si, 'day', e.target.value)} className="p-1 px-1.5 text-xs rounded border border-white/10 bg-slate-800 text-white outline-none focus:border-indigo-500 transition-colors hover:bg-slate-700 min-w-[90px]">
+                                  <select value={slot.day} onChange={e => updateTimeSlot(ci, pi, si, 'day', e.target.value)} className="p-0.5 px-1 text-[11px] rounded-sm border border-white/10 bg-slate-800 text-white outline-none focus:border-indigo-500 transition-colors w-[80px]">
                                     <option value="">Jour</option>
                                     {DAYS.map(d => <option key={d} value={d}>{d}</option>)}
                                   </select>
@@ -379,10 +377,10 @@ export default function EventsAndPlanningView() {
                                     value={slot.timeSlot} 
                                     onChange={(val: string) => updateTimeSlot(ci, pi, si, 'timeSlot', val)}
                                     placeholder="09h00-12h00"
-                                    className="p-1 px-1.5 text-xs rounded border border-white/10 bg-slate-800 text-white w-24 outline-none focus:border-indigo-500 transition-colors hover:bg-slate-700 text-center"
+                                    className="p-0.5 px-1 text-[11px] rounded-sm border border-white/10 bg-slate-800 text-white w-[80px] outline-none focus:border-indigo-500 transition-colors text-center"
                                   />
                                   
-                                  <button onClick={() => deleteTimeSlot(ci, pi, si)} className="text-rose-400/50 hover:text-rose-400 p-1 rounded transition-colors ml-auto text-xs" title="Supprimer créneau">
+                                  <button onClick={() => deleteTimeSlot(ci, pi, si)} className="text-rose-400/50 hover:text-rose-400 px-1 rounded transition-colors ml-auto text-xs" title="Supprimer créneau">
                                     ✕
                                   </button>
                                 </div>
