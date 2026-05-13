@@ -1,7 +1,7 @@
 import { useData } from '../contexts/DataContext';
 
 export default function Dashboard() {
-  const { volunteers, events, children } = useData();
+  const { volunteers, events } = useData();
 
   let totalCategories = 0;
   let totalPositions = 0;
@@ -10,14 +10,6 @@ export default function Dashboard() {
     totalCategories += (e.categories || []).length;
     (e.categories || []).forEach(c => totalPositions += (c.positions || []).length);
   });
-
-  const getVolChildIds = (v: any) => Array.isArray(v.childIds) ? v.childIds : (v.childId ? [String(v.childId)] : []);
-  
-  // Stats for children
-  const assignedChildIds = new Set(volunteers.flatMap(v => getVolChildIds(v)));
-  const representedChildren = children.filter(c => assignedChildIds.has(String(c.id))).length;
-  const childPct = children.length > 0 ? Math.round(representedChildren / children.length * 100) : 0;
-  const childColor = childPct >= 75 ? '#34d399' : childPct >= 40 ? '#fbbf24' : '#fb7185';
   
   const incompleteEvents = events.map(e => {
     let requiredSlots = 0;
@@ -50,26 +42,6 @@ export default function Dashboard() {
             <strong className="text-amber-400 text-lg">⭐ {priorityEvent.name}</strong> 
             <span className="text-amber-500 ml-2 font-semibold">Prioritaire</span>
             <p className="text-amber-200/70 mt-1 text-sm">Vérifiez le planning pour vous assurer que tous les postes sont pourvus.</p>
-          </div>
-        </div>
-      )}
-
-      {/* Children Banner */}
-      {children.length > 0 && (
-        <div className={`bg-white/5 backdrop-blur-lg border border-white/10 border-l-[4px] shadow p-5 rounded-2xl flex items-center justify-between gap-4`} style={{ borderLeftColor: childColor }}>
-          <div className="flex items-center gap-4 flex-1">
-            <span className="text-2xl">🧒</span>
-            <div>
-              <strong className="text-white">{childPct}% d'élèves représentés</strong>
-              <div className="h-1.5 w-48 bg-slate-800 rounded-full mt-2 mb-1.5 overflow-hidden">
-                <div className="h-full rounded-full transition-all duration-500 shadow-sm" style={{ width: `${childPct}%`, backgroundColor: childColor }}></div>
-              </div>
-              <span className="text-xs text-slate-400">
-                {childPct === 100 ? 'Tous les élèves sont représentés ! 🎉' : 
-                 childPct === 0 ? 'Aucun élève n\'a encore de bénévole associé.' : 
-                 `${representedChildren} élève${representedChildren>1?'s':''} sur ${children.length} ${representedChildren>1?'sont':'est'} représenté${representedChildren>1?'s':''}.`}
-              </span>
-            </div>
           </div>
         </div>
       )}

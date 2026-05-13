@@ -4,7 +4,7 @@ import { useData } from '../contexts/DataContext';
 import { Volunteer } from '../types';
 
 export default function VolunteersView() {
-  const { volunteers, children, associations, addVolunteer, deleteVolunteer, updateVolunteer, addAssociation, deleteAssociation } = useData();
+  const { volunteers, associations, addVolunteer, deleteVolunteer, updateVolunteer, addAssociation, deleteAssociation } = useData();
   const [search, setSearch] = useState('');
   const [form, setForm] = useState({ firstName: '', lastName: '', email: '', phone: '', license: '', lastRole: '', group: '' });
   const [showAssociationsManager, setShowAssociationsManager] = useState(false);

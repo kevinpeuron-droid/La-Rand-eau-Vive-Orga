@@ -1,6 +1,6 @@
 {
-  "name": "",
-  "description": "",
+  "name": "Rand'eau Vive",
+  "description": "Application de gestion de bénévoles pour événements",
   "requestFramePermissions": [],
   "majorCapabilities": []
 }

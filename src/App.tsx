@@ -4,7 +4,7 @@ import { DataProvider, useData } from './contexts/DataContext';
 import Dashboard from './components/Dashboard';
 import VolunteersView from './components/VolunteersView';
 import EventsAndPlanningView from './components/EventsAndPlanningView';
-import ChildrenView from './components/ChildrenView';
+import MapView from './components/MapView';
 
 function Layout({ children }: { children: React.ReactNode }) {
   const { syncing, loading } = useData();
@@ -22,11 +22,11 @@ function Layout({ children }: { children: React.ReactNode }) {
           <div className="flex flex-col md:flex-row items-center justify-between gap-4 max-w-[1500px] mx-auto w-full">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 bg-indigo-500 rounded-lg flex items-center justify-center shadow-lg shadow-indigo-500/20">
-                <span className="font-bold text-white text-xl">V</span>
+                <span className="font-bold text-white text-xl">R</span>
               </div>
               <div className="flex items-end gap-3">
                 <div>
-                  <h1 className="text-xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-white to-slate-400 m-0">Voluntree</h1>
+                  <h1 className="text-xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-white to-slate-400 m-0">Rand'eau Vive</h1>
                   <p className="text-xs text-slate-400">Gestionnaire de Bénévoles</p>
                 </div>
                 {isSyncing ? (
@@ -53,8 +53,8 @@ function Layout({ children }: { children: React.ReactNode }) {
           <NavLink to="/events-planning" className={({isActive}) => `px-4 py-2 text-sm font-medium transition-colors rounded-xl flex items-center gap-2 ${isActive ? 'bg-white/10 text-white' : 'text-slate-400 hover:text-white hover:bg-white/5'}`}>
             📅 Événements & Planning
           </NavLink>
-          <NavLink to="/children" className={({isActive}) => `px-4 py-2 text-sm font-medium transition-colors rounded-xl flex items-center gap-2 ${isActive ? 'bg-white/10 text-white' : 'text-slate-400 hover:text-white hover:bg-white/5'}`}>
-            🧒 Élèves
+          <NavLink to="/map" className={({isActive}) => `px-4 py-2 text-sm font-medium transition-colors rounded-xl flex items-center gap-2 ${isActive ? 'bg-white/10 text-white' : 'text-slate-400 hover:text-white hover:bg-white/5'}`}>
+            🗺️ Carte
           </NavLink>
             </nav>
           </div>
@@ -77,7 +77,7 @@ export default function App() {
             <Route path="/" element={<Dashboard />} />
             <Route path="/volunteers" element={<VolunteersView />} />
             <Route path="/events-planning" element={<EventsAndPlanningView />} />
-            <Route path="/children" element={<ChildrenView />} />
+            <Route path="/map" element={<MapView />} />
             <Route path="*" element={<Navigate to="/" />} />
           </Routes>
         </Layout>
