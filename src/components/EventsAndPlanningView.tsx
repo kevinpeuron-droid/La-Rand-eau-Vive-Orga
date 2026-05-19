@@ -476,6 +476,13 @@ export default function EventsAndPlanningView() {
                         <span className="text-xs bg-black/30 px-2 py-0.5 rounded-full text-slate-300">{cat.positions.length} postes</span>
                       </div>
                       <div className="flex items-center gap-2" onClick={e => e.stopPropagation()}>
+                        <button onClick={() => {
+                          const url = `${window.location.origin}/share/event/${selectedEvent.id}/category/${encodeURIComponent(cat.name)}`;
+                          navigator.clipboard.writeText(url);
+                          alert('Lien copié: ' + url);
+                        }} className="text-xs text-teal-400 bg-teal-500/10 px-2 py-1.5 rounded-lg hover:bg-teal-500/20 transition-colors">
+                          🔗 Partager
+                        </button>
                         <button onClick={() => addPosition(ci)} className="text-xs bg-indigo-500 shadow-sm shadow-indigo-500/20 text-white px-3 py-1.5 rounded-lg font-semibold hover:bg-indigo-400 transition-colors">
                           + Poste
                         </button>

@@ -5,6 +5,7 @@ import Dashboard from './components/Dashboard';
 import VolunteersView from './components/VolunteersView';
 import EventsAndPlanningView from './components/EventsAndPlanningView';
 import MapView from './components/MapView';
+import PublicCategoryView from './components/PublicCategoryView';
 
 function Layout({ children }: { children: React.ReactNode }) {
   const { syncing, loading } = useData();
@@ -72,15 +73,20 @@ export default function App() {
   return (
     <DataProvider>
       <BrowserRouter>
-        <Layout>
-          <Routes>
-            <Route path="/" element={<Dashboard />} />
-            <Route path="/volunteers" element={<VolunteersView />} />
-            <Route path="/events-planning" element={<EventsAndPlanningView />} />
-            <Route path="/map" element={<MapView />} />
-            <Route path="*" element={<Navigate to="/" />} />
-          </Routes>
-        </Layout>
+        <Routes>
+          <Route path="/share/event/:eventId/category/:categoryName" element={<PublicCategoryView />} />
+          <Route path="*" element={
+            <Layout>
+              <Routes>
+                <Route path="/" element={<Dashboard />} />
+                <Route path="/volunteers" element={<VolunteersView />} />
+                <Route path="/events-planning" element={<EventsAndPlanningView />} />
+                <Route path="/map" element={<MapView />} />
+                <Route path="*" element={<Navigate to="/" />} />
+              </Routes>
+            </Layout>
+          } />
+        </Routes>
       </BrowserRouter>
     </DataProvider>
   );
