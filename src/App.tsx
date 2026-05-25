@@ -6,6 +6,7 @@ import VolunteersView from './components/VolunteersView';
 import EventsAndPlanningView from './components/EventsAndPlanningView';
 import MapView from './components/MapView';
 import PublicCategoryView from './components/PublicCategoryView';
+import PublicVolunteerView from './components/PublicVolunteerView';
 
 function Layout({ children }: { children: React.ReactNode }) {
   const { syncing, loading } = useData();
@@ -74,6 +75,7 @@ export default function App() {
     <DataProvider>
       <BrowserRouter>
         <Routes>
+          <Route path="/p/:eventId" element={<PublicVolunteerView />} />
           <Route path="/share/event/:eventId/category/:categoryName" element={<PublicCategoryView />} />
           <Route path="*" element={
             <Layout>

@@ -415,6 +415,13 @@ export default function EventsAndPlanningView() {
                   {selectedEvent.name}
                 </h2>
                 <div className="flex items-center gap-4 mt-2">
+                  <button onClick={() => {
+                    const url = `${window.location.origin}/p/${selectedEvent.id}`;
+                    navigator.clipboard.writeText(url);
+                    alert('Lien pour les bénévoles copié: ' + url);
+                  }} className="text-xs bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 px-3 py-1.5 rounded-lg hover:bg-indigo-500/40 transition-colors">
+                    🔗 Lien Bénévoles
+                  </button>
                   <button 
                      onClick={() => toggleEventPriority(selectedEvent.id)}
                      className={`text-xs px-3 py-1 rounded-lg border transition-colors ${selectedEvent.priority ? 'bg-amber-500/20 border-amber-500/50 text-amber-300' : 'bg-white/5 border-white/10 text-slate-400 hover:text-amber-400 hover:border-amber-500/50'}`}
