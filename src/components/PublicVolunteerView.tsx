@@ -139,7 +139,7 @@ export default function PublicVolunteerView() {
                         href={selectedEvent.carteUrl} 
                         target="_blank" 
                         rel="noreferrer"
-                        className="inline-flex items-center gap-1.5 text-xs bg-indigo-500/20 hover:bg-indigo-500/30 text-indigo-300 px-3 py-1.5 rounded-lg font-medium transition-colors border border-indigo-500/30 w-fit"
+                        className="inline-flex items-center gap-2 mt-1 bg-indigo-600 hover:bg-indigo-500 text-white px-4 py-2 rounded-xl font-bold transition-all shadow-lg shadow-indigo-500/30 w-fit hover:-translate-y-0.5"
                       >
                         🗺️ Voir sur la carte
                       </a>
