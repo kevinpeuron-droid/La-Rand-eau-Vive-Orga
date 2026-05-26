@@ -72,19 +72,9 @@ export default function PublicVolunteerView() {
     });
   });
 
-  const eventVolunteers = volunteers.filter(v => assignedVolunteerIds.has(v.id)).sort((a, b) => a.lastName.localeCompare(b.lastName, 'fr'));
+  const eventVolunteers = volunteers.sort((a, b) => a.lastName.localeCompare(b.lastName, 'fr'));
   const organizers = volunteers.filter(v => v.isOrganizer);
   const referents = volunteers.filter(v => v.isReferent && !v.isOrganizer);
-
-  const selectedVolunteer = volunteers.find(v => v.id === selectedVolunteerId);
-
-  React.useEffect(() => {
-    if (selectedVolunteer) {
-      setIdeasDraft(selectedVolunteer.ideas || '');
-    } else {
-      setIdeasDraft('');
-    }
-  }, [selectedVolunteer]);
 
   return (
     <div className="min-h-screen bg-[#0f172a] text-slate-100 font-sans relative flex flex-col p-4 md:p-8">
@@ -115,7 +105,12 @@ export default function PublicVolunteerView() {
           <label className="block text-sm font-semibold text-slate-300 mb-2 text-center">Sélectionnez votre nom</label>
           <select 
             value={selectedVolunteerId}
-            onChange={(e) => setSelectedVolunteerId(e.target.value)}
+            onChange={(e) => {
+              const newId = e.target.value;
+              setSelectedVolunteerId(newId);
+              const vol = volunteers.find(v => v.id === newId);
+              setIdeasDraft(vol?.ideas || '');
+            }}
             className="w-full p-3 border border-white/10 rounded-xl bg-black/40 text-white focus:border-indigo-500 outline-none transition-colors shadow-inner"
           >
             <option value="">-- Choisissez un bénévole --</option>

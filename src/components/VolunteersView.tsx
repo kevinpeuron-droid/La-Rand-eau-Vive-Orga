@@ -319,6 +319,12 @@ function VolunteerCard({ volunteer: v, onUpdate, onDelete, allGroups }: any) {
                <option key={g} value={g}>{g}</option>
              ))}
            </select>
+           <textarea 
+             value={editForm.ideas || ''} 
+             onChange={e=>setEditForm({...editForm, ideas: e.target.value})} 
+             className="w-full p-2 border border-white/10 rounded-lg bg-white/5 text-white text-sm outline-none focus:border-indigo-500 min-h-[80px]" 
+             placeholder="Idées / Suggestions" 
+           />
         </div>
         <div className="mt-3 flex gap-2">
           <button onClick={handleSave} className="flex-1 bg-indigo-600 hover:bg-indigo-500 text-white py-1.5 rounded-lg text-xs font-semibold transition-colors">💾 Enregistrer</button>
@@ -354,7 +360,7 @@ function VolunteerCard({ volunteer: v, onUpdate, onDelete, allGroups }: any) {
               <option key={g} value={g}>{g}</option>
             ))}
           </select>
-          <button onClick={() => setIsEditing(true)} className="opacity-0 group-hover:opacity-100 transition-opacity text-slate-400 hover:text-white p-1 text-sm bg-white/5 rounded-md">📝</button>
+          <button onClick={() => { setEditForm(v); setIsEditing(true); }} className="opacity-0 group-hover:opacity-100 transition-opacity text-slate-400 hover:text-white p-1 text-sm bg-white/5 rounded-md">📝</button>
         </div>
       </div>
 
