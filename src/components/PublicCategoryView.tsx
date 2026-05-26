@@ -85,7 +85,19 @@ export default function PublicCategoryView() {
                 <div className="flex-1">
                   <h3 className="text-lg font-bold text-indigo-300">{pos.name}</h3>
                 </div>
-                <div className="flex gap-4">
+                <div className="flex flex-wrap gap-4 mt-3">
+                  {pos.responsableId && (() => {
+                    const resp = volunteers.find(v => v.id === pos.responsableId);
+                    return resp ? (
+                      <div className="flex gap-2 items-center bg-amber-500/10 px-3 py-1.5 rounded-lg border border-amber-500/20">
+                        <span>⭐</span>
+                        <span className="text-xs text-amber-200">
+                          Responsable : <strong>{resp.firstName} {resp.lastName}</strong>
+                          {resp.phone && <span className="ml-1 opacity-75">({resp.phone})</span>}
+                        </span>
+                      </div>
+                    ) : null;
+                  })()}
                   {pos.details && (
                     <div className="flex gap-2 items-center bg-black/40 px-3 py-1.5 rounded-lg border border-white/5">
                       <span>📝</span>

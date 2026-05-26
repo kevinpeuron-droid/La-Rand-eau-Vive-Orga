@@ -222,6 +222,14 @@ export default function EventsAndPlanningView() {
     await updateEvent(selectedEvent.id, { categories: newCats });
   };
 
+  const togglePositionResponsable = async (catIndex: number, posIndex: number, volunteerId: string) => {
+    if (!selectedEvent) return;
+    const newCats = [...selectedEvent.categories];
+    const pos = newCats[catIndex].positions[posIndex];
+    pos.responsableId = pos.responsableId === volunteerId ? undefined : volunteerId;
+    await updateEvent(selectedEvent.id, { categories: newCats });
+  };
+
   const addTimeSlot = async (catIndex: number, posIndex: number) => {
     if (!selectedEvent) return;
     const newCats = [...selectedEvent.categories];
@@ -563,7 +571,8 @@ export default function EventsAndPlanningView() {
                             className="text-sm p-1.5 rounded-lg bg-black/40 border border-white/10 text-white outline-none focus:border-indigo-500 min-w-[200px]"
                           >
                             <option value="">-- Aucun --</option>
-                            {availableVolunteers
+                            {volunteers
+                              .filter((v: any) => v.isOrganizer || v.isReferent)
                               .sort((a: any, b: any) => a.lastName.localeCompare(b.lastName, 'fr'))
                               .map((v: any) => (
                               <option key={v.id} value={v.id}>{v.lastName} {v.firstName}</option>
@@ -628,10 +637,18 @@ export default function EventsAndPlanningView() {
                                   <div className="flex-1 flex flex-wrap gap-1 items-center min-w-[150px] sm:mr-1 sm:pr-1 sm:border-r border-white/10">
                                     {Array.isArray(slot.volunteer) && slot.volunteer.map(vid => {
                                       const v = volunteers.find(x => x.id === vid);
+                                      const isResp = pos.responsableId === vid;
                                       return v ? (
-                                        <span key={vid} className="bg-indigo-500/20 border border-indigo-500/30 text-indigo-200 text-[10px] px-1 py-0.5 rounded-sm flex items-center gap-1 font-medium">
+                                        <span key={vid} className={`border text-[10px] px-1 py-0.5 rounded-sm flex items-center gap-1 font-medium transition-colors ${isResp ? 'bg-amber-500/20 border-amber-500/40 text-amber-200' : 'bg-indigo-500/20 border-indigo-500/30 text-indigo-200'}`}>
+                                          <button 
+                                            onClick={() => togglePositionResponsable(ci, pi, vid)} 
+                                            className={`transition-opacity hover:opacity-100 leading-none ${isResp ? 'opacity-100 text-amber-400' : 'opacity-40 grayscale'}`}
+                                            title="Responsable du poste"
+                                          >
+                                            ⭐
+                                          </button>
                                           {v.firstName} {v.lastName}
-                                          <button onClick={() => removeVolunteerFromSlot(ci, pi, si, vid)} className="text-indigo-400 hover:text-rose-400 ml-0.5 transition-colors leading-none">✕</button>
+                                          <button onClick={() => removeVolunteerFromSlot(ci, pi, si, vid)} className="hover:text-rose-400 ml-0.5 transition-colors leading-none">✕</button>
                                         </span>
                                       ) : null;
                                     })}

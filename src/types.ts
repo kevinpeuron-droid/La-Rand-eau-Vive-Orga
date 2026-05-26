@@ -37,6 +37,7 @@ export interface TimeSlot {
 
 export interface Position {
   name: string;
+  responsableId?: string;
   details?: string;
   equipment?: string;
   timeSlots: TimeSlot[];
