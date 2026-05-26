@@ -367,6 +367,15 @@ function VolunteerCard({ volunteer: v, onUpdate, onDelete, allGroups }: any) {
             {v.lastRole && <p className="text-xs text-slate-300">🎯 {v.lastRole}</p>}
           </div>
           
+          {v.ideas && (
+            <div className="mb-3 p-2.5 bg-indigo-500/10 border border-indigo-500/20 rounded-lg">
+              <h4 className="text-xs font-bold text-indigo-300 flex items-center gap-1.5 mb-1">
+                💡 Idées / Suggestions
+              </h4>
+              <p className="text-xs text-slate-300 whitespace-pre-wrap">{v.ideas}</p>
+            </div>
+          )}
+
           <div className="flex gap-3 p-2 bg-black/20 rounded-lg flex-wrap">
             <label className="flex items-center gap-1.5 text-xs text-slate-300 cursor-pointer hover:text-white">
               <input type="checkbox" checked={v.isOrganizer} onChange={e => onUpdate(v.id, { isOrganizer: e.target.checked })} className="accent-indigo-500" />

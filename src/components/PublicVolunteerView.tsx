@@ -5,8 +5,9 @@ import { Volunteer } from '../types';
 
 export default function PublicVolunteerView() {
   const { eventId } = useParams();
-  const { events, volunteers, loading } = useData();
+  const { events, volunteers, loading, updateVolunteer } = useData();
   const [selectedVolunteerId, setSelectedVolunteerId] = useState<string>('');
+  const [ideasDraft, setIdeasDraft] = useState<string>('');
 
   if (loading) {
     return (
@@ -74,6 +75,16 @@ export default function PublicVolunteerView() {
   const eventVolunteers = volunteers.filter(v => assignedVolunteerIds.has(v.id)).sort((a, b) => a.lastName.localeCompare(b.lastName, 'fr'));
   const organizers = volunteers.filter(v => v.isOrganizer);
   const referents = volunteers.filter(v => v.isReferent && !v.isOrganizer);
+
+  const selectedVolunteer = volunteers.find(v => v.id === selectedVolunteerId);
+
+  React.useEffect(() => {
+    if (selectedVolunteer) {
+      setIdeasDraft(selectedVolunteer.ideas || '');
+    } else {
+      setIdeasDraft('');
+    }
+  }, [selectedVolunteer]);
 
   return (
     <div className="min-h-screen bg-[#0f172a] text-slate-100 font-sans relative flex flex-col p-4 md:p-8">
@@ -198,6 +209,19 @@ export default function PublicVolunteerView() {
               </div>
             )}
             
+            <div className="mt-8 bg-black/20 border border-white/5 rounded-2xl p-6">
+              <h3 className="text-lg font-semibold text-white mb-2">💡 Boîte à idées</h3>
+              <p className="text-sm text-slate-400 mb-4">Une idée pour améliorer l'événement ou le poste ? Notez-la ici, elle sera transmise à l'équipe organisatrice !</p>
+              <textarea
+                value={ideasDraft}
+                onChange={(e) => setIdeasDraft(e.target.value)}
+                onBlur={() => selectedVolunteerId && updateVolunteer(selectedVolunteerId, { ideas: ideasDraft })}
+                placeholder="Ex : Proposer des talkies-walkies pour ce poste, ajouter plus de signalisation..."
+                className="w-full bg-black/40 border border-white/10 rounded-xl p-4 text-white placeholder-slate-500 focus:border-indigo-500 outline-none resize-y min-h-[120px] transition-colors"
+              />
+              <p className="text-xs text-slate-500 mt-2">Enregistrement automatique lorsque vous quittez la zone de texte.</p>
+            </div>
+
             {(organizers.length > 0 || referents.length > 0) && (
               <div className="mt-12 bg-black/20 border border-white/5 rounded-2xl p-6">
                 <h3 className="text-lg font-semibold text-white mb-4">Contacts / Responsables</h3>

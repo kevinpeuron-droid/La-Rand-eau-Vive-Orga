@@ -21,6 +21,7 @@ export interface Volunteer {
   lastRole?: string;
   group?: string; // Association partenaire
   notes?: string;
+  ideas?: string;
   isOrganizer: boolean;
   isReferent: boolean;
   availability: Availability[];

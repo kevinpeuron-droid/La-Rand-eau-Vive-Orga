@@ -9,6 +9,7 @@ import PublicCategoryView from './components/PublicCategoryView';
 import PublicVolunteerView from './components/PublicVolunteerView';
 
 import TodoListView from './components/TodoListView';
+import IdeasView from './components/IdeasView';
 
 function AdminLayout({ children }: { children: React.ReactNode }) {
   const [isAuthenticated, setIsAuthenticated] = useState(() => localStorage.getItem('admin_auth') === 'true');
@@ -117,6 +118,9 @@ function Layout({ children }: { children: React.ReactNode }) {
           <NavLink to="/todos" className={({isActive}) => `px-4 py-2 text-sm font-medium transition-colors rounded-xl flex items-center gap-2 ${isActive ? 'bg-white/10 text-white' : 'text-slate-400 hover:text-white hover:bg-white/5'}`}>
             ✅ TdL
           </NavLink>
+          <NavLink to="/ideas" className={({isActive}) => `px-4 py-2 text-sm font-medium transition-colors rounded-xl flex items-center gap-2 ${isActive ? 'bg-white/10 text-white' : 'text-slate-400 hover:text-white hover:bg-white/5'}`}>
+            💡 Idées
+          </NavLink>
             </nav>
           </div>
         </header>
@@ -144,6 +148,7 @@ export default function App() {
                 <Route path="/events-planning" element={<EventsAndPlanningView />} />
                 <Route path="/map" element={<MapView />} />
                 <Route path="/todos" element={<TodoListView />} />
+                <Route path="/ideas" element={<IdeasView />} />
                 <Route path="*" element={<Navigate to="/" />} />
               </Routes>
             </AdminLayout>
