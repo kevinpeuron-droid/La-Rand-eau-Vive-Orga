@@ -240,11 +240,28 @@ export default function VolunteersView() {
             👥 Par Association
           </button>
         </div>
-        <input 
-          value={search} onChange={e => setSearch(e.target.value)}
-          placeholder="🔍 Rechercher un bénévole..." 
-          className="w-full mt-4 p-4 mb-6 border border-white/10 rounded-2xl bg-white/5 text-white focus:border-indigo-500 outline-none shadow-sm transition-colors"
-        />
+        <div className="flex flex-col md:flex-row gap-4 mt-4 mb-6">
+          <input 
+            value={search} onChange={e => setSearch(e.target.value)}
+            placeholder="🔍 Rechercher un bénévole..." 
+            className="w-full flex-1 p-4 border border-white/10 rounded-2xl bg-white/5 text-white focus:border-indigo-500 outline-none shadow-sm transition-colors"
+          />
+          <button 
+             onClick={() => {
+                const phones = filtered.map(v => v.phone).filter(Boolean).join(', ');
+                if (phones) {
+                  navigator.clipboard.writeText(phones);
+                  alert('Téléphones copiés !');
+                } else {
+                  alert('Aucun téléphone trouvé.');
+                }
+             }}
+             title="Copier les numéros de téléphone des bénévoles affichés"
+             className="bg-indigo-600/20 hover:bg-indigo-600/40 text-indigo-300 border border-indigo-500/30 px-6 py-4 rounded-2xl font-medium transition-all flex items-center justify-center gap-2"
+          >
+             📱 Copier les téléphones ({filtered.filter(v=>v.phone).length})
+          </button>
+        </div>
         
         {viewMode === 'alphabetical' ? (
           renderList('Tous les Bénévoles', filtered, 'bg-indigo-500/20')

@@ -603,6 +603,30 @@ export default function EventsAndPlanningView() {
                         }} className="text-xs text-teal-400 bg-teal-500/10 px-2 py-1.5 rounded-lg hover:bg-teal-500/20 transition-colors">
                           🔗 Partager
                         </button>
+                        <button onClick={() => {
+                          const vIds = new Set<string>();
+                          if (cat.referentId) vIds.add(cat.referentId);
+                          cat.positions.forEach(p => {
+                            if (p.responsableId) vIds.add(p.responsableId);
+                            p.timeSlots.forEach(ts => {
+                              if (ts.volunteer) {
+                                ts.volunteer.forEach(id => vIds.add(id));
+                              }
+                            });
+                          });
+                          const phones = Array.from(vIds)
+                            .map(id => volunteers.find(v => v.id === id)?.phone)
+                            .filter(Boolean)
+                            .join(', ');
+                          if (phones) {
+                            navigator.clipboard.writeText(phones);
+                            alert('Téléphones copiés pour la catégorie !');
+                          } else {
+                            alert('Aucun téléphone trouvé.');
+                          }
+                        }} className="text-xs text-indigo-300 bg-indigo-500/10 px-2 py-1.5 rounded-lg hover:bg-indigo-500/20 transition-colors">
+                          📱 Téléphones
+                        </button>
                         <button onClick={() => addPosition(ci)} className="text-xs bg-indigo-500 shadow-sm shadow-indigo-500/20 text-white px-3 py-1.5 rounded-lg font-semibold hover:bg-indigo-400 transition-colors">
                           + Poste
                         </button>
@@ -707,6 +731,27 @@ export default function EventsAndPlanningView() {
                                 )}
                                 <button onClick={() => addTimeSlot(ci, pi)} className="text-[10px] bg-teal-500/20 text-teal-300 border border-teal-500/30 px-2 py-1 rounded hover:bg-teal-500/30 hover:text-white transition-colors font-medium whitespace-nowrap">
                                   + Créneau
+                                </button>
+                                <button onClick={() => {
+                                  const vIds = new Set<string>();
+                                  if (pos.responsableId) vIds.add(pos.responsableId);
+                                  pos.timeSlots.forEach(ts => {
+                                    if (ts.volunteer) {
+                                      ts.volunteer.forEach(id => vIds.add(id));
+                                    }
+                                  });
+                                  const phones = Array.from(vIds)
+                                    .map(id => volunteers.find(v => v.id === id)?.phone)
+                                    .filter(Boolean)
+                                    .join(', ');
+                                  if (phones) {
+                                    navigator.clipboard.writeText(phones);
+                                    alert('Téléphones copiés pour ce poste !');
+                                  } else {
+                                    alert('Aucun téléphone trouvé.');
+                                  }
+                                }} className="text-[10px] bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 px-2 py-1 rounded hover:bg-indigo-500/30 transition-colors font-medium whitespace-nowrap" title="Copier téléphones">
+                                  📱
                                 </button>
                                 <button onClick={() => duplicatePosition(ci, pi)} className="text-[10px] px-1.5 py-1 text-indigo-400 hover:bg-indigo-500/20 rounded transition-colors" title="Dupliquer">
                                   📄
