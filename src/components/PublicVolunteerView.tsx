@@ -29,7 +29,9 @@ export default function PublicVolunteerView() {
   // Find all assignments for the currently selected volunteer
   const assignments: {
     categoryName: string;
+    categoryReferentId?: string;
     positionName: string;
+    positionResponsableId?: string;
     details: string;
     equipment: string;
     day: string;
@@ -43,7 +45,9 @@ export default function PublicVolunteerView() {
           if (Array.isArray(ts.volunteer) && ts.volunteer.includes(selectedVolunteerId)) {
             assignments.push({
               categoryName: cat.name,
+              categoryReferentId: cat.referentId,
               positionName: pos.name,
+              positionResponsableId: pos.responsableId,
               details: pos.details || '',
               equipment: pos.equipment || '',
               day: ts.day,
@@ -126,6 +130,29 @@ export default function PublicVolunteerView() {
                         ⏰ {assignment.timeSlot || 'Horaire non défini'}
                       </span>
                     </div>
+
+                    {(assignment.categoryReferentId || assignment.positionResponsableId) && (
+                      <div className="mt-2 space-y-2 pt-3 border-t border-white/5">
+                        {assignment.categoryReferentId && (() => {
+                          const ref = volunteers.find(v => v.id === assignment.categoryReferentId);
+                          return ref ? (
+                            <div className="text-sm text-rose-300 flex items-start gap-2 bg-rose-500/10 p-2 rounded-lg border border-rose-500/20">
+                              <span className="mt-0.5">⭐</span>
+                              <p>Référent catégorie: <strong>{ref.firstName} {ref.lastName}</strong> {ref.phone && `(${ref.phone})`}</p>
+                            </div>
+                          ) : null;
+                        })()}
+                        {assignment.positionResponsableId && (() => {
+                          const resp = volunteers.find(v => v.id === assignment.positionResponsableId);
+                          return resp ? (
+                            <div className="text-sm text-amber-300 flex items-start gap-2 bg-amber-500/10 p-2 rounded-lg border border-amber-500/20">
+                              <span className="mt-0.5">⭐</span>
+                              <p>Responsable du poste: <strong>{resp.firstName} {resp.lastName}</strong> {resp.phone && `(${resp.phone})`}</p>
+                            </div>
+                          ) : null;
+                        })()}
+                      </div>
+                    )}
 
                     {(assignment.details || assignment.equipment) && (
                       <div className="mt-2 space-y-2 pt-3 border-t border-white/5">
