@@ -44,6 +44,7 @@ export interface Position {
 
 export interface Category {
   name: string;
+  referentId?: string;
   positions: Position[];
 }
 

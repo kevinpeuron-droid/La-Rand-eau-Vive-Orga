@@ -59,6 +59,21 @@ export default function PublicCategoryView() {
           </div>
         </header>
 
+        {category.referentId && (
+          <div className="mb-6 bg-rose-500/10 border border-rose-500/20 p-4 rounded-xl flex items-center gap-3">
+            <span className="text-2xl">⭐</span>
+            <div>
+              <h3 className="text-rose-300 font-semibold text-sm">Référent de catégorie</h3>
+              <p className="text-white text-lg font-bold">
+                {(() => {
+                  const ref = volunteers.find(v => v.id === category.referentId);
+                  return ref ? `${ref.firstName} ${ref.lastName}` + (ref.phone ? ` - ${ref.phone}` : '') : 'Inconnu';
+                })()}
+              </p>
+            </div>
+          </div>
+        )}
+
         <div className="flex-1 space-y-6">
           {category.positions.length === 0 && (
             <p className="text-center py-10 text-slate-500 italic">Aucun poste défini pour cette catégorie.</p>

@@ -99,7 +99,7 @@ function VolunteerCombobox({ volunteers, currentSlot, onSelect, eventDetails }: 
 }
 
 export default function EventsAndPlanningView() {
-  const { events, volunteers, addEvent, updateEvent, deleteEvent } = useData();
+  const { events, volunteers, addEvent, updateEvent, deleteEvent, updateVolunteer } = useData();
   const [selectedEventId, setSelectedEventId] = useState<string>('');
   const [newEventName, setNewEventName] = useState('');
   const [expandedCategories, setExpandedCategories] = useState<Record<string, boolean>>({});
@@ -144,6 +144,21 @@ export default function EventsAndPlanningView() {
     await updateEvent(selectedEvent.id, { categories: newCats });
   };
 
+  const updateCategoryReferent = async (catIndex: number, volunteerId: string) => {
+    if (!selectedEvent) return;
+    const newCats = [...selectedEvent.categories];
+    const oldReferentId = newCats[catIndex].referentId;
+    newCats[catIndex].referentId = volunteerId;
+    await updateEvent(selectedEvent.id, { categories: newCats });
+    // Also try to helpfully check the 'isReferent' flag on that volunteer
+    if (volunteerId) {
+       const v = volunteers.find(x => x.id === volunteerId);
+       if (v && !v.isReferent) {
+           await updateVolunteer(volunteerId, { isReferent: true });
+       }
+    }
+  };
+
   const addPosition = async (catIndex: number) => {
     if (!selectedEvent) return;
     const newCats = [...selectedEvent.categories];
@@ -169,6 +184,34 @@ export default function EventsAndPlanningView() {
     if (!selectedEvent) return;
     const newCats = [...selectedEvent.categories];
     newCats[catIndex].positions.splice(posIndex, 1);
+    await updateEvent(selectedEvent.id, { categories: newCats });
+  };
+
+  const moveCategoryUp = async (catIndex: number) => {
+    if (!selectedEvent || !selectedEvent.categories || catIndex === 0) return;
+    const newCats = [...selectedEvent.categories];
+    [newCats[catIndex - 1], newCats[catIndex]] = [newCats[catIndex], newCats[catIndex - 1]];
+    await updateEvent(selectedEvent.id, { categories: newCats });
+  };
+
+  const moveCategoryDown = async (catIndex: number) => {
+    if (!selectedEvent || !selectedEvent.categories || catIndex === selectedEvent.categories.length - 1) return;
+    const newCats = [...selectedEvent.categories];
+    [newCats[catIndex], newCats[catIndex + 1]] = [newCats[catIndex + 1], newCats[catIndex]];
+    await updateEvent(selectedEvent.id, { categories: newCats });
+  };
+
+  const movePositionUp = async (catIndex: number, posIndex: number) => {
+    if (!selectedEvent || !selectedEvent.categories || posIndex === 0) return;
+    const newCats = [...selectedEvent.categories];
+    [newCats[catIndex].positions[posIndex - 1], newCats[catIndex].positions[posIndex]] = [newCats[catIndex].positions[posIndex], newCats[catIndex].positions[posIndex - 1]];
+    await updateEvent(selectedEvent.id, { categories: newCats });
+  };
+
+  const movePositionDown = async (catIndex: number, posIndex: number) => {
+    if (!selectedEvent || !selectedEvent.categories || posIndex === selectedEvent.categories[catIndex].positions.length - 1) return;
+    const newCats = [...selectedEvent.categories];
+    [newCats[catIndex].positions[posIndex], newCats[catIndex].positions[posIndex + 1]] = [newCats[catIndex].positions[posIndex + 1], newCats[catIndex].positions[posIndex]];
     await updateEvent(selectedEvent.id, { categories: newCats });
   };
 
@@ -483,6 +526,16 @@ export default function EventsAndPlanningView() {
                         <span className="text-xs bg-black/30 px-2 py-0.5 rounded-full text-slate-300">{cat.positions.length} postes</span>
                       </div>
                       <div className="flex items-center gap-2" onClick={e => e.stopPropagation()}>
+                        {ci > 0 && (
+                          <button onClick={() => moveCategoryUp(ci)} className="text-xs px-2 py-1.5 text-slate-400 hover:text-white hover:bg-white/10 rounded-lg transition-colors" title="Monter">
+                            ↑
+                          </button>
+                        )}
+                        {ci < (selectedEvent.categories.length - 1) && (
+                          <button onClick={() => moveCategoryDown(ci)} className="text-xs px-2 py-1.5 text-slate-400 hover:text-white hover:bg-white/10 rounded-lg transition-colors" title="Descendre">
+                            ↓
+                          </button>
+                        )}
                         <button onClick={() => {
                           const url = `${window.location.origin}/share/event/${selectedEvent.id}/category/${encodeURIComponent(cat.name)}`;
                           navigator.clipboard.writeText(url);
@@ -501,7 +554,23 @@ export default function EventsAndPlanningView() {
 
                     {/* Category Content: List of positions */}
                     {isExpanded && (
-                      <div className="p-4 pt-2 space-y-3 border-t border-white/5 bg-black/20">
+                      <div className="p-4 pt-4 border-t border-white/5 bg-black/20 space-y-4">
+                        <div className="flex items-center gap-2">
+                          <span className="text-sm font-semibold text-slate-300">⭐ Référent de catégorie :</span>
+                          <select
+                            value={cat.referentId || ''}
+                            onChange={e => updateCategoryReferent(ci, e.target.value)}
+                            className="text-sm p-1.5 rounded-lg bg-black/40 border border-white/10 text-white outline-none focus:border-indigo-500 min-w-[200px]"
+                          >
+                            <option value="">-- Aucun --</option>
+                            {availableVolunteers
+                              .sort((a: any, b: any) => a.lastName.localeCompare(b.lastName, 'fr'))
+                              .map((v: any) => (
+                              <option key={v.id} value={v.id}>{v.lastName} {v.firstName}</option>
+                            ))}
+                          </select>
+                        </div>
+                        <div className="space-y-3">
                         {cat.positions.length === 0 && <p className="text-xs text-slate-500 italic pl-6">Aucun poste dans cette catégorie.</p>}
                         
                         {(cat.positions || []).map((pos, pi) => (
@@ -530,6 +599,16 @@ export default function EventsAndPlanningView() {
                                 </div>
                               </div>
                               <div className="flex gap-1 lg:ml-auto shrink-0">
+                                {pi > 0 && (
+                                  <button onClick={() => movePositionUp(ci, pi)} className="text-[10px] px-1.5 py-1 text-slate-400 hover:text-white hover:bg-white/10 rounded transition-colors" title="Monter">
+                                    ↑
+                                  </button>
+                                )}
+                                {pi < (cat.positions.length - 1) && (
+                                  <button onClick={() => movePositionDown(ci, pi)} className="text-[10px] px-1.5 py-1 text-slate-400 hover:text-white hover:bg-white/10 rounded transition-colors" title="Descendre">
+                                    ↓
+                                  </button>
+                                )}
                                 <button onClick={() => addTimeSlot(ci, pi)} className="text-[10px] bg-teal-500/20 text-teal-300 border border-teal-500/30 px-2 py-1 rounded hover:bg-teal-500/30 hover:text-white transition-colors font-medium whitespace-nowrap">
                                   + Créneau
                                 </button>
@@ -584,6 +663,7 @@ export default function EventsAndPlanningView() {
                             </div>
                           </div>
                         ))}
+                        </div>
                       </div>
                     )}
                   </div>
