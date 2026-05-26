@@ -371,6 +371,11 @@ function VolunteerCard({ volunteer: v, onUpdate, onDelete, allGroups }: any) {
             {v.phone && <p className="text-xs text-slate-300">📱 {v.phone}</p>}
             {v.license && <p className="text-xs text-slate-300">🪪 {v.license}</p>}
             {v.lastRole && <p className="text-xs text-slate-300">🎯 {v.lastRole}</p>}
+            {localStorage.getItem('mymap_url') && (
+              <a href={localStorage.getItem('mymap_url') || '#'} target="_blank" rel="noreferrer" className="text-xs text-indigo-400 hover:text-indigo-300 flex items-center gap-1.5 transition-colors">
+                🗺️ Voir sur la carte
+              </a>
+            )}
           </div>
           
           {v.ideas && (

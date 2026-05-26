@@ -122,7 +122,20 @@ export default function PublicVolunteerView() {
 
         {selectedVolunteerId && (
           <div className="space-y-6">
-            <h2 className="text-xl font-semibold text-indigo-300 text-center mb-6">Vos affections ({assignments.length})</h2>
+            <h2 className="text-xl font-semibold text-indigo-300 text-center mb-6">Vos affectations ({assignments.length})</h2>
+            
+            {(selectedEvent?.carteUrl || localStorage.getItem('mymap_url')) && (
+               <div className="flex justify-center mb-8">
+                 <a 
+                   href={selectedEvent?.carteUrl || localStorage.getItem('mymap_url') || "#"}
+                   target="_blank" 
+                   rel="noreferrer"
+                   className="inline-flex items-center gap-3 bg-indigo-600 hover:bg-indigo-500 text-white px-8 py-4 rounded-2xl font-bold transition-all shadow-xl shadow-indigo-500/30 w-full md:w-auto justify-center hover:-translate-y-1 text-lg"
+                 >
+                   🗺️ Consulter le plan de l'événement
+                 </a>
+               </div>
+            )}
             
             {assignments.length === 0 ? (
               <p className="text-center text-slate-500 italic p-6 bg-black/20 rounded-xl border border-white/5">
