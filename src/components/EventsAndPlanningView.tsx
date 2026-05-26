@@ -1,4 +1,4 @@
-import { useState, useEffect, KeyboardEvent } from 'react';
+import React, { useState, useEffect, KeyboardEvent } from 'react';
 import Papa from 'papaparse';
 import { useData } from '../contexts/DataContext';
 import { Position } from '../types';
@@ -135,6 +135,39 @@ export default function EventsAndPlanningView() {
     const newCats = [...(selectedEvent.categories || []), { name: name.trim(), positions: [] }];
     await updateEvent(selectedEvent.id, { categories: newCats });
     setExpandedCategories(prev => ({ ...prev, [newCats.length - 1]: true }));
+  };
+
+  const addTask = async (catIndex: number) => {
+    if (!selectedEvent) return;
+    const title = prompt('Nouvelle tâche TdL :');
+    if (!title || !title.trim()) return;
+    
+    const newCats = [...selectedEvent.categories];
+    if (!newCats[catIndex].tasks) {
+      newCats[catIndex].tasks = [];
+    }
+    // We add an id using a simple random string
+    newCats[catIndex].tasks!.push({ id: Math.random().toString(36).substring(2, 9), title: title.trim(), completed: false });
+    await updateEvent(selectedEvent.id, { categories: newCats });
+  };
+
+  const toggleTaskLocal = async (catIndex: number, taskId: string) => {
+    if (!selectedEvent) return;
+    const newCats = [...selectedEvent.categories];
+    const task = newCats[catIndex].tasks?.find(t => t.id === taskId);
+    if (task) {
+      task.completed = !task.completed;
+      await updateEvent(selectedEvent.id, { categories: newCats });
+    }
+  };
+
+  const removeTask = async (catIndex: number, taskId: string) => {
+    if (!selectedEvent || !confirm('Supprimer cette tâche ?')) return;
+    const newCats = [...selectedEvent.categories];
+    if (newCats[catIndex].tasks) {
+      newCats[catIndex].tasks = newCats[catIndex].tasks!.filter(t => t.id !== taskId);
+      await updateEvent(selectedEvent.id, { categories: newCats });
+    }
   };
 
   const removeCategory = async (catIndex: number) => {
@@ -483,6 +516,25 @@ export default function EventsAndPlanningView() {
                     🗑️ Supprimer
                   </button>
                 </div>
+                <div className="mt-3 flex items-center gap-2">
+                  <span className="text-xs text-slate-400">🗺️ Carte de l'événement:</span>
+                  <input
+                    type="url"
+                    value={selectedEvent.carteUrl || ''}
+                    onChange={(e) => updateEvent(selectedEvent.id, { carteUrl: e.target.value })}
+                    placeholder="https://maps.google.com/..."
+                    className="flex-1 p-1.5 text-xs bg-black/20 border border-white/10 rounded-lg text-white outline-none focus:border-indigo-500"
+                  />
+                  {!selectedEvent.carteUrl && localStorage.getItem('mymap_url') && (
+                    <button 
+                      onClick={() => updateEvent(selectedEvent.id, { carteUrl: localStorage.getItem('mymap_url') || '' })}
+                      className="text-xs px-2 py-1 bg-white/5 border border-white/10 text-slate-300 hover:bg-white/10 rounded-md transition-colors"
+                      title="Utiliser la carte MyMaps globale"
+                    >
+                      Utiliser MyMaps global
+                    </button>
+                  )}
+                </div>
               </div>
 
               {stats && (
@@ -579,6 +631,41 @@ export default function EventsAndPlanningView() {
                             ))}
                           </select>
                         </div>
+
+                        {/* Category Tasks (TdL) */}
+                        <div className="bg-black/30 border border-white/5 rounded-xl p-3">
+                          <div className="flex justify-between items-center mb-2">
+                            <h4 className="text-sm font-semibold text-teal-300 flex items-center gap-2">
+                              <span>✅</span> To-Do List ({cat.tasks?.filter(t => t.completed).length || 0}/{cat.tasks?.length || 0})
+                            </h4>
+                            <button onClick={() => addTask(ci)} className="text-xs text-teal-200 bg-teal-500/20 hover:bg-teal-500/30 px-2 py-1 rounded-lg transition-colors border border-teal-500/30">
+                              + Tâche
+                            </button>
+                          </div>
+                          
+                          {(!cat.tasks || cat.tasks.length === 0) ? (
+                            <p className="text-xs text-slate-500 italic">Aucune tâche pour cette catégorie.</p>
+                          ) : (
+                            <div className="space-y-1.5 mt-2">
+                              {cat.tasks.map(task => (
+                                <div key={task.id} className={`flex items-center justify-between gap-2 p-2 rounded-lg border ${task.completed ? 'bg-teal-500/5 border-teal-500/20' : 'bg-white/5 border-white/5'} transition-colors`}>
+                                  <div className="flex items-center gap-3 cursor-pointer flex-1" onClick={() => toggleTaskLocal(ci, task.id)}>
+                                    <div className={`w-4 h-4 rounded border flex items-center justify-center transition-colors ${task.completed ? 'bg-teal-500 border-teal-500 text-white' : 'border-slate-500'}`}>
+                                      {task.completed && <span className="text-[10px]">✓</span>}
+                                    </div>
+                                    <span className={`text-sm ${task.completed ? 'line-through text-slate-500' : 'text-slate-300'}`}>
+                                      {task.title}
+                                    </span>
+                                  </div>
+                                  <button onClick={() => removeTask(ci, task.id)} className="text-xs text-slate-500 hover:text-rose-400 px-2 py-1">
+                                    🗑️
+                                  </button>
+                                </div>
+                              ))}
+                            </div>
+                          )}
+                        </div>
+
                         <div className="space-y-3">
                         {cat.positions.length === 0 && <p className="text-xs text-slate-500 italic pl-6">Aucun poste dans cette catégorie.</p>}
                         

@@ -51,6 +51,18 @@ export default function PublicCategoryView() {
             <h2 className="text-lg text-slate-400">
               Événement : <span className="text-slate-300 font-medium">{selectedEvent.name}</span>
             </h2>
+            {selectedEvent.carteUrl && (
+              <div className="mt-4">
+                <a 
+                  href={selectedEvent.carteUrl} 
+                  target="_blank" 
+                  rel="noreferrer"
+                  className="inline-flex items-center gap-2 bg-indigo-600 hover:bg-indigo-500 text-white px-4 py-2 rounded-lg font-medium transition-colors shadow-lg shadow-indigo-500/20 text-sm"
+                >
+                  🗺️ Accéder à la carte
+                </a>
+              </div>
+            )}
           </div>
           <div className="bg-black/30 px-4 py-2 rounded-xl border border-white/5">
             <p className="text-slate-300 text-sm">

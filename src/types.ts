@@ -43,10 +43,17 @@ export interface Position {
   timeSlots: TimeSlot[];
 }
 
+export interface Task {
+  id: string;
+  title: string;
+  completed: boolean;
+}
+
 export interface Category {
   name: string;
   referentId?: string;
   positions: Position[];
+  tasks?: Task[];
 }
 
 export interface EventEntity {
@@ -55,6 +62,7 @@ export interface EventEntity {
   priority: boolean;
   availableVolunteers: string[]; // Array of Volunteer IDs
   categories: Category[];
+  carteUrl?: string; // Link to the map
   createdAt: number;
   updatedAt: number;
 }
