@@ -134,6 +134,17 @@ export default function PublicVolunteerView() {
                     
                     <h3 className="text-lg font-bold text-white leading-tight">{assignment.positionName}</h3>
                     
+                    {selectedEvent?.carteUrl && (
+                      <a 
+                        href={selectedEvent.carteUrl} 
+                        target="_blank" 
+                        rel="noreferrer"
+                        className="inline-flex items-center gap-1.5 text-xs bg-indigo-500/20 hover:bg-indigo-500/30 text-indigo-300 px-3 py-1.5 rounded-lg font-medium transition-colors border border-indigo-500/30 w-fit"
+                      >
+                        🗺️ Voir sur la carte
+                      </a>
+                    )}
+                    
                     <div className="flex flex-wrap gap-2 mt-1">
                       <span className="bg-slate-800 text-slate-300 px-3 py-1.5 rounded-lg text-sm font-medium border border-white/5">
                         📅 {assignment.day || 'Jour non défini'}
