@@ -39,10 +39,24 @@ export default function PublicVolunteerView() {
     timeSlot: string;
   }[] = [];
 
+  const managedCategories = [];
+  const managedPositions = [];
+
   if (selectedEvent && selectedVolunteerId) {
     selectedEvent.categories?.forEach(cat => {
+      let isCategoryReferent = cat.referentId === selectedVolunteerId;
+      
+      if (isCategoryReferent) {
+        managedCategories.push(cat);
+      }
+
       cat.positions?.forEach(pos => {
+        if (!isCategoryReferent && pos.responsableId === selectedVolunteerId) {
+          managedPositions.push({ categoryName: cat.name, position: pos });
+        }
+        
         pos.timeSlots?.forEach(ts => {
+
           if (Array.isArray(ts.volunteer) && ts.volunteer.includes(selectedVolunteerId)) {
             assignments.push({
               categoryName: cat.name,
@@ -146,6 +160,7 @@ export default function PublicVolunteerView() {
                 {assignments.map((assignment, idx) => (
                   <div key={idx} className="bg-gradient-to-br from-white/5 to-white/[0.02] border border-white/10 p-5 rounded-2xl shadow-sm flex flex-col gap-3">
                     <div className="flex justify-between items-start gap-2">
+
                       <span className="bg-indigo-500/20 text-indigo-300 px-2 py-1 rounded text-[10px] font-bold uppercase tracking-wider">
                         {assignment.categoryName}
                       </span>
@@ -217,8 +232,94 @@ export default function PublicVolunteerView() {
               </div>
             )}
             
+            {(managedCategories.length > 0 || managedPositions.length > 0) && (
+              <div className="mt-8 space-y-6">
+                <h2 className="text-xl font-semibold text-rose-300 text-center mb-6">Vos Postes à Responsabilité</h2>
+                
+                {managedCategories.map((cat, idx) => (
+                  <div key={`cat-${idx}`} className="bg-rose-500/10 border border-rose-500/20 p-5 rounded-2xl shadow-sm flex flex-col gap-4">
+                    <div className="flex items-center gap-2">
+                      <span className="text-xl">⭐</span>
+                      <h3 className="text-lg font-bold text-rose-200">Référent Stand : {cat.name}</h3>
+                    </div>
+                    
+                    <div className="space-y-4">
+                      {cat.positions.map((pos, pi) => (
+                        <div key={pi} className="bg-black/20 p-4 rounded-xl border border-white/5">
+                          <h4 className="font-semibold text-white mb-2">{pos.name}</h4>
+                          {(pos.details || pos.equipment) && (
+                            <div className="text-sm text-slate-400 mb-3 space-y-1">
+                              {pos.details && <p>📝 {pos.details}</p>}
+                              {pos.equipment && <p>🦺 {pos.equipment}</p>}
+                            </div>
+                          )}
+                          <div className="space-y-2">
+                            {pos.timeSlots.map((ts, ti) => (
+                              <div key={ti} className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-sm bg-white/5 p-2 rounded-lg">
+                                <span className="font-mono text-slate-300 whitespace-nowrap">📅 {ts.day} • ⏰ {ts.timeSlot}</span>
+                                <div className="flex flex-wrap gap-1">
+                                  {ts.volunteer && ts.volunteer.length > 0 ? (
+                                    ts.volunteer.map(vid => {
+                                      const v = volunteers.find(v => v.id === vid);
+                                      return v ? <span key={vid} className="bg-indigo-500/20 border border-indigo-500/30 text-indigo-200 px-2 py-0.5 rounded text-xs">{v.firstName} {v.lastName} {v.phone && `(${v.phone})`}</span> : null;
+                                    })
+                                  ) : (
+                                    <span className="text-rose-400/50 text-xs italic">Aucun inscrit</span>
+                                  )}
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+
+                {managedPositions.map((mp, idx) => (
+                  <div key={`pos-${idx}`} className="bg-amber-500/10 border border-amber-500/20 p-5 rounded-2xl shadow-sm flex flex-col gap-4">
+                    <div className="flex justify-between items-start gap-2">
+                      <span className="bg-amber-500/20 text-amber-300 px-2 py-1 rounded text-[10px] font-bold uppercase tracking-wider">
+                        {mp.categoryName}
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <span className="text-xl">⭐</span>
+                      <h3 className="text-lg font-bold text-amber-200">Responsable Poste : {mp.position.name}</h3>
+                    </div>
+                    
+                    {(mp.position.details || mp.position.equipment) && (
+                      <div className="text-sm text-slate-400 mb-2 space-y-1">
+                        {mp.position.details && <p>📝 {mp.position.details}</p>}
+                        {mp.position.equipment && <p>🦺 {mp.position.equipment}</p>}
+                      </div>
+                    )}
+                    
+                    <div className="space-y-2 mt-2">
+                      {mp.position.timeSlots.map((ts, ti) => (
+                        <div key={ti} className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-sm bg-black/20 border border-white/5 p-3 rounded-lg">
+                          <span className="font-mono text-slate-300 whitespace-nowrap">📅 {ts.day} • ⏰ {ts.timeSlot}</span>
+                          <div className="flex flex-wrap gap-1">
+                            {ts.volunteer && ts.volunteer.length > 0 ? (
+                              ts.volunteer.map(vid => {
+                                const v = volunteers.find(v => v.id === vid);
+                                return v ? <span key={vid} className="bg-indigo-500/20 border border-indigo-500/30 text-indigo-200 px-2 py-0.5 rounded text-xs">{v.firstName} {v.lastName} {v.phone && `(${v.phone})`}</span> : null;
+                              })
+                            ) : (
+                              <span className="text-rose-400/50 text-xs italic">Aucun inscrit</span>
+                            )}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+
             <div className="mt-8 bg-black/20 border border-white/5 rounded-2xl p-6">
               <h3 className="text-lg font-semibold text-white mb-2">💡 Boîte à idées</h3>
+
               <p className="text-sm text-slate-400 mb-4">Une idée pour améliorer l'événement ou le poste ? Notez-la ici, elle sera transmise à l'équipe organisatrice !</p>
               <textarea
                 value={ideasDraft}
