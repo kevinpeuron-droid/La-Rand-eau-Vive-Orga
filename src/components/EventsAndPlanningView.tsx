@@ -515,6 +515,23 @@ export default function EventsAndPlanningView() {
                   <button onClick={() => { if(confirm('Supprimer cet événement ?')) { deleteEvent(selectedEvent.id); setSelectedEventId(''); } }} className="text-xs text-rose-400 hover:text-rose-300 transition-colors">
                     🗑️ Supprimer
                   </button>
+                  <button 
+                    onClick={() => {
+                      if(confirm('Dupliquer cet événement ?')) {
+                        const newEvent = {
+                          name: selectedEvent.name + ' (Copie)',
+                          priority: selectedEvent.priority,
+                          availableVolunteers: [...(selectedEvent.availableVolunteers || [])],
+                          categories: JSON.parse(JSON.stringify(selectedEvent.categories || [])),
+                          carteUrl: selectedEvent.carteUrl || ''
+                        };
+                        addEvent(newEvent);
+                      }
+                    }} 
+                    className="text-xs text-teal-400 hover:text-teal-300 transition-colors ml-2"
+                  >
+                    📄 Dupliquer
+                  </button>
                 </div>
                 <div className="mt-3 flex items-center gap-2">
                   <span className="text-xs text-slate-400">🗺️ Carte de l'événement:</span>

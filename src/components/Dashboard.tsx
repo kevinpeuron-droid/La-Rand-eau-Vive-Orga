@@ -108,18 +108,55 @@ export default function Dashboard() {
           {events.length === 0 ? (
             <p className="text-slate-500 italic">Aucun événement</p>
           ) : (
-             events.slice().reverse().slice(0, 5).map(e => (
-              <div key={e.id} className={`bg-white/5 backdrop-blur-lg p-5 rounded-2xl border border-white/10 border-l-[4px] shadow-sm hover:bg-white/10 transition-all ${e.priority ? 'border-l-amber-400' : 'border-l-indigo-400'}`}>
+             events.slice().reverse().slice(0, 5).map(e => {
+              const volunteerIds = new Set<string>();
+              (e.categories || []).forEach(c => {
+                if (c.referentId) volunteerIds.add(c.referentId);
+                (c.positions || []).forEach(p => {
+                  if (p.responsableId) volunteerIds.add(p.responsableId);
+                  (p.timeSlots || []).forEach(ts => {
+                    if (ts.volunteer) {
+                      ts.volunteer.forEach(vId => volunteerIds.add(vId));
+                    }
+                  });
+                });
+              });
+
+              const groupCounts: Record<string, number> = {};
+              let totalAssigned = 0;
+              volunteerIds.forEach(vId => {
+                const vol = volunteers.find(v => v.id === vId);
+                if (vol) {
+                  const g = vol.group || 'Sans groupe';
+                  groupCounts[g] = (groupCounts[g] || 0) + 1;
+                  totalAssigned++;
+                }
+              });
+
+              const sortedGroups = Object.entries(groupCounts).sort((a, b) => b[1] - a[1]);
+
+              return (
+              <div key={e.id} className={`bg-white/5 backdrop-blur-lg p-5 rounded-2xl border border-white/10 border-l-[4px] shadow-sm hover:bg-white/10 transition-all ${e.priority ? 'border-l-amber-400' : 'border-l-indigo-400'} flex flex-col gap-3`}>
                 <div className="flex justify-between items-start gap-2">
                   <div>
                     <h3 className={`font-semibold text-lg mb-1 ${e.priority ? 'text-amber-400' : 'text-indigo-400'}`}>
                       {e.priority ? '⭐ ' : ''}{e.name}
                     </h3>
-                    <p className="text-slate-400 text-sm">📋 {(e.categories || []).length} catégories • 👥 {(e.availableVolunteers || []).length} disponibles</p>
+                    <p className="text-slate-400 text-sm">📋 {(e.categories || []).length} catégories • 👥 {(e.availableVolunteers || []).length} disponibles • 🎯 {totalAssigned} affectés</p>
                   </div>
                 </div>
+                
+                {sortedGroups.length > 0 && (
+                  <div className="flex flex-wrap gap-2 pt-2 border-t border-white/5">
+                    {sortedGroups.map(([group, count]) => (
+                      <span key={group} className="text-xs bg-white/10 text-slate-300 px-2 py-1 rounded-md border border-white/10">
+                        <span className="font-semibold text-white">{group}:</span> {count}
+                      </span>
+                    ))}
+                  </div>
+                )}
               </div>
-            ))
+            )})
           )}
         </div>
       </div>
