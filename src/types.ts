@@ -28,6 +28,7 @@ export interface Volunteer {
   childIds: string[];
   createdAt: number;
   updatedAt: number;
+  viewedEvents?: Record<string, number>; // eventId -> timestamp
 }
 
 export interface TimeSlot {

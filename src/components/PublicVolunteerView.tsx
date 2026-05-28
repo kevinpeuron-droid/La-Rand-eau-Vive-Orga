@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useData } from '../contexts/DataContext';
 import { Volunteer } from '../types';
@@ -8,6 +8,29 @@ export default function PublicVolunteerView() {
   const { events, volunteers, loading, updateVolunteer } = useData();
   const [selectedVolunteerId, setSelectedVolunteerId] = useState<string>('');
   const [ideasDraft, setIdeasDraft] = useState<string>('');
+
+  useEffect(() => {
+    if (selectedVolunteerId && eventId) {
+      const vol = volunteers.find(v => v.id === selectedVolunteerId);
+      const ev = events.find(e => e.id === eventId);
+      if (vol && ev) {
+        const lastViewedAt = vol.viewedEvents?.[eventId] || 0;
+        // Update if viewedEvents is older than 5 minutes or older than the last event update
+        // We only want to track view time if it's outdated so we don't cause an infinite re-render loop/spam writes
+        if (lastViewedAt < ev.updatedAt || Date.now() - lastViewedAt > 300000) {
+           const timeout = setTimeout(() => {
+              updateVolunteer(selectedVolunteerId, {
+                viewedEvents: {
+                  ...(vol.viewedEvents || {}),
+                  [eventId]: Date.now()
+                }
+              });
+           }, 5000); // Wait 5 seconds before updating to ensure they actually looked at it
+           return () => clearTimeout(timeout);
+        }
+      }
+    }
+  }, [selectedVolunteerId, eventId, events, volunteers, updateVolunteer]);
 
   if (loading) {
     return (

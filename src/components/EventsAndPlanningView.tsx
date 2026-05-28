@@ -787,8 +787,9 @@ export default function EventsAndPlanningView() {
                                     {Array.isArray(slot.volunteer) && slot.volunteer.map(vid => {
                                       const v = volunteers.find(x => x.id === vid);
                                       const isResp = pos.responsableId === vid;
+                                      const hasViewedRecently = (v?.viewedEvents?.[selectedEvent.id] || 0) >= selectedEvent.updatedAt;
                                       return v ? (
-                                        <span key={vid} className={`border text-[10px] px-1 py-0.5 rounded-sm flex items-center gap-1 font-medium transition-colors ${isResp ? 'bg-amber-500/20 border-amber-500/40 text-amber-200' : 'bg-indigo-500/20 border-indigo-500/30 text-indigo-200'}`}>
+                                        <span key={vid} className={`border text-[10px] px-1 py-0.5 rounded-sm flex items-center gap-1 font-medium transition-colors ${isResp ? 'bg-amber-500/20 border-amber-500/40 text-amber-200' : hasViewedRecently ? 'bg-teal-500/20 border-teal-500/30 text-teal-300' : 'bg-indigo-500/20 border-indigo-500/30 text-indigo-200'}`} title={hasViewedRecently ? "A consulté son planning" : "Planning non consulté depuis modification"}>
                                           <button 
                                             onClick={() => togglePositionResponsable(ci, pi, vid)} 
                                             className={`transition-opacity hover:opacity-100 leading-none ${isResp ? 'opacity-100 text-amber-400' : 'opacity-40 grayscale'}`}
