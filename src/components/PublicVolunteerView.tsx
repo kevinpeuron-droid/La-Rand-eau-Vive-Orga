@@ -228,39 +228,37 @@ export default function PublicVolunteerView() {
                       </div>
                     )}
 
-                    {/* Équipe du stand */}
+                    {/* Équipe du poste */}
                     {(() => {
                       const cat = selectedEvent.categories?.find(c => c.name === assignment.categoryName);
                       if (!cat) return null;
+                      const p = cat.positions.find(pos => pos.name === assignment.positionName);
+                      if (!p) return null;
                       
                       let coVolunteersFound = false;
-                      const teamElements = cat.positions.map((p, pi) => {
-                        const slots = p.timeSlots.filter(ts => Array.isArray(ts.volunteer) && ts.volunteer.length > 0);
-                        if (slots.length === 0) return null;
+                      const slots = p.timeSlots.filter(ts => Array.isArray(ts.volunteer) && ts.volunteer.length > 0);
+                      if (slots.length === 0) return null;
+                      
+                      const slotElements = slots.map((ts, ti) => {
+                        const others = ts.volunteer!.filter(vid => vid !== selectedVolunteerId);
+                        if (others.length === 0) return null;
+                        coVolunteersFound = true;
                         
-                        const slotElements = slots.map((ts, ti) => {
-                          const others = ts.volunteer!.filter(vid => vid !== selectedVolunteerId);
-                          if (others.length === 0) return null;
-                          coVolunteersFound = true;
-                          
-                          return (
-                            <div key={ti} className="flex flex-col gap-1 mt-2">
-                              <span className="text-xs font-mono text-slate-400">📅 {ts.day} • ⏰ {ts.timeSlot} • {p.name}</span>
-                              <div className="flex flex-wrap gap-1">
-                                {others.map(vid => {
-                                  const v = volunteers.find(vol => vol.id === vid);
-                                  return v ? (
-                                    <span key={vid} className="text-xs bg-white/5 border border-white/10 px-2 py-0.5 rounded text-slate-300">
-                                      {v.firstName} {v.lastName}
-                                    </span>
-                                  ) : null;
-                                })}
-                              </div>
+                        return (
+                          <div key={ti} className="flex flex-col gap-1 mt-2">
+                            <span className="text-xs font-mono text-slate-400">📅 {ts.day} • ⏰ {ts.timeSlot}</span>
+                            <div className="flex flex-wrap gap-1">
+                              {others.map(vid => {
+                                const v = volunteers.find(vol => vol.id === vid);
+                                return v ? (
+                                  <span key={vid} className="text-xs bg-white/5 border border-white/10 px-2 py-0.5 rounded text-slate-300">
+                                    {v.firstName} {v.lastName}
+                                  </span>
+                                ) : null;
+                              })}
                             </div>
-                          );
-                        });
-                        
-                        return slotElements;
+                          </div>
+                        );
                       });
 
                       if (!coVolunteersFound) return null;
@@ -269,11 +267,11 @@ export default function PublicVolunteerView() {
                         <div className="mt-3 pt-3 border-t border-white/5">
                           <details className="group cursor-pointer">
                             <summary className="text-sm font-medium text-slate-300 hover:text-white transition-colors flex items-center justify-between outline-none">
-                              <span>👥 Équipe du stand ({cat.name})</span>
+                              <span>👥 Équipe du poste</span>
                               <span className="opacity-60 group-open:rotate-180 transition-transform">▼</span>
                             </summary>
                             <div className="mt-2 space-y-1 block pb-2">
-                              {teamElements}
+                              {slotElements}
                             </div>
                           </details>
                         </div>
