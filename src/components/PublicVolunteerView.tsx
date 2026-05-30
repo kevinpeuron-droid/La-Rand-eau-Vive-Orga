@@ -9,20 +9,57 @@ export default function PublicVolunteerView() {
   const [selectedVolunteerId, setSelectedVolunteerId] = useState<string>('');
   const [ideasDraft, setIdeasDraft] = useState<string>('');
 
+  const [modifications, setModifications] = useState<{ added: string[]; removed: string[] } | null>(null);
+
   useEffect(() => {
     if (selectedVolunteerId && eventId) {
       const vol = volunteers.find(v => v.id === selectedVolunteerId);
       const ev = events.find(e => e.id === eventId);
       if (vol && ev) {
-        const lastViewedAt = vol.viewedEvents?.[eventId] || 0;
-        // Update if viewedEvents is older than 5 minutes or older than the last event update
-        // We only want to track view time if it's outdated so we don't cause an infinite re-render loop/spam writes
-        if (lastViewedAt < ev.updatedAt || Date.now() - lastViewedAt > 300000) {
+        const summary: string[] = [];
+        ev.categories?.forEach((cat: any) => {
+          const isCatRef = cat.referentId === selectedVolunteerId;
+          if (isCatRef) {
+            summary.push(`Référent: ${cat.name}`);
+          }
+          cat.positions?.forEach((pos: any) => {
+            const isPosResp = pos.responsableId === selectedVolunteerId;
+            if (isPosResp && !isCatRef) {
+              summary.push(`Responsable: ${pos.name} (${cat.name})`);
+            }
+            pos.timeSlots?.forEach((ts: any) => {
+              if (Array.isArray(ts.volunteer) && ts.volunteer.includes(selectedVolunteerId)) {
+                summary.push(`Créneau: ${cat.name} - ${pos.name} - ${ts.day} ${ts.timeSlot} (Détails: ${pos.details || ''}, Matériel: ${pos.equipment || ''})`);
+              }
+            });
+          });
+        });
+
+        const lastSeen = vol.lastSeenAssignments?.[eventId] || [];
+        const isDifferent = JSON.stringify(summary) !== JSON.stringify(lastSeen);
+
+        if (vol.lastSeenAssignments?.[eventId] !== undefined && isDifferent) { // Only show changes if they had viewed before
+          const added = summary.filter(s => !lastSeen.includes(s));
+          const removed = lastSeen.filter(s => !summary.includes(s));
+          if (added.length > 0 || removed.length > 0) {
+            setModifications({ added, removed });
+          } else {
+            setModifications({ added: [], removed: [] }); // different order or something, won't show alert
+          }
+        } else if (vol.lastSeenAssignments?.[eventId] !== undefined && !isDifferent) {
+           setModifications({ added: [], removed: [] });
+        }
+
+        if (isDifferent) {
            const timeout = setTimeout(() => {
               updateVolunteer(selectedVolunteerId, {
                 viewedEvents: {
                   ...(vol.viewedEvents || {}),
                   [eventId]: Date.now()
+                },
+                lastSeenAssignments: {
+                  ...(vol.lastSeenAssignments || {}),
+                  [eventId]: summary
                 }
               });
            }, 5000); // Wait 5 seconds before updating to ensure they actually looked at it
@@ -159,7 +196,34 @@ export default function PublicVolunteerView() {
 
         {selectedVolunteerId && (
           <div className="space-y-6">
-            <h2 className="text-xl font-semibold text-indigo-300 text-center mb-6">Vos affectations ({assignments.length})</h2>
+            
+            {modifications && (
+              <div className={`mt-2 p-4 rounded-xl border ${modifications.added.length === 0 && modifications.removed.length === 0 ? 'bg-teal-500/10 border-teal-500/20 text-teal-200' : 'bg-amber-500/10 border-amber-500/20 text-amber-200'}`}>
+                {modifications.added.length === 0 && modifications.removed.length === 0 ? (
+                  <div className="flex items-center gap-3">
+                    <span className="text-xl">✅</span>
+                    <p className="font-medium text-sm">Pas de modification sur votre poste depuis votre dernière visite</p>
+                  </div>
+                ) : (
+                  <div>
+                    <div className="flex items-center gap-3 mb-3">
+                      <span className="text-xl">⚠️</span>
+                      <p className="font-bold text-sm">Attention, modification depuis votre dernière visite :</p>
+                    </div>
+                    <div className="space-y-2 text-sm pl-8">
+                      {modifications.added.map((add, i) => (
+                         <p key={`added-${i}`} className="text-teal-300">➕ Ajouté: {add.replace(/Créneau: |Détails: |Matériel: /g, '')}</p>
+                      ))}
+                      {modifications.removed.map((rem, i) => (
+                         <p key={`rem-${i}`} className="text-rose-300 line-through">➖ Retiré: {rem.replace(/Créneau: |Détails: |Matériel: /g, '')}</p>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
+
+            <h2 className="text-xl font-semibold text-indigo-300 text-center mb-6 mt-6">Vos affectations ({assignments.length})</h2>
             
             {(selectedEvent?.carteUrl || localStorage.getItem('mymap_url')) && (
                <div className="flex justify-center mb-8">

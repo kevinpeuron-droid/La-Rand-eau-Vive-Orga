@@ -98,6 +98,30 @@ function VolunteerCombobox({ volunteers, currentSlot, onSelect, eventDetails }: 
   );
 }
 
+export const getVolunteerAssignmentsSummary = (event: any, volunteerId: string): string[] => {
+  const summary: string[] = [];
+  if (!event || !event.categories) return summary;
+  
+  event.categories.forEach((cat: any) => {
+    const isCatRef = cat.referentId === volunteerId;
+    if (isCatRef) {
+      summary.push(`Référent: ${cat.name}`);
+    }
+    cat.positions?.forEach((pos: any) => {
+      const isPosResp = pos.responsableId === volunteerId;
+      if (isPosResp && !isCatRef) {
+        summary.push(`Responsable: ${pos.name} (${cat.name})`);
+      }
+      pos.timeSlots?.forEach((ts: any) => {
+        if (Array.isArray(ts.volunteer) && ts.volunteer.includes(volunteerId)) {
+          summary.push(`Créneau: ${cat.name} - ${pos.name} - ${ts.day} ${ts.timeSlot} (Détails: ${pos.details || ''}, Matériel: ${pos.equipment || ''})`);
+        }
+      });
+    });
+  });
+  return summary;
+};
+
 export default function EventsAndPlanningView() {
   const { events, volunteers, addEvent, updateEvent, deleteEvent, updateVolunteer } = useData();
   const [selectedEventId, setSelectedEventId] = useState<string>('');
@@ -787,7 +811,11 @@ export default function EventsAndPlanningView() {
                                     {Array.isArray(slot.volunteer) && slot.volunteer.map(vid => {
                                       const v = volunteers.find(x => x.id === vid);
                                       const isResp = pos.responsableId === vid;
-                                      const hasViewedRecently = (v?.viewedEvents?.[selectedEvent.id] || 0) >= selectedEvent.updatedAt;
+                                      
+                                      const assignSummary = getVolunteerAssignmentsSummary(selectedEvent, vid);
+                                      const lastSeen = v?.lastSeenAssignments?.[selectedEvent.id];
+                                      const hasViewedRecently = !!lastSeen && JSON.stringify(assignSummary) === JSON.stringify(lastSeen);
+                                      
                                       return v ? (
                                         <span key={vid} className={`border text-[10px] px-1 py-0.5 rounded-sm flex items-center gap-1 font-medium transition-colors ${isResp ? 'bg-amber-500/20 border-amber-500/40 text-amber-200' : hasViewedRecently ? 'bg-teal-500/20 border-teal-500/30 text-teal-300' : 'bg-indigo-500/20 border-indigo-500/30 text-indigo-200'}`} title={hasViewedRecently ? "A consulté son planning" : "Planning non consulté depuis modification"}>
                                           <button 
