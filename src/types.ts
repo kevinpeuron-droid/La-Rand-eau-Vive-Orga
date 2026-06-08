@@ -59,6 +59,12 @@ export interface Category {
   tasks?: Task[];
 }
 
+export interface ArchivedIdea {
+  volunteerId: string;
+  volunteerName: string;
+  text: string;
+}
+
 export interface EventEntity {
   id: string; // Firestore document ID
   name: string;
@@ -66,8 +72,83 @@ export interface EventEntity {
   availableVolunteers: string[]; // Array of Volunteer IDs
   categories: Category[];
   carteUrl?: string; // Link to the map
+  archivedIdeas?: ArchivedIdea[];
   createdAt: number;
   updatedAt: number;
+}
+
+export interface Transaction {
+  id: string; // Firestore document ID
+  title?: string;
+  description?: string;
+  amount: number;
+  date: string; // YYYY-MM-DD
+  type: 'RECETTE' | 'DEPENSE' | 'INCOME' | 'EXPENSE';
+  category?: string;
+  budgetLineId?: string;
+  eventId?: string;
+  isBenevolat?: boolean;
+  status?: string;
+  notes?: string;
+  createdAt: number;
+  updatedAt: number;
+}
+
+export interface BudgetLine {
+  id: string;
+  category: string;
+  label: string;
+  section: string; // 'RECETTE' | 'DEPENSE' | 'VALORISATION'
+  amountN?: number;
+  amountNMinus1?: number;
+  createdAt?: number;
+}
+
+export interface Contribution {
+  id: string;
+  beneficiary: string;
+  description: string;
+  quantity: number;
+  unitValue: number;
+  createdAt?: number;
+}
+
+export interface SponsorYearlyData {
+  amountPaid: number;
+  amountPromised: number;
+  budgetLineId?: string;
+  datePaid?: string;
+  dateReminder?: string;
+  dateSent?: string;
+  notes?: string;
+  status: string;
+  transactionId?: string;
+}
+
+export interface Sponsor {
+  id: string;
+  name: string;
+  contact?: string;
+  email?: string;
+  phone?: string;
+  notes?: string;
+  status?: string;
+  amountPromised?: number;
+  dateSent?: string;
+  dateReminder?: string;
+  datePayment?: string;
+  createdAt?: number;
+  updatedAt?: number;
+}
+
+export interface BankLine {
+  id: string;
+  date: string;
+  description: string;
+  amount: number;
+  pointed: boolean;
+  transactionId?: string;
+  createdAt?: number;
 }
 
 export interface Child {

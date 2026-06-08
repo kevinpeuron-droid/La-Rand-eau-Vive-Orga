@@ -126,19 +126,40 @@ export default function EventsAndPlanningView() {
   const { events, volunteers, addEvent, updateEvent, deleteEvent, updateVolunteer } = useData();
   const [selectedEventId, setSelectedEventId] = useState<string>('');
   const [newEventName, setNewEventName] = useState('');
+  const [duplicateEventId, setDuplicateEventId] = useState<string>('');
   const [expandedCategories, setExpandedCategories] = useState<Record<string, boolean>>({});
 
   const DAYS = ['Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi','Dimanche'];
 
   const handleCreateEvent = async () => {
     if (!newEventName.trim()) return alert("Nom d'événement requis");
+
+    let baseCategories: any[] = [];
+    if (duplicateEventId) {
+      const baseEvent = events.find(e => e.id === duplicateEventId);
+      if (baseEvent && baseEvent.categories) {
+        baseCategories = JSON.parse(JSON.stringify(baseEvent.categories)).map((cat: any) => ({
+          ...cat,
+          positions: cat.positions?.map((pos: any) => ({
+            ...pos,
+            timeSlots: pos.timeSlots?.map((ts: any) => ({
+              ...ts,
+              volunteer: [] // Never copy volunteers to the new event slots by default
+            }))
+          }))
+        }));
+      }
+    }
+
     await addEvent({
       name: newEventName.trim(),
       priority: false,
       availableVolunteers: [],
-      categories: []
+      categories: baseCategories,
+      archivedIdeas: []
     });
     setNewEventName('');
+    setDuplicateEventId('');
   };
 
   const selectedEvent = events.find(e => e.id === selectedEventId);
@@ -480,6 +501,16 @@ export default function EventsAndPlanningView() {
               placeholder="Nouvel événement..."
               onKeyDown={e => e.key === 'Enter' && handleCreateEvent()}
             />
+            <select
+              value={duplicateEventId}
+              onChange={e => setDuplicateEventId(e.target.value)}
+              className="w-full p-2.5 border border-white/10 rounded-xl bg-black/40 text-slate-300 outline-none focus:border-indigo-500 transition-colors text-sm"
+            >
+              <option value="">À partir de zéro</option>
+              {events.map((e, idx) => (
+                <option key={`dup-${idx}`} value={e.id}>Copier: {e.name}</option>
+              ))}
+            </select>
             <button 
               onClick={handleCreateEvent} 
               className="w-full bg-indigo-600 shadow-lg shadow-indigo-600/20 text-white px-4 py-2 rounded-xl text-sm font-medium hover:bg-indigo-500 transition-colors"
@@ -865,6 +896,24 @@ export default function EventsAndPlanningView() {
                 );
               })}
             </div>
+
+            {selectedEvent.archivedIdeas && selectedEvent.archivedIdeas.length > 0 && (
+              <div className="bg-white/5 backdrop-blur-lg border border-white/10 rounded-2xl p-6 shadow-xl mt-6">
+                <h2 className="text-xl font-bold text-white mb-4 flex items-center gap-2">
+                  <span>💡</span> Idées archivées ({selectedEvent.archivedIdeas.length})
+                </h2>
+                <div className="space-y-4">
+                  {selectedEvent.archivedIdeas.map((idea, idx) => (
+                    <div key={`idea-${idx}`} className="bg-black/20 border border-white/5 p-4 rounded-xl">
+                      <div className="flex items-center gap-2 mb-2 text-sm text-slate-300 font-medium">
+                        <span className="text-white">👤 {idea.volunteerName}</span>
+                      </div>
+                      <p className="text-indigo-200 text-sm whitespace-pre-wrap">{idea.text}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
         )}
       </div>

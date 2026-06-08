@@ -1,0 +1,2087 @@
+{
+  "realized": [
+    {
+      "amount": 3136.8,
+      "budgetLineId": "inc1",
+      "category": "Participation des délégations",
+      "date": "2025-06-01",
+      "description": "Klikego RV",
+      "eventId": "039wqf7",
+      "hourlyRate": 11.65,
+      "id": "dh79q0w",
+      "isBenevolat": false,
+      "status": "REALIZED",
+      "type": "RECETTE"
+    },
+    {
+      "amount": 2000,
+      "budgetLineId": "f4v39mc",
+      "category": "Collectivités Territoriales",
+      "date": "2025-06-01",
+      "description": "Commune de Glomel",
+      "eventId": "039wqf7",
+      "hourlyRate": 11.65,
+      "id": "rnb7diw",
+      "isBenevolat": false,
+      "status": "REALIZED",
+      "type": "RECETTE"
+    },
+    {
+      "amount": 1500,
+      "budgetLineId": "686z1wu",
+      "category": "Collectivités Territoriales",
+      "date": "2025-06-01",
+      "description": "CCKB",
+      "eventId": "039wqf7",
+      "hourlyRate": 11.65,
+      "id": "m4bibxn",
+      "isBenevolat": false,
+      "status": "REALIZED",
+      "type": "RECETTE"
+    },
+    {
+      "amount": 1000,
+      "budgetLineId": "inc7",
+      "category": "Collectivités Territoriales",
+      "date": "2025-06-01",
+      "description": "Département des côtes d'armor",
+      "eventId": "039wqf7",
+      "hourlyRate": 11.65,
+      "id": "7q0fg97",
+      "isBenevolat": false,
+      "status": "REALIZED",
+      "type": "RECETTE"
+    },
+    {
+      "amount": 976,
+      "budgetLineId": "8zz29w3",
+      "category": "Public/Spectateurs",
+      "date": "2025-06-01",
+      "description": "Restauration/Buvette",
+      "eventId": "039wqf7",
+      "hourlyRate": 11.65,
+      "id": "plfqr89",
+      "isBenevolat": false,
+      "status": "REALIZED",
+      "type": "RECETTE"
+    },
+    {
+      "amount": 250,
+      "budgetLineId": "8zz29w3",
+      "category": "Public/Spectateurs",
+      "date": "2025-06-01",
+      "description": "Restauration/buvette (chèques)",
+      "eventId": "039wqf7",
+      "hourlyRate": 11.65,
+      "id": "qjaxfq5",
+      "isBenevolat": false,
+      "status": "REALIZED",
+      "type": "RECETTE"
+    },
+    {
+      "amount": 1833.2,
+      "budgetLineId": "8zz29w3",
+      "category": "Public/Spectateurs",
+      "date": "2025-06-01",
+      "description": "Restauration/buvette (Espèces)",
+      "eventId": "039wqf7",
+      "hourlyRate": 11.65,
+      "id": "p1sl8j9",
+      "isBenevolat": false,
+      "status": "REALIZED",
+      "type": "RECETTE"
+    },
+    {
+      "amount": 100,
+      "budgetLineId": "7w2wvck",
+      "category": "Partenaires privés",
+      "date": "2025-06-01",
+      "description": "Sponsors/Partenaires (hors contribution en nature)",
+      "eventId": "039wqf7",
+      "hourlyRate": 11.65,
+      "id": "5n2crbk",
+      "isBenevolat": false,
+      "status": "REALIZED",
+      "type": "RECETTE"
+    },
+    {
+      "amount": 2440,
+      "budgetLineId": "inc1",
+      "category": "Participation des délégations",
+      "date": "2025-12-21",
+      "description": "Inscriptions Klikego",
+      "eventId": "hijefdy",
+      "hourlyRate": 11.65,
+      "id": "w7iwb8v",
+      "isBenevolat": false,
+      "status": "REALIZED",
+      "type": "RECETTE"
+    },
+    {
+      "amount": 85,
+      "budgetLineId": "8zz29w3",
+      "category": "Public/Spectateurs",
+      "date": "2025-12-21",
+      "description": "Restauration/Buvette",
+      "eventId": "hijefdy",
+      "hourlyRate": 11.65,
+      "id": "61fqqwl",
+      "isBenevolat": false,
+      "status": "REALIZED",
+      "type": "RECETTE"
+    },
+    {
+      "amount": 93.7,
+      "budgetLineId": "a0tqpz6",
+      "category": "Restauration",
+      "date": "2025-12-21",
+      "description": "Zone de vie (cidre)",
+      "eventId": "039wqf7",
+      "hourlyRate": 11.65,
+      "id": "lntcjqe",
+      "isBenevolat": false,
+      "status": "REALIZED",
+      "type": "DEPENSE"
+    },
+    {
+      "amount": 786.69,
+      "budgetLineId": "a0tqpz6",
+      "category": "Restauration",
+      "date": "2025-12-21",
+      "description": "Zone de vie (Grobul)",
+      "eventId": "039wqf7",
+      "hourlyRate": 11.65,
+      "id": "rdjvnl9",
+      "isBenevolat": false,
+      "status": "REALIZED",
+      "type": "DEPENSE"
+    },
+    {
+      "amount": 300,
+      "budgetLineId": "a0tqpz6",
+      "category": "Restauration",
+      "date": "2025-12-21",
+      "description": "Zone de vie (Fred)",
+      "eventId": "039wqf7",
+      "hourlyRate": 11.65,
+      "id": "ifiri76",
+      "isBenevolat": false,
+      "status": "REALIZED",
+      "type": "DEPENSE"
+    },
+    {
+      "amount": 388.3,
+      "budgetLineId": "a0tqpz6",
+      "category": "Restauration",
+      "date": "2025-12-21",
+      "description": "Zone de vie (Crêpes)",
+      "eventId": "039wqf7",
+      "hourlyRate": 11.65,
+      "id": "ovjk919",
+      "isBenevolat": false,
+      "status": "REALIZED",
+      "type": "DEPENSE"
+    },
+    {
+      "amount": 45.93,
+      "budgetLineId": "6hawolo",
+      "category": "Restauration",
+      "date": "2025-12-21",
+      "description": "Pot des bénévoles",
+      "eventId": "039wqf7",
+      "hourlyRate": 11.65,
+      "id": "hs944t2",
+      "isBenevolat": false,
+      "status": "REALIZED",
+      "type": "DEPENSE"
+    },
+    {
+      "amount": 2760,
+      "budgetLineId": "exp5",
+      "category": "Matériel Sportif",
+      "date": "2025-12-21",
+      "description": "Kit CO",
+      "eventId": "039wqf7",
+      "hourlyRate": 11.65,
+      "id": "wvbjo7c",
+      "isBenevolat": false,
+      "status": "REALIZED",
+      "type": "DEPENSE"
+    },
+    {
+      "amount": 1500,
+      "budgetLineId": "tam8qb1",
+      "category": "Ressources Humaines",
+      "date": "2025-12-21",
+      "description": "Gratification Associations (Kayak)",
+      "eventId": "039wqf7",
+      "hourlyRate": 11.65,
+      "id": "hwc5gmw",
+      "isBenevolat": false,
+      "status": "REALIZED",
+      "type": "DEPENSE"
+    },
+    {
+      "amount": 1500,
+      "budgetLineId": "tam8qb1",
+      "category": "Ressources Humaines",
+      "date": "2025-12-21",
+      "description": "Gratification Associations (AL Glomel)",
+      "eventId": "039wqf7",
+      "hourlyRate": 11.65,
+      "id": "ph8iix1",
+      "isBenevolat": false,
+      "status": "REALIZED",
+      "type": "DEPENSE"
+    },
+    {
+      "amount": 687,
+      "budgetLineId": "sd16e8a",
+      "category": "Frais d'organisation",
+      "date": "2025-12-21",
+      "description": "Sécurité (Protection civile)",
+      "eventId": "039wqf7",
+      "hourlyRate": 11.65,
+      "id": "9hy40ub",
+      "isBenevolat": false,
+      "status": "REALIZED",
+      "type": "DEPENSE"
+    },
+    {
+      "amount": 400,
+      "budgetLineId": "exp5",
+      "category": "Matériel Sportif",
+      "date": "2025-12-21",
+      "description": "Location d'escalade",
+      "eventId": "039wqf7",
+      "hourlyRate": 11.65,
+      "id": "9wgizn9",
+      "isBenevolat": false,
+      "status": "REALIZED",
+      "type": "DEPENSE"
+    },
+    {
+      "amount": 331.8,
+      "budgetLineId": "pgeto1t",
+      "category": "Frais d'organisation",
+      "date": "2025-12-21",
+      "description": "Commande d'espèces  (dont erreur de 22,80 du dépôt)",
+      "eventId": "039wqf7",
+      "hourlyRate": 11.65,
+      "id": "z6q2sxe",
+      "isBenevolat": false,
+      "status": "REALIZED",
+      "type": "DEPENSE"
+    },
+    {
+      "amount": 144,
+      "budgetLineId": "exp6",
+      "category": "Frais d'organisation",
+      "date": "2025-12-21",
+      "description": "Inscription FFTRI",
+      "eventId": "039wqf7",
+      "hourlyRate": 11.65,
+      "id": "cui5409",
+      "isBenevolat": false,
+      "status": "REALIZED",
+      "type": "DEPENSE"
+    },
+    {
+      "amount": 15,
+      "budgetLineId": "pgeto1t",
+      "category": "Frais d'organisation",
+      "date": "2025-12-21",
+      "description": "Impôts et Taxes",
+      "eventId": "039wqf7",
+      "hourlyRate": 11.65,
+      "id": "xixzwj5",
+      "isBenevolat": false,
+      "status": "REALIZED",
+      "type": "DEPENSE"
+    },
+    {
+      "amount": 17.15,
+      "budgetLineId": "pgeto1t",
+      "category": "Frais d'organisation",
+      "date": "2025-12-21",
+      "description": "Impôts et Taxes",
+      "eventId": "039wqf7",
+      "hourlyRate": 11.65,
+      "id": "vflpk0m",
+      "isBenevolat": false,
+      "status": "REALIZED",
+      "type": "DEPENSE"
+    },
+    {
+      "amount": 34.8,
+      "budgetLineId": "pgeto1t",
+      "category": "Frais d'organisation",
+      "date": "2025-12-21",
+      "description": "AVEM",
+      "eventId": "039wqf7",
+      "hourlyRate": 11.65,
+      "id": "vk47gja",
+      "isBenevolat": false,
+      "status": "REALIZED",
+      "type": "DEPENSE"
+    },
+    {
+      "amount": 82.02,
+      "budgetLineId": "xar29dr",
+      "category": "Frais d'organisation",
+      "date": "2025-12-21",
+      "description": "Assurances MAIF",
+      "eventId": "039wqf7",
+      "hourlyRate": 11.65,
+      "id": "qk9fqy9",
+      "isBenevolat": false,
+      "status": "REALIZED",
+      "type": "DEPENSE"
+    },
+    {
+      "amount": 36,
+      "budgetLineId": "pgeto1t",
+      "category": "Frais d'organisation",
+      "date": "2025-12-21",
+      "description": "Impôts et Taxes",
+      "eventId": "039wqf7",
+      "hourlyRate": 11.65,
+      "id": "k3or79b",
+      "isBenevolat": false,
+      "status": "REALIZED",
+      "type": "DEPENSE"
+    },
+    {
+      "amount": 158.4,
+      "budgetLineId": "exp5",
+      "category": "Matériel Sportif",
+      "date": "2025-12-21",
+      "description": "Pastilles réfléchissantes",
+      "eventId": "hijefdy",
+      "hourlyRate": 11.65,
+      "id": "0rhxu1f",
+      "isBenevolat": false,
+      "status": "REALIZED",
+      "type": "DEPENSE"
+    },
+    {
+      "amount": 138.9,
+      "budgetLineId": "exp7",
+      "category": "Frais d'organisation",
+      "date": "2025-12-21",
+      "description": "Papiers Préac",
+      "eventId": "hijefdy",
+      "hourlyRate": 11.65,
+      "id": "vn57g31",
+      "isBenevolat": false,
+      "status": "REALIZED",
+      "type": "DEPENSE"
+    },
+    {
+      "amount": 104.21,
+      "budgetLineId": "exp5",
+      "category": "Matériel Sportif",
+      "date": "2025-12-21",
+      "description": "Douchette",
+      "eventId": "hijefdy",
+      "hourlyRate": 11.65,
+      "id": "3pf92ws",
+      "isBenevolat": false,
+      "status": "REALIZED",
+      "type": "DEPENSE"
+    },
+    {
+      "amount": 1.48,
+      "budgetLineId": "pgeto1t",
+      "category": "Frais d'organisation",
+      "date": "2025-12-21",
+      "description": "Impôts et Taxes",
+      "eventId": "hijefdy",
+      "hourlyRate": 11.65,
+      "id": "aixgj7m",
+      "isBenevolat": false,
+      "status": "REALIZED",
+      "type": "DEPENSE"
+    },
+    {
+      "amount": 466.48,
+      "budgetLineId": "3on0xze",
+      "category": "Restauration",
+      "date": "2025-12-21",
+      "description": "Ravito",
+      "eventId": "hijefdy",
+      "hourlyRate": 11.65,
+      "id": "naaena7",
+      "isBenevolat": false,
+      "status": "REALIZED",
+      "type": "DEPENSE"
+    },
+    {
+      "amount": 800,
+      "budgetLineId": "3on0xze",
+      "category": "Restauration",
+      "date": "2025-12-21",
+      "description": "Repas bénévoles",
+      "eventId": "hijefdy",
+      "hourlyRate": 11.65,
+      "id": "xotm6g0",
+      "isBenevolat": false,
+      "status": "REALIZED",
+      "type": "DEPENSE"
+    },
+    {
+      "amount": 105,
+      "budgetLineId": "3on0xze",
+      "category": "Restauration",
+      "date": "2025-12-21",
+      "description": "pizza",
+      "eventId": "hijefdy",
+      "hourlyRate": 11.65,
+      "id": "1pxayrd",
+      "isBenevolat": false,
+      "status": "REALIZED",
+      "type": "DEPENSE"
+    },
+    {
+      "amount": 105,
+      "budgetLineId": "exp6",
+      "category": "Frais d'organisation",
+      "date": "2025-12-21",
+      "description": "FFA CD22",
+      "eventId": "hijefdy",
+      "hourlyRate": 11.65,
+      "id": "21afisg",
+      "isBenevolat": false,
+      "status": "REALIZED",
+      "type": "DEPENSE"
+    },
+    {
+      "amount": 450,
+      "budgetLineId": "sd16e8a",
+      "category": "Frais d'organisation",
+      "date": "2025-12-21",
+      "description": "Sécurité Protection civile",
+      "eventId": "hijefdy",
+      "hourlyRate": 11.65,
+      "id": "gct0yq3",
+      "isBenevolat": false,
+      "status": "REALIZED",
+      "type": "DEPENSE"
+    },
+    {
+      "amount": 627,
+      "budgetLineId": "sd16e8a",
+      "category": "Frais d'organisation",
+      "date": "2026-06-07",
+      "description": "Protection civile",
+      "hourlyRate": 11.65,
+      "id": "qyhj7h2",
+      "isBenevolat": false,
+      "status": "PENDING",
+      "type": "DEPENSE"
+    },
+    {
+      "amount": 36,
+      "budgetLineId": "pgeto1t",
+      "category": "Frais d'organisation",
+      "date": "2026-06-07",
+      "description": "Frais Mensuel CA (3€/mois)",
+      "hourlyRate": 11.65,
+      "id": "ll4t0rw",
+      "isBenevolat": false,
+      "status": "PENDING",
+      "type": "DEPENSE"
+    },
+    {
+      "amount": 134.68,
+      "budgetLineId": "xar29dr",
+      "category": "Frais d'organisation",
+      "date": "2026-06-07",
+      "description": "Assurances MAIF 2026",
+      "hourlyRate": 11.65,
+      "id": "6uto63f",
+      "isBenevolat": false,
+      "status": "REALIZED",
+      "type": "DEPENSE"
+    },
+    {
+      "amount": 150,
+      "budgetLineId": "7w2wvck",
+      "category": "Partenaires privés",
+      "date": "2025-09-01",
+      "description": "Partenaire : Aeronet",
+      "id": "7yid1ul",
+      "status": "REALIZED",
+      "type": "RECETTE"
+    },
+    {
+      "amount": 100,
+      "budgetLineId": "7w2wvck",
+      "category": "Partenaires privés",
+      "date": "2025-09-01",
+      "description": "Partenaire : Combustible D'arvor",
+      "id": "foxk3lh",
+      "status": "REALIZED",
+      "type": "RECETTE"
+    },
+    {
+      "amount": 50,
+      "budgetLineId": "7w2wvck",
+      "category": "Partenaires privés",
+      "date": "2025-09-01",
+      "description": "Partenaire : Calipage",
+      "id": "cvxvgqz",
+      "status": "REALIZED",
+      "type": "RECETTE"
+    },
+    {
+      "amount": 100,
+      "budgetLineId": "7w2wvck",
+      "category": "Partenaires privés",
+      "date": "2025-08-02",
+      "description": "Partenaire : Crédit Agricole",
+      "id": "irg7d8n",
+      "status": "REALIZED",
+      "type": "RECETTE"
+    },
+    {
+      "amount": 50,
+      "budgetLineId": "7w2wvck",
+      "category": "Partenaires privés",
+      "date": "2025-09-01",
+      "description": "Partenaire : autosur carhaix",
+      "id": "2fj3j4n",
+      "status": "REALIZED",
+      "type": "RECETTE"
+    },
+    {
+      "amount": 50,
+      "budgetLineId": "7w2wvck",
+      "category": "Partenaires privés",
+      "date": "2025-09-01",
+      "description": "Partenaire : Ovotrade",
+      "id": "6nkgj48",
+      "status": "REALIZED",
+      "type": "RECETTE"
+    },
+    {
+      "amount": 100,
+      "budgetLineId": "7w2wvck",
+      "category": "Partenaires privés",
+      "date": "2025-09-01",
+      "description": "Partenaire : Collectif des lunetiers",
+      "id": "ukxat9q",
+      "status": "REALIZED",
+      "type": "RECETTE"
+    },
+    {
+      "amount": 100,
+      "budgetLineId": "7w2wvck",
+      "category": "Partenaires privés",
+      "date": "2025-09-01",
+      "description": "Partenaire : Weldom",
+      "id": "5hek1yz",
+      "status": "REALIZED",
+      "type": "RECETTE"
+    },
+    {
+      "amount": 150,
+      "budgetLineId": "7w2wvck",
+      "category": "Partenaires privés",
+      "date": "2025-09-01",
+      "description": "Partenaire : Charlotte Coiffure",
+      "id": "r1hhnpt",
+      "status": "REALIZED",
+      "type": "RECETTE"
+    },
+    {
+      "amount": 150,
+      "budgetLineId": "7w2wvck",
+      "category": "Partenaires privés",
+      "date": "2025-09-01",
+      "description": "Partenaire : ABC",
+      "id": "kzyymld",
+      "status": "REALIZED",
+      "type": "RECETTE"
+    },
+    {
+      "amount": 100,
+      "budgetLineId": "7w2wvck",
+      "category": "Partenaires privés",
+      "date": "2025-09-01",
+      "description": "Partenaire : Garage Corvest",
+      "id": "gkxfo7g",
+      "status": "REALIZED",
+      "type": "RECETTE"
+    },
+    {
+      "amount": 500,
+      "budgetLineId": "7w2wvck",
+      "category": "Partenaires privés",
+      "date": "2025-09-01",
+      "description": "Partenaire : miloco",
+      "id": "b481c6e",
+      "status": "REALIZED",
+      "type": "RECETTE"
+    },
+    {
+      "amount": 300,
+      "budgetLineId": "7w2wvck",
+      "category": "Partenaires privés",
+      "date": "2025-11-01",
+      "description": "Partenaire : CKB",
+      "id": "fzsy0er",
+      "status": "REALIZED",
+      "type": "RECETTE"
+    },
+    {
+      "amount": 150,
+      "budgetLineId": "afjl2dx",
+      "category": "Information-Communication-Animation",
+      "date": "2026-06-07",
+      "description": "Randonnée nature avec Jean Luc Le Jeanne",
+      "eventId": "039wqf7",
+      "hourlyRate": 11.65,
+      "id": "cs443a4",
+      "isBenevolat": false,
+      "status": "PENDING",
+      "type": "DEPENSE"
+    },
+    {
+      "amount": 100,
+      "budgetLineId": "exp6",
+      "category": "Frais d'organisation",
+      "date": "2026-03-10",
+      "description": "Inscription Calendrier FFtri",
+      "eventId": "039wqf7",
+      "hourlyRate": 11.65,
+      "id": "hkv8xl9",
+      "isBenevolat": false,
+      "status": "REALIZED",
+      "type": "DEPENSE"
+    },
+    {
+      "amount": 150,
+      "budgetLineId": "7w2wvck",
+      "category": "Partenaires privés",
+      "date": "2026-03-13",
+      "description": "Partenaire : Charlotte Coiffure",
+      "id": "wa9wcjl",
+      "status": "REALIZED",
+      "type": "RECETTE"
+    },
+    {
+      "amount": 150,
+      "budgetLineId": "7w2wvck",
+      "category": "Partenaires privés",
+      "date": "2026-03-15",
+      "description": "Partenaire : ABC",
+      "id": "uixkk58",
+      "status": "REALIZED",
+      "type": "RECETTE"
+    },
+    {
+      "amount": 398,
+      "budgetLineId": "exp3",
+      "category": "Logistique",
+      "date": "2026-04-03",
+      "description": "achat enceinte JBL 320",
+      "eventId": "039wqf7",
+      "hourlyRate": 11.65,
+      "id": "lgwpiyx",
+      "isBenevolat": false,
+      "status": "REALIZED",
+      "type": "DEPENSE"
+    },
+    {
+      "amount": 100,
+      "budgetLineId": "7w2wvck",
+      "category": "Partenaires privés",
+      "date": "2026-04-09",
+      "description": "Partenaire : Combustible D'arvor",
+      "id": "rins781",
+      "status": "REALIZED",
+      "type": "RECETTE"
+    },
+    {
+      "amount": 150,
+      "budgetLineId": "7w2wvck",
+      "category": "Partenaires privés",
+      "date": "2026-04-10",
+      "description": "Partenaire : Aeronet",
+      "id": "8ox16os",
+      "status": "REALIZED",
+      "type": "RECETTE"
+    },
+    {
+      "amount": 50,
+      "budgetLineId": "7w2wvck",
+      "category": "Partenaires privés",
+      "date": "2026-04-17",
+      "description": "Partenaire : Ovotrade",
+      "id": "tv47gq7",
+      "status": "REALIZED",
+      "type": "RECETTE"
+    },
+    {
+      "amount": 100,
+      "budgetLineId": "7w2wvck",
+      "category": "Partenaires privés",
+      "date": "2026-04-10",
+      "description": "Partenaire : Garage Corvest",
+      "id": "uxnrxr4",
+      "status": "REALIZED",
+      "type": "RECETTE"
+    },
+    {
+      "amount": 500,
+      "budgetLineId": "7w2wvck",
+      "category": "Partenaires privés",
+      "date": "2026-04-10",
+      "description": "Partenaire : miloco",
+      "id": "31nceyd",
+      "status": "REALIZED",
+      "type": "RECETTE"
+    },
+    {
+      "amount": 50,
+      "budgetLineId": "7w2wvck",
+      "category": "Partenaires privés",
+      "date": "2026-05-05",
+      "description": "Partenaire : Les Ramoneurs du Kreiz Breizh",
+      "id": "mmit94b",
+      "status": "REALIZED",
+      "type": "RECETTE"
+    },
+    {
+      "amount": 100,
+      "budgetLineId": "7w2wvck",
+      "category": "Partenaires privés",
+      "date": "2026-06-01",
+      "description": "Partenaire : Weldom",
+      "id": "ky8v585",
+      "status": "REALIZED",
+      "type": "RECETTE"
+    },
+    {
+      "amount": 400,
+      "budgetLineId": "7w2wvck",
+      "category": "Partenaires privés",
+      "date": "2026-04-10",
+      "description": "Partenaire : Crédit Agricole",
+      "id": "iil6q34",
+      "status": "REALIZED",
+      "type": "RECETTE"
+    },
+    {
+      "amount": 0.41,
+      "budgetLineId": "wkbjkbd",
+      "category": "Divers",
+      "date": "2026-06-01",
+      "description": "Parts sociales CA",
+      "hourlyRate": 11.65,
+      "id": "92vhqd3",
+      "isBenevolat": false,
+      "status": "REALIZED",
+      "type": "RECETTE"
+    }
+  ],
+  "provisional": [],
+  "contributions": [
+    {
+      "beneficiary": "Conseil départemental",
+      "description": "Prêt de kayak",
+      "id": "gdtor3v",
+      "quantity": 120,
+      "unitValue": 20
+    },
+    {
+      "beneficiary": "Kévin PEURON",
+      "description": "Prêt de tracteur",
+      "id": "emk5e67",
+      "quantity": 8,
+      "unitValue": 40
+    },
+    {
+      "beneficiary": "Gaec de Kerangall",
+      "description": "Groupe électrogène",
+      "id": "1auties",
+      "quantity": 6,
+      "unitValue": 70
+    },
+    {
+      "beneficiary": "Mickaël Réminiac",
+      "description": "Intervention électricien",
+      "id": "thkargy",
+      "quantity": 1,
+      "unitValue": 60
+    },
+    {
+      "beneficiary": "Bénévoles",
+      "description": "Bénévolat",
+      "id": "k87alz9",
+      "quantity": 2020,
+      "unitValue": 12.02
+    },
+    {
+      "beneficiary": "UNSS 22",
+      "description": "Doigts électroniques",
+      "id": "fvzn7u8",
+      "quantity": 1,
+      "unitValue": 400
+    },
+    {
+      "beneficiary": "Commune de Glomel",
+      "description": "Base nautique",
+      "id": "821lveu",
+      "quantity": 1,
+      "unitValue": 250
+    },
+    {
+      "beneficiary": "Kévin PEURON",
+      "description": "Chronométrage du trail des lucioles",
+      "id": "yew63gv",
+      "quantity": 1,
+      "unitValue": 500
+    },
+    {
+      "beneficiary": "Intermarché",
+      "description": "Fourniture",
+      "id": "esjb6uw",
+      "quantity": 1,
+      "unitValue": 300
+    }
+  ],
+  "sponsors": [
+    {
+      "amountPaid": 300,
+      "amountPromised": 300,
+      "budgetLineId": "7w2wvck",
+      "contact": "Marianne Hellouvry",
+      "datePaid": "2025-12-01",
+      "dateReminder": "",
+      "dateSent": "",
+      "email": "bureau@constructions-kreiz-breizh.fr",
+      "id": "u6qh20p",
+      "name": "CKB",
+      "notes": "Envoyer un dossier",
+      "phone": "07 88 89 47 70",
+      "status": "Accepté",
+      "transactionId": "kuu0b0d",
+      "yearlyData": {
+        "2025": {
+          "amountPaid": 300,
+          "amountPromised": 300,
+          "budgetLineId": "7w2wvck",
+          "datePaid": "2025-11-01",
+          "dateReminder": "",
+          "dateSent": "",
+          "notes": "",
+          "status": "Accepté",
+          "transactionId": "fzsy0er"
+        },
+        "2026": {
+          "amountPaid": 0,
+          "amountPromised": 300,
+          "budgetLineId": "7w2wvck",
+          "datePaid": "",
+          "dateReminder": "",
+          "dateSent": "",
+          "notes": "chèque à récupérer jeudi prochain 17h",
+          "status": "Accepté",
+          "transactionId": ""
+        }
+      }
+    },
+    {
+      "amountPaid": 0,
+      "amountPromised": 50,
+      "contact": "",
+      "datePaid": "",
+      "dateReminder": "",
+      "dateSent": "",
+      "email": "info@propvapo.fr",
+      "id": "qfesoa5",
+      "name": "Prop'Vapo",
+      "notes": "1 année sur 2",
+      "phone": "0683420873",
+      "status": "Refusé",
+      "yearlyData": {
+        "2025": {
+          "amountPaid": 50,
+          "amountPromised": 0,
+          "budgetLineId": "7w2wvck",
+          "datePaid": "2025-11-01",
+          "dateReminder": "",
+          "dateSent": "",
+          "notes": "",
+          "status": "Accepté",
+          "transactionId": "ct172qo"
+        },
+        "2026": {
+          "amountPaid": 0,
+          "amountPromised": 0,
+          "budgetLineId": "7w2wvck",
+          "datePaid": "",
+          "dateReminder": "",
+          "dateSent": "",
+          "notes": "",
+          "status": "Refusé",
+          "transactionId": ""
+        }
+      }
+    },
+    {
+      "amountPaid": 150,
+      "amountPromised": 150,
+      "contact": "Robin Coatmellec",
+      "datePaid": "",
+      "dateReminder": "",
+      "dateSent": "",
+      "email": "robin.coatmellec@aero-net.com",
+      "id": "2nn82r1",
+      "name": "Aeronet",
+      "notes": "",
+      "phone": "+33 (0) 2 96 57 44 44",
+      "status": "Accepté",
+      "yearlyData": {
+        "2025": {
+          "amountPaid": 150,
+          "amountPromised": 0,
+          "budgetLineId": "7w2wvck",
+          "datePaid": "2025-09-01",
+          "dateReminder": "",
+          "dateSent": "",
+          "notes": "",
+          "status": "Accepté",
+          "transactionId": "7yid1ul"
+        },
+        "2026": {
+          "amountPaid": 150,
+          "amountPromised": 150,
+          "budgetLineId": "7w2wvck",
+          "datePaid": "2026-04-10",
+          "dateReminder": "",
+          "dateSent": "",
+          "notes": "demain 10h30?",
+          "status": "Accepté",
+          "transactionId": "8ox16os"
+        }
+      }
+    },
+    {
+      "amountPaid": 100,
+      "amountPromised": 100,
+      "contact": "Michel AUFFRET",
+      "datePaid": "",
+      "dateReminder": "",
+      "dateSent": "",
+      "email": "combustiblesdarvor@wanadoo.fr",
+      "id": "eedyjjz",
+      "name": "Combustible D'arvor",
+      "notes": "Envoyer un dossier",
+      "phone": "0296290020",
+      "status": "Accepté",
+      "yearlyData": {
+        "2025": {
+          "amountPaid": 100,
+          "amountPromised": 0,
+          "budgetLineId": "7w2wvck",
+          "datePaid": "2025-09-01",
+          "dateReminder": "",
+          "dateSent": "",
+          "notes": "",
+          "status": "Accepté",
+          "transactionId": "foxk3lh"
+        },
+        "2026": {
+          "amountPaid": 100,
+          "amountPromised": 100,
+          "budgetLineId": "7w2wvck",
+          "datePaid": "2026-04-09",
+          "dateReminder": "",
+          "dateSent": "",
+          "notes": "",
+          "status": "Accepté",
+          "transactionId": "rins781"
+        }
+      }
+    },
+    {
+      "amountPaid": 0,
+      "amountPromised": 50,
+      "contact": "",
+      "datePaid": "",
+      "dateReminder": "",
+      "dateSent": "",
+      "email": "magasin@bm-calipage.fr",
+      "id": "sbjl9ox",
+      "name": "Calipage",
+      "notes": "",
+      "phone": "0298930410",
+      "status": "En attente",
+      "yearlyData": {
+        "2025": {
+          "amountPaid": 50,
+          "amountPromised": 0,
+          "budgetLineId": "7w2wvck",
+          "datePaid": "2025-09-01",
+          "dateReminder": "",
+          "dateSent": "",
+          "notes": "",
+          "status": "Accepté",
+          "transactionId": "cvxvgqz"
+        },
+        "2026": {
+          "amountPaid": 0,
+          "amountPromised": 50,
+          "budgetLineId": "",
+          "datePaid": "",
+          "dateReminder": "",
+          "dateSent": "",
+          "notes": "",
+          "status": "Accepté",
+          "transactionId": ""
+        }
+      }
+    },
+    {
+      "amountPaid": 0,
+      "amountPromised": 100,
+      "contact": "Malo Dornemin",
+      "datePaid": "",
+      "dateReminder": "",
+      "dateSent": "",
+      "email": "malo.dornemin@ca-cotesdarmor.fr",
+      "id": "uxm3wpa",
+      "name": "Crédit Agricole",
+      "notes": "",
+      "phone": "0296578054",
+      "status": "En attente",
+      "yearlyData": {
+        "2025": {
+          "amountPaid": 100,
+          "amountPromised": 0,
+          "budgetLineId": "7w2wvck",
+          "datePaid": "2025-08-02",
+          "dateReminder": "",
+          "dateSent": "",
+          "notes": "",
+          "status": "Accepté",
+          "transactionId": "irg7d8n"
+        },
+        "2026": {
+          "amountPaid": 400,
+          "amountPromised": 400,
+          "budgetLineId": "7w2wvck",
+          "datePaid": "2026-04-10",
+          "dateReminder": "",
+          "dateSent": "",
+          "notes": "vainqueur des trophées de la vie locale (300€)",
+          "status": "Accepté",
+          "transactionId": "iil6q34"
+        }
+      }
+    },
+    {
+      "amountPaid": 0,
+      "amountPromised": 50,
+      "contact": "Anthony",
+      "datePaid": "",
+      "dateReminder": "",
+      "dateSent": "",
+      "email": "contact@cplp.fr",
+      "id": "9mfhjhz",
+      "name": "autosur carhaix",
+      "notes": "",
+      "phone": "0298990606 / 0678314619",
+      "status": "En attente",
+      "yearlyData": {
+        "2025": {
+          "amountPaid": 50,
+          "amountPromised": 0,
+          "budgetLineId": "7w2wvck",
+          "datePaid": "2025-09-01",
+          "dateReminder": "",
+          "dateSent": "",
+          "notes": "",
+          "status": "Accepté",
+          "transactionId": "2fj3j4n"
+        },
+        "2026": {
+          "amountPaid": 0,
+          "amountPromised": 50,
+          "budgetLineId": "",
+          "datePaid": "",
+          "dateReminder": "",
+          "dateSent": "",
+          "notes": "",
+          "status": "Accepté",
+          "transactionId": ""
+        }
+      }
+    },
+    {
+      "amountPaid": 50,
+      "amountPromised": 50,
+      "contact": "adeline Gueltas",
+      "datePaid": "",
+      "dateReminder": "",
+      "dateSent": "",
+      "email": "adeline.gueltas@ovotrade.com",
+      "id": "91gnctw",
+      "name": "Ovotrade",
+      "notes": "",
+      "phone": "",
+      "status": "Accepté",
+      "yearlyData": {
+        "2025": {
+          "amountPaid": 50,
+          "amountPromised": 0,
+          "budgetLineId": "7w2wvck",
+          "datePaid": "2025-09-01",
+          "dateReminder": "",
+          "dateSent": "",
+          "notes": "",
+          "status": "Accepté",
+          "transactionId": "6nkgj48"
+        },
+        "2026": {
+          "amountPaid": 50,
+          "amountPromised": 50,
+          "budgetLineId": "7w2wvck",
+          "datePaid": "2026-04-17",
+          "dateReminder": "",
+          "dateSent": "",
+          "notes": "message envoyé à Adeline",
+          "status": "Accepté",
+          "transactionId": "tv47gq7"
+        }
+      }
+    },
+    {
+      "amountPaid": 0,
+      "amountPromised": 100,
+      "contact": "",
+      "datePaid": "",
+      "dateReminder": "",
+      "dateSent": "",
+      "email": "carhaix@leslunetiers.fr",
+      "id": "w11br6e",
+      "name": "Collectif des lunetiers",
+      "notes": "Envoyer un dossier",
+      "phone": "",
+      "status": "Accepté",
+      "yearlyData": {
+        "2025": {
+          "amountPaid": 100,
+          "amountPromised": 0,
+          "budgetLineId": "7w2wvck",
+          "datePaid": "2025-09-01",
+          "dateReminder": "",
+          "dateSent": "",
+          "notes": "",
+          "status": "Accepté",
+          "transactionId": "ukxat9q"
+        },
+        "2026": {
+          "amountPaid": 0,
+          "amountPromised": 100,
+          "budgetLineId": "",
+          "datePaid": "",
+          "dateReminder": "",
+          "dateSent": "",
+          "notes": "rappeler demain",
+          "status": "Accepté",
+          "transactionId": ""
+        }
+      }
+    },
+    {
+      "amountPaid": 0,
+      "amountPromised": 100,
+      "contact": "Konan Le Coz",
+      "datePaid": "",
+      "dateReminder": "",
+      "dateSent": "",
+      "email": "konan.lecoz@weldom.fr",
+      "id": "gt6x0v5",
+      "name": "Weldom",
+      "notes": "",
+      "phone": "",
+      "status": "En attente",
+      "yearlyData": {
+        "2025": {
+          "amountPaid": 100,
+          "amountPromised": 0,
+          "budgetLineId": "7w2wvck",
+          "datePaid": "2025-09-01",
+          "dateReminder": "",
+          "dateSent": "",
+          "notes": "",
+          "status": "Accepté",
+          "transactionId": "5hek1yz"
+        },
+        "2026": {
+          "amountPaid": 100,
+          "amountPromised": 100,
+          "budgetLineId": "7w2wvck",
+          "datePaid": "2026-06-01",
+          "dateReminder": "",
+          "dateSent": "",
+          "notes": "",
+          "status": "Accepté",
+          "transactionId": "ky8v585"
+        }
+      }
+    },
+    {
+      "amountPaid": 0,
+      "amountPromised": 58,
+      "contact": "",
+      "datePaid": "",
+      "dateReminder": "",
+      "dateSent": "",
+      "email": "",
+      "id": "8yerytb",
+      "name": "Gamm Vert",
+      "notes": "",
+      "phone": "",
+      "status": "En attente",
+      "yearlyData": {
+        "2025": {
+          "amountPaid": 0,
+          "amountPromised": 0,
+          "budgetLineId": "",
+          "datePaid": "",
+          "dateReminder": "",
+          "dateSent": "",
+          "notes": "58€ en don",
+          "status": "Accepté",
+          "transactionId": ""
+        }
+      }
+    },
+    {
+      "amountPaid": 0,
+      "amountPromised": 150,
+      "contact": "Charlotte ",
+      "datePaid": "",
+      "dateReminder": "",
+      "dateSent": "",
+      "email": "charlottecoiffure@orange.fr",
+      "id": "owcfbx2",
+      "name": "Charlotte Coiffure",
+      "notes": "",
+      "phone": "0298811103",
+      "status": "En attente",
+      "yearlyData": {
+        "2025": {
+          "amountPaid": 150,
+          "amountPromised": 0,
+          "budgetLineId": "7w2wvck",
+          "datePaid": "2025-09-01",
+          "dateReminder": "",
+          "dateSent": "",
+          "notes": "",
+          "status": "Accepté",
+          "transactionId": "r1hhnpt"
+        },
+        "2026": {
+          "amountPaid": 150,
+          "amountPromised": 150,
+          "budgetLineId": "7w2wvck",
+          "datePaid": "2026-03-13",
+          "dateReminder": "2026-03-02",
+          "dateSent": "",
+          "notes": "rappeler mardi",
+          "status": "Accepté",
+          "transactionId": "wa9wcjl"
+        }
+      }
+    },
+    {
+      "amountPaid": 0,
+      "amountPromised": 2636,
+      "contact": "William",
+      "datePaid": "",
+      "dateReminder": "",
+      "dateSent": "",
+      "email": "glomel@proxi.bzh",
+      "id": "6iwh0ht",
+      "name": "Proxi",
+      "notes": "",
+      "phone": "",
+      "status": "En attente",
+      "yearlyData": {
+        "2025": {
+          "amountPaid": 0,
+          "amountPromised": 0,
+          "budgetLineId": "",
+          "datePaid": "",
+          "dateReminder": "",
+          "dateSent": "",
+          "notes": "2636€ en nature (financement, etc)",
+          "status": "Accepté",
+          "transactionId": ""
+        },
+        "2026": {
+          "amountPaid": 0,
+          "amountPromised": 0,
+          "budgetLineId": "",
+          "datePaid": "",
+          "dateReminder": "",
+          "dateSent": "",
+          "notes": "",
+          "status": "Refusé",
+          "transactionId": ""
+        }
+      }
+    },
+    {
+      "amountPaid": 0,
+      "amountPromised": 150,
+      "contact": "Mathieu, Yoann",
+      "datePaid": "",
+      "dateReminder": "",
+      "dateSent": "",
+      "email": "contact@abc.bzh",
+      "id": "rrtf8a2",
+      "name": "ABC",
+      "notes": "",
+      "phone": "0298930419",
+      "status": "En attente",
+      "yearlyData": {
+        "2025": {
+          "amountPaid": 150,
+          "amountPromised": 150,
+          "budgetLineId": "7w2wvck",
+          "datePaid": "2025-09-01",
+          "dateReminder": "",
+          "dateSent": "",
+          "notes": "",
+          "status": "Accepté",
+          "transactionId": "kzyymld"
+        },
+        "2026": {
+          "amountPaid": 150,
+          "amountPromised": 150,
+          "budgetLineId": "7w2wvck",
+          "datePaid": "2026-03-15",
+          "dateReminder": "2026-03-17",
+          "dateSent": "",
+          "notes": "mail envoyé",
+          "status": "Accepté",
+          "transactionId": "uixkk58"
+        }
+      }
+    },
+    {
+      "contact": "0296296166",
+      "email": "garagecorvest22@orange.fr",
+      "id": "7sjm7or",
+      "name": "Garage Corvest",
+      "notes": "",
+      "phone": "",
+      "yearlyData": {
+        "2025": {
+          "amountPaid": 100,
+          "amountPromised": 0,
+          "budgetLineId": "7w2wvck",
+          "datePaid": "2025-09-01",
+          "dateReminder": "",
+          "dateSent": "",
+          "notes": "",
+          "status": "Accepté",
+          "transactionId": "gkxfo7g"
+        },
+        "2026": {
+          "amountPaid": 100,
+          "amountPromised": 100,
+          "budgetLineId": "7w2wvck",
+          "datePaid": "2026-04-10",
+          "dateReminder": "",
+          "dateSent": "2026-03-10",
+          "notes": "Rib et reçu envoyé, en attente du virement",
+          "status": "Accepté",
+          "transactionId": "uxnrxr4"
+        }
+      }
+    },
+    {
+      "contact": "",
+      "email": "info-miloco@milocogroup.com",
+      "id": "68lohnv",
+      "name": "miloco",
+      "notes": "",
+      "phone": "02 96 57 70 70",
+      "yearlyData": {
+        "2025": {
+          "amountPaid": 500,
+          "amountPromised": 0,
+          "budgetLineId": "7w2wvck",
+          "datePaid": "2025-09-01",
+          "dateReminder": "",
+          "dateSent": "",
+          "notes": "",
+          "status": "Accepté",
+          "transactionId": "b481c6e"
+        },
+        "2026": {
+          "amountPaid": 500,
+          "amountPromised": 500,
+          "budgetLineId": "7w2wvck",
+          "datePaid": "2026-04-10",
+          "dateReminder": "2026-03-17",
+          "dateSent": "2026-03-10",
+          "notes": "passer demain à 11h",
+          "status": "Accepté",
+          "transactionId": "31nceyd"
+        }
+      }
+    },
+    {
+      "contact": "Christophe Jégou",
+      "email": "ramoneurdukb@gmail.com",
+      "id": "ba1cr3z",
+      "name": "Les Ramoneurs du Kreiz Breizh",
+      "notes": "",
+      "phone": "07 70 28 71 74",
+      "yearlyData": {
+        "2026": {
+          "amountPaid": 50,
+          "amountPromised": 50,
+          "budgetLineId": "7w2wvck",
+          "datePaid": "2026-05-05",
+          "notes": "chèque remis à Barbara qui le dépose en mairie",
+          "status": "Accepté",
+          "transactionId": "mmit94b"
+        }
+      }
+    }
+  ],
+  "contacts": [
+    {
+      "email": "Pierre.LEMEUR@cotesdarmor.fr",
+      "id": "xecmm9e",
+      "name": "Pierre Le MEUR",
+      "notes": "",
+      "organization": "Conseil départemental 22",
+      "phone": "0608879400",
+      "role": "Chauffeur Bateau"
+    },
+    {
+      "email": "",
+      "id": "0vjus4t",
+      "name": "Bernard Trubuilt",
+      "notes": "",
+      "organization": "Maire de Glomel",
+      "phone": "0688151454",
+      "role": "Maire"
+    },
+    {
+      "email": "",
+      "id": "3ae4wee",
+      "name": "guillaume Le Coz",
+      "notes": "",
+      "organization": "CCKB et département",
+      "phone": "0669594672",
+      "role": "Gestion du canal"
+    },
+    {
+      "email": "",
+      "id": "g9op94o",
+      "name": "site de la fédération de triathlon",
+      "notes": "login : ORGA01979\nmdp: Créharer2026",
+      "organization": "https://espacetri.fftri.com/users/user/login",
+      "phone": "",
+      "role": ""
+    }
+  ],
+  "volunteers": [],
+  "budget": [
+    {
+      "amountN": 0,
+      "amountNMinus1": 0,
+      "category": "Participation des délégations",
+      "id": "inc1",
+      "label": "Inscriptions",
+      "section": "RECETTE"
+    },
+    {
+      "amountN": 0,
+      "amountNMinus1": 0,
+      "category": "Participation des délégations",
+      "id": "inc2",
+      "label": "Hébergement & Restauration",
+      "section": "RECETTE"
+    },
+    {
+      "amountN": 0,
+      "amountNMinus1": 0,
+      "category": "Aides fédérales ",
+      "id": "inc3",
+      "label": "Fédération Internationale/Nationale",
+      "section": "RECETTE"
+    },
+    {
+      "amountN": 0,
+      "amountNMinus1": 0,
+      "category": "Aides fédérales ",
+      "id": "inc4",
+      "label": "Ligue régionale",
+      "section": "RECETTE"
+    },
+    {
+      "amountN": 0,
+      "amountNMinus1": 0,
+      "category": "Aides fédérales ",
+      "id": "inc5",
+      "label": "Comité départementale",
+      "section": "RECETTE"
+    },
+    {
+      "amountN": 0,
+      "amountNMinus1": 0,
+      "category": "Collectivités Territoriales",
+      "id": "inc6",
+      "label": "Conseil Régional",
+      "section": "RECETTE"
+    },
+    {
+      "amountN": 0,
+      "amountNMinus1": 0,
+      "category": "Collectivités Territoriales",
+      "id": "inc7",
+      "label": "Département des côtes d'armor",
+      "section": "RECETTE"
+    },
+    {
+      "amountN": 0,
+      "amountNMinus1": 0,
+      "category": "Autres Partenaires Publics",
+      "id": "inc8",
+      "label": "Etat (Minitère)",
+      "section": "RECETTE"
+    },
+    {
+      "amountN": 0,
+      "amountNMinus1": 0,
+      "category": "Autres Partenaires Publics",
+      "id": "inc9",
+      "label": "Agence Nationale du Sport (ANS)",
+      "section": "RECETTE"
+    },
+    {
+      "amountN": 0,
+      "amountNMinus1": 0,
+      "category": "Logistique",
+      "id": "exp1",
+      "label": "Location Site",
+      "section": "DEPENSE"
+    },
+    {
+      "amountN": 0,
+      "amountNMinus1": 0,
+      "category": "Logistique",
+      "id": "exp2",
+      "label": "Installation/Améngaement/Entretien",
+      "section": "DEPENSE"
+    },
+    {
+      "amountN": 0,
+      "amountNMinus1": 0,
+      "category": "Logistique",
+      "id": "exp3",
+      "label": "Achat/location matériel (podium, barrière, etc)",
+      "section": "DEPENSE"
+    },
+    {
+      "amountN": 0,
+      "amountNMinus1": 0,
+      "category": "Matériel Sportif",
+      "id": "exp4",
+      "label": "Transport de Matériel",
+      "section": "DEPENSE"
+    },
+    {
+      "amountN": 0,
+      "amountNMinus1": 0,
+      "category": "Matériel Sportif",
+      "id": "exp5",
+      "label": "Location/Achat",
+      "section": "DEPENSE"
+    },
+    {
+      "amountN": 0,
+      "amountNMinus1": 0,
+      "category": "Frais d'organisation",
+      "id": "exp6",
+      "label": "Droits d'inscription fédéraux",
+      "section": "DEPENSE"
+    },
+    {
+      "amountN": 0,
+      "amountNMinus1": 0,
+      "category": "Frais d'organisation",
+      "id": "exp7",
+      "label": "Fournitures/Abonnements (Papiers, Dossards, Internet, Téléphone)",
+      "section": "DEPENSE"
+    },
+    {
+      "amountN": 0,
+      "amountNMinus1": 0,
+      "category": "Hébergement",
+      "id": "exp8",
+      "label": "Officiels, Arbitres, Organisation",
+      "section": "DEPENSE"
+    },
+    {
+      "amountN": 0,
+      "amountNMinus1": 0,
+      "category": "Hébergement",
+      "id": "exp9",
+      "label": "Equipes/Athlètes",
+      "section": "DEPENSE"
+    },
+    {
+      "amountN": 0,
+      "amountNMinus1": 0,
+      "category": "Bénévolat",
+      "id": "val1",
+      "label": "Heures Bénévoles",
+      "section": "VALORISATION"
+    },
+    {
+      "amountN": 0,
+      "amountNMinus1": 0,
+      "category": "Matériel",
+      "id": "val2",
+      "label": "Prêt de Véhicules/Matériel",
+      "section": "VALORISATION"
+    },
+    {
+      "amountN": 0,
+      "amountNMinus1": 0,
+      "category": "Locaux",
+      "id": "val3",
+      "label": "Mise à dispo Salles",
+      "section": "VALORISATION"
+    },
+    {
+      "amountN": 0,
+      "amountNMinus1": 0,
+      "category": "Participation des délégations",
+      "id": "6js1ydd",
+      "label": "Participations Restauration",
+      "section": "RECETTE"
+    },
+    {
+      "amountN": 0,
+      "amountNMinus1": 0,
+      "category": "Participation des délégations",
+      "id": "5nscz4o",
+      "label": "Autre",
+      "section": "RECETTE"
+    },
+    {
+      "amountN": 0,
+      "amountNMinus1": 0,
+      "category": "Logistique",
+      "id": "qkr2ctn",
+      "label": "Autres",
+      "section": "DEPENSE"
+    },
+    {
+      "amountN": 0,
+      "amountNMinus1": 0,
+      "category": "Matériel Sportif",
+      "id": "dvtsplh",
+      "label": "Autres",
+      "section": "DEPENSE"
+    },
+    {
+      "amountN": 0,
+      "amountNMinus1": 0,
+      "category": "Frais d'organisation",
+      "id": "sd16e8a",
+      "label": "Sécurité",
+      "section": "DEPENSE"
+    },
+    {
+      "amountN": 0,
+      "amountNMinus1": 0,
+      "category": "Frais d'organisation",
+      "id": "xar29dr",
+      "label": "Assurances",
+      "section": "DEPENSE"
+    },
+    {
+      "amountN": 0,
+      "amountNMinus1": 0,
+      "category": "Hébergement",
+      "id": "qt4waid",
+      "label": "Organisation/Bénévoles",
+      "section": "DEPENSE"
+    },
+    {
+      "amountN": 0,
+      "amountNMinus1": 0,
+      "category": "Restauration",
+      "id": "zugvsyt",
+      "label": "Officiel, Arbitres, VIP",
+      "section": "DEPENSE"
+    },
+    {
+      "amountN": 0,
+      "amountNMinus1": 0,
+      "category": "Restauration",
+      "id": "3on0xze",
+      "label": "Equipes/Athlètes",
+      "section": "DEPENSE"
+    },
+    {
+      "amountN": 0,
+      "amountNMinus1": 0,
+      "category": "Restauration",
+      "id": "6hawolo",
+      "label": "Orga, Bénévoles",
+      "section": "DEPENSE"
+    },
+    {
+      "amountN": 0,
+      "amountNMinus1": 0,
+      "category": "Transport",
+      "id": "3tqdj9e",
+      "label": "Navettes",
+      "section": "DEPENSE"
+    },
+    {
+      "amountN": 0,
+      "amountNMinus1": 0,
+      "category": "Transport",
+      "id": "zzmg9f3",
+      "label": "Déplacement Officiels/Arbitre",
+      "section": "DEPENSE"
+    },
+    {
+      "amountN": 0,
+      "amountNMinus1": 0,
+      "category": "Transport",
+      "id": "shcflhg",
+      "label": "Déplacement Equipes/Athlètes",
+      "section": "DEPENSE"
+    },
+    {
+      "amountN": 0,
+      "amountNMinus1": 0,
+      "category": "Transport",
+      "id": "qgtz5z0",
+      "label": "Déplacement Orga/bénévoles",
+      "section": "DEPENSE"
+    },
+    {
+      "amountN": 0,
+      "amountNMinus1": 0,
+      "category": "Transport",
+      "id": "ec93pnl",
+      "label": "Autres",
+      "section": "DEPENSE"
+    },
+    {
+      "amountN": 0,
+      "amountNMinus1": 0,
+      "category": "Ressources Humaines",
+      "id": "j8r31ht",
+      "label": "Arbitres",
+      "section": "DEPENSE"
+    },
+    {
+      "amountN": 0,
+      "amountNMinus1": 0,
+      "category": "Ressources Humaines",
+      "id": "rs4t1u8",
+      "label": "Speaker",
+      "section": "DEPENSE"
+    },
+    {
+      "amountN": 0,
+      "amountNMinus1": 0,
+      "category": "Ressources Humaines",
+      "id": "p3ta0rz",
+      "label": "Médecins Secouristes",
+      "section": "DEPENSE"
+    },
+    {
+      "amountN": 0,
+      "amountNMinus1": 0,
+      "category": "Ressources Humaines",
+      "id": "tam8qb1",
+      "label": "Gratification Associations",
+      "section": "DEPENSE"
+    },
+    {
+      "amountN": 0,
+      "amountNMinus1": 0,
+      "category": "Ressources Humaines",
+      "id": "i19q2w8",
+      "label": "Autres",
+      "section": "DEPENSE"
+    },
+    {
+      "amountN": 0,
+      "amountNMinus1": 0,
+      "category": "Information-Communication-Animation",
+      "id": "4y6pyxa",
+      "label": "Supports de communication (affiches, flyers, ...)",
+      "section": "DEPENSE"
+    },
+    {
+      "amountN": 0,
+      "amountNMinus1": 0,
+      "category": "Information-Communication-Animation",
+      "id": "vhw9sny",
+      "label": "Billeterie",
+      "section": "DEPENSE"
+    },
+    {
+      "amountN": 0,
+      "amountNMinus1": 0,
+      "category": "Information-Communication-Animation",
+      "id": "jag5hi8",
+      "label": "Signalétique",
+      "section": "DEPENSE"
+    },
+    {
+      "amountN": 0,
+      "amountNMinus1": 0,
+      "category": "Information-Communication-Animation",
+      "id": "afjl2dx",
+      "label": "Animations",
+      "section": "DEPENSE"
+    },
+    {
+      "amountN": 0,
+      "amountNMinus1": 0,
+      "category": "Information-Communication-Animation",
+      "id": "m6k0ulq",
+      "label": "Captation TV",
+      "section": "DEPENSE"
+    },
+    {
+      "amountN": 0,
+      "amountNMinus1": 0,
+      "category": "Information-Communication-Animation",
+      "id": "y91hhve",
+      "label": "Autres",
+      "section": "DEPENSE"
+    },
+    {
+      "amountN": 0,
+      "amountNMinus1": 0,
+      "category": "Récompenses",
+      "id": "xhk47d8",
+      "label": "Dotations",
+      "section": "DEPENSE"
+    },
+    {
+      "amountN": 0,
+      "amountNMinus1": 0,
+      "category": "Récompenses",
+      "id": "nxgfg75",
+      "label": "Médailles, goodies",
+      "section": "DEPENSE"
+    },
+    {
+      "amountN": 0,
+      "amountNMinus1": 0,
+      "category": "Récompenses",
+      "id": "449mvqu",
+      "label": "Autres",
+      "section": "DEPENSE"
+    },
+    {
+      "amountN": 0,
+      "amountNMinus1": 0,
+      "category": "Divers",
+      "id": "98ra1cw",
+      "label": "Autres",
+      "section": "DEPENSE"
+    },
+    {
+      "amountN": 0,
+      "amountNMinus1": 0,
+      "category": "Frais d'organisation",
+      "id": "pgeto1t",
+      "label": "Impôts et Taxes",
+      "section": "DEPENSE"
+    },
+    {
+      "amountN": 0,
+      "amountNMinus1": 0,
+      "category": "Frais d'organisation",
+      "id": "6adzah5",
+      "label": "Préservation de l'environnement",
+      "section": "DEPENSE"
+    },
+    {
+      "amountN": 0,
+      "amountNMinus1": 0,
+      "category": "Frais d'organisation",
+      "id": "zjximbk",
+      "label": "Autres",
+      "section": "DEPENSE"
+    },
+    {
+      "amountN": 0,
+      "amountNMinus1": 0,
+      "category": "Collectivités Territoriales",
+      "id": "686z1wu",
+      "label": "CCKB",
+      "section": "RECETTE"
+    },
+    {
+      "amountN": 0,
+      "amountNMinus1": 0,
+      "category": "Collectivités Territoriales",
+      "id": "f4v39mc",
+      "label": "Commune de Glomel",
+      "section": "RECETTE"
+    },
+    {
+      "amountN": 0,
+      "amountNMinus1": 0,
+      "category": "Collectivités Territoriales",
+      "id": "hzwit3t",
+      "label": "Autres",
+      "section": "RECETTE"
+    },
+    {
+      "amountN": 0,
+      "amountNMinus1": 0,
+      "category": "Autres Partenaires Publics",
+      "id": "3zkb8ud",
+      "label": "Autres",
+      "section": "RECETTE"
+    },
+    {
+      "amountN": 0,
+      "amountNMinus1": 0,
+      "category": "Partenaires privés",
+      "id": "7w2wvck",
+      "label": "Sponsors/Partenaires (hors contribution en nature)",
+      "section": "RECETTE"
+    },
+    {
+      "amountN": 0,
+      "amountNMinus1": 0,
+      "category": "Partenaires privés",
+      "id": "xu8jfv9",
+      "label": "Vente de prestations VIP",
+      "section": "RECETTE"
+    },
+    {
+      "amountN": 0,
+      "amountNMinus1": 0,
+      "category": "Partenaires privés",
+      "id": "aomf2mi",
+      "label": "Village Partenaires (Stands)",
+      "section": "RECETTE"
+    },
+    {
+      "amountN": 0,
+      "amountNMinus1": 0,
+      "category": "Partenaires privés",
+      "id": "xk20yse",
+      "label": "Autres",
+      "section": "RECETTE"
+    },
+    {
+      "amountN": 0,
+      "amountNMinus1": 0,
+      "category": "Public/Spectateurs",
+      "id": "qv4x2i2",
+      "label": "Billetterie",
+      "section": "RECETTE"
+    },
+    {
+      "amountN": 0,
+      "amountNMinus1": 0,
+      "category": "Public/Spectateurs",
+      "id": "8zz29w3",
+      "label": "Restauration/Buvette",
+      "section": "RECETTE"
+    },
+    {
+      "amountN": 0,
+      "amountNMinus1": 0,
+      "category": "Public/Spectateurs",
+      "id": "aw9r8f4",
+      "label": "Boutiques",
+      "section": "RECETTE"
+    },
+    {
+      "amountN": 0,
+      "amountNMinus1": 0,
+      "category": "Apports Propres",
+      "id": "041mlr0",
+      "label": "Financement Club",
+      "section": "RECETTE"
+    },
+    {
+      "amountN": 0,
+      "amountNMinus1": 0,
+      "category": "Apports Propres",
+      "id": "nm42n7d",
+      "label": "Organisation d'évènements (Tombolas, Kermesses, ...)",
+      "section": "RECETTE"
+    },
+    {
+      "amountN": 0,
+      "amountNMinus1": 0,
+      "category": "Divers",
+      "id": "wkbjkbd",
+      "label": "Divers",
+      "section": "RECETTE"
+    },
+    {
+      "amountN": 0,
+      "amountNMinus1": 0,
+      "category": "Restauration",
+      "id": "a0tqpz6",
+      "label": "Zone de vie",
+      "section": "DEPENSE"
+    }
+  ],
+  "budgetYear": 2026,
+  "initialBalance": 3437.64,
+  "categoriesRecette": [
+    "Participation des délégations",
+    "Aides publiques",
+    "Partenaires",
+    "Ventes"
+  ],
+  "categoriesDepense": [
+    "Logistique",
+    "Animation",
+    "Sécurité",
+    "Communication"
+  ],
+  "bankLines": [],
+  "lastPointedDate": "",
+  "archives": [],
+  "eventsList": [
+    {
+      "color": "#3B82F6",
+      "date": "2025-05-18",
+      "id": "039wqf7",
+      "name": "Rand'eau Vive"
+    },
+    {
+      "color": "#331dd7",
+      "date": "2025-12-13",
+      "id": "hijefdy",
+      "name": "Lucioles"
+    }
+  ]
+}

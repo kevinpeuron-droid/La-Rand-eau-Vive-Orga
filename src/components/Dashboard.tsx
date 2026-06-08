@@ -1,4 +1,5 @@
 import { useData } from '../contexts/DataContext';
+import { Link } from 'react-router-dom';
 
 export default function Dashboard() {
   const { volunteers, events } = useData();
@@ -163,9 +164,9 @@ export default function Dashboard() {
 
       {/* Liens discrets */}
       <div className="mt-16 flex justify-end gap-2 opacity-5 hover:opacity-100 transition-opacity duration-500">
-        <a href="https://budget-rv.vercel.app/" target="_blank" rel="noreferrer" title="Budget RV" className="grayscale hover:grayscale-0 transition-all cursor-pointer">
+        <Link to="/budget" title="Gestion du budget" className="grayscale hover:grayscale-0 transition-all cursor-pointer">
           <div className="w-8 h-8 flex items-center justify-center rounded-lg bg-black/40 border border-white/10 text-sm">🪙</div>
-        </a>
+        </Link>
         <a href="#" target="_blank" rel="noreferrer" title="Autre lien (à modifier)" className="grayscale hover:grayscale-0 transition-all cursor-pointer">
           <div className="w-8 h-8 flex items-center justify-center rounded-lg bg-black/40 border border-white/10 text-sm">🔗</div>
         </a>

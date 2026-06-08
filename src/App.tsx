@@ -10,6 +10,7 @@ import PublicVolunteerView from './components/PublicVolunteerView';
 
 import TodoListView from './components/TodoListView';
 import IdeasView from './components/IdeasView';
+import BudgetView from './components/BudgetView';
 
 function AdminLayout({ children }: { children: React.ReactNode }) {
   const [isAuthenticated, setIsAuthenticated] = useState(() => localStorage.getItem('admin_auth') === 'true');
@@ -149,6 +150,7 @@ export default function App() {
                 <Route path="/map" element={<MapView />} />
                 <Route path="/todos" element={<TodoListView />} />
                 <Route path="/ideas" element={<IdeasView />} />
+                <Route path="/budget" element={<BudgetView />} />
                 <Route path="*" element={<Navigate to="/" />} />
               </Routes>
             </AdminLayout>
