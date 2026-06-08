@@ -122,6 +122,24 @@ export default function BudgetView() {
     setIsAddingSponsor(false);
     setEditingSponsorId(null);
   };
+   const toDateInput = (val: string | undefined) => {
+      if (!val || val === 'Non envoyé') return '';
+      if (val.includes('/')) {
+         const [d, m, y] = val.split('/');
+         if (y && m && d) return `${y}-${m}-${d.padStart(2, '0')}`;
+      }
+      return val;
+   };
+
+   const fromDateInput = (val: string) => {
+      if (!val) return '';
+      if (val.includes('-')) {
+         const [y, m, d] = val.split('-');
+         if (y && m && d) return `${d}/${m}/${y}`;
+      }
+      return val;
+   };
+
   const saveSponsor = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!sponsorForm.name) return alert('Le nom est requis');
@@ -871,9 +889,35 @@ export default function BudgetView() {
                         <div><label className="block text-xs font-medium text-slate-400 mb-1">Montant Promis (€)</label><input type="number" step="0.01" value={sponsorForm.amountPromised || ''} onChange={e=>setSponsorForm({...sponsorForm, amountPromised: parseFloat(e.target.value)})} className="w-full bg-black/40 border border-amber-500/30 rounded-xl p-3 text-white outline-none focus:border-amber-500" /></div>
                      </div>
                      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                        <div><label className="block text-xs font-medium text-slate-400 mb-1">Date d'envoi dossier</label><input type="text" placeholder="Ex: 01/03/2026" value={sponsorForm.dateSent || ''} onChange={e=>setSponsorForm({...sponsorForm, dateSent: e.target.value})} className="w-full bg-black/40 border border-amber-500/30 rounded-xl p-3 text-white outline-none focus:border-amber-500" /></div>
-                        <div><label className="block text-xs font-medium text-slate-400 mb-1">Dernière relance</label><input type="text" placeholder="Ex: 15/03/2026" value={sponsorForm.dateReminder || ''} onChange={e=>setSponsorForm({...sponsorForm, dateReminder: e.target.value})} className="w-full bg-black/40 border border-amber-500/30 rounded-xl p-3 text-white outline-none focus:border-amber-500" /></div>
-                        <div><label className="block text-xs font-medium text-slate-400 mb-1">Encaissement réel</label><input type="text" placeholder="Ex: 10/04/2026" value={sponsorForm.datePayment || ''} onChange={e=>setSponsorForm({...sponsorForm, datePayment: e.target.value})} className="w-full bg-black/40 border border-amber-500/30 rounded-xl p-3 text-white outline-none focus:border-amber-500" /></div>
+                        <div>
+                           <label className="block text-xs font-medium text-slate-400 mb-1">Envoi dossier</label>
+                           <div className="flex gap-2">
+                              <select 
+                                 value={(sponsorForm.dateSent === 'Non envoyé' || !sponsorForm.dateSent) ? 'Non envoyé' : 'Envoyé'}
+                                 onChange={e => {
+                                    if (e.target.value === 'Non envoyé') {
+                                       setSponsorForm({...sponsorForm, dateSent: 'Non envoyé'});
+                                    } else {
+                                       setSponsorForm({...sponsorForm, dateSent: ''}); 
+                                    }
+                                 }}
+                                 className="w-1/2 bg-black/40 border border-amber-500/30 rounded-xl p-3 text-white outline-none focus:border-amber-500"
+                              >
+                                 <option value="Non envoyé">Non envoyé</option>
+                                 <option value="Envoyé">Envoyé</option>
+                              </select>
+                              {(sponsorForm.dateSent !== 'Non envoyé' && sponsorForm.dateSent !== undefined) && (
+                                 <input 
+                                    type="date" 
+                                    value={toDateInput(sponsorForm.dateSent)} 
+                                    onChange={e=>setSponsorForm({...sponsorForm, dateSent: fromDateInput(e.target.value)})} 
+                                    className="w-1/2 bg-black/40 border border-amber-500/30 rounded-xl p-3 text-white outline-none focus:border-amber-500" 
+                                 />
+                              )}
+                           </div>
+                        </div>
+                        <div><label className="block text-xs font-medium text-slate-400 mb-1">Dernière relance</label><input type="date" value={toDateInput(sponsorForm.dateReminder)} onChange={e=>setSponsorForm({...sponsorForm, dateReminder: fromDateInput(e.target.value)})} className="w-full bg-black/40 border border-amber-500/30 rounded-xl p-3 text-white outline-none focus:border-amber-500" /></div>
+                        <div><label className="block text-xs font-medium text-slate-400 mb-1">Encaissement réel</label><input type="date" value={toDateInput(sponsorForm.datePayment)} onChange={e=>setSponsorForm({...sponsorForm, datePayment: fromDateInput(e.target.value)})} className="w-full bg-black/40 border border-amber-500/30 rounded-xl p-3 text-white outline-none focus:border-amber-500" /></div>
                      </div>
                   </div>
                   <div className="border-t border-white/10 pt-4"><label className="block text-xs font-medium text-slate-400 mb-1">Notes / Infos de suivi</label><textarea value={sponsorForm.notes || ''} onChange={e=>setSponsorForm({...sponsorForm, notes: e.target.value})} className="w-full bg-black/40 border border-amber-500/30 rounded-xl p-3 text-white outline-none focus:border-amber-500 h-24 resize-none" placeholder="Ex: Rappeler le 15 mars..."></textarea></div>
