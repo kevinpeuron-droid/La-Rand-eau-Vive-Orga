@@ -56,6 +56,13 @@ export default function BudgetView() {
   const [importText, setImportText] = useState('');
   const importFileRef = useRef<HTMLInputElement>(null);
   const [importTarget, setImportTarget] = useState<'OPERATIONS' | 'VALORISATION' | 'SPONSORS' | 'POINTAGE' | null>(null);
+  const [bankMetadata, setBankMetadata] = useState<{date: string, solde: string, asso: string, account: string} | null>(() => {
+    try {
+      return JSON.parse(localStorage.getItem('bankMetadata') || 'null');
+    } catch {
+      return null;
+    }
+  });
 
   // Summaries
   const { totalIncome, totalExpense, balance } = useMemo(() => {
@@ -270,12 +277,43 @@ export default function BudgetView() {
              }
          }
       } else if (importTarget === 'POINTAGE') {
-         for (const parts of parsedLines) {
-             if (parts.length >= 3) {
+         const tDateMatch = text.match(/Téléchargement du (.*?);/);
+         const dateTelechargement = tDateMatch ? tDateMatch[1] : '';
+         const assoMatch = text.match(/ASSOC\.\s+(.*)/);
+         const assoName = assoMatch ? assoMatch[1] : '';
+         const accountMatch = text.match(/Compte courant .* (.*);/);
+         const accountNum = accountMatch ? accountMatch[1] : '';
+         const soldeMatch = text.match(/Solde au (.*?)\n/);
+         const soldeText = soldeMatch ? soldeMatch[1].replace(';', '').trim() : '';
+         
+         if (dateTelechargement || soldeText) {
+             const mData = { date: dateTelechargement, solde: soldeText, asso: assoName.replace(';', '').trim(), account: accountNum };
+             setBankMetadata(mData);
+             localStorage.setItem('bankMetadata', JSON.stringify(mData));
+         }
+
+         const rawTransactionsString = text.substring(text.indexOf('Date;Libellé;'));
+         if (rawTransactionsString) {
+             const txMatches = [...rawTransactionsString.matchAll(/(\d{2}\/\d{2}\/\d{4});("[^"]*"|[^;]*);([^;]*);([^;\r\n]*)/g)];
+             
+             for (const match of txMatches) {
+                 const date = match[1];
+                 let libelle = match[2];
+                 if (libelle.startsWith('"') && libelle.endsWith('"')) {
+                     libelle = libelle.substring(1, libelle.length - 1).trim();
+                 }
+                 const debitStr = match[3].trim().replace(',', '.');
+                 const creditStr = match[4].trim().replace(',', '.');
+                 
+                 const debit = debitStr ? parseFloat(debitStr) : 0;
+                 const credit = creditStr ? parseFloat(creditStr) : 0;
+                 
+                 const amount = credit > 0 ? credit : -debit;
+                 
                  await addBankLine({
-                     date: parts[0],
-                     description: parts[1],
-                     amount: parseFloat(parts[2].replace(',', '.') || '0'),
+                     date,
+                     description: libelle.replace(/\n+/g, ' ').replace(/\s+/g, ' ').trim(),
+                     amount,
                      pointed: false
                  } as any);
              }
@@ -697,7 +735,7 @@ export default function BudgetView() {
                     <h2 className="text-xl font-bold text-white flex items-center gap-2 mb-1">
                        <span>🏦</span> Pointage Bancaire
                     </h2>
-                    <p className="text-sm text-slate-400">Importez un relevé bancaire CSV (Date;Libellé;Montant) pour rapprochement.</p>
+                    <p className="text-sm text-slate-400">Importez un relevé bancaire CSV (Date;Libellé;Débit;Crédit) pour rapprochement.</p>
                  </div>
                  <div className="flex gap-2">
                     <button onClick={() => exportCSV("releve-complet.csv", [
@@ -710,6 +748,15 @@ export default function BudgetView() {
                     <button onClick={() => startImport('POINTAGE')} className="bg-blue-600 hover:bg-blue-500 text-white px-5 py-2 rounded-xl text-sm font-bold shadow-lg transition-colors">Import CSV (Relevé)</button>
                  </div>
              </div>
+             
+             {bankMetadata && (
+                <div className="bg-blue-900/20 border border-blue-500/20 rounded-2xl p-4 flex flex-wrap gap-x-8 gap-y-2 text-sm text-blue-200">
+                   <div><span className="text-blue-400/70 block text-xs">Association</span><span className="font-semibold">{bankMetadata.asso || '-'}</span></div>
+                   <div><span className="text-blue-400/70 block text-xs">Compte</span><span className="font-semibold truncate max-w-[200px] block" title={bankMetadata.account}>{bankMetadata.account || '-'}</span></div>
+                   <div><span className="text-blue-400/70 block text-xs">Date de téléchargement</span><span className="font-semibold">{bankMetadata.date || '-'}</span></div>
+                   <div><span className="text-blue-400/70 block text-xs">Solde au {bankMetadata.date?.split(' ')[0]}</span><span className="font-semibold text-white bg-blue-500/20 px-2 py-0.5 rounded">{bankMetadata.solde || '-'}</span></div>
+                </div>
+             )}
 
              <div className="bg-white/5 border border-white/10 rounded-3xl overflow-hidden shadow-xl">
                  <table className="w-full text-left border-collapse">
