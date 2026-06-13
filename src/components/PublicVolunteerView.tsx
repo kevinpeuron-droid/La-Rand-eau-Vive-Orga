@@ -8,6 +8,7 @@ export default function PublicVolunteerView() {
   const { events, volunteers, loading, updateVolunteer } = useData();
   const [selectedVolunteerId, setSelectedVolunteerId] = useState<string>('');
   const [ideasDraft, setIdeasDraft] = useState<string>('');
+  const [equipmentNeedsDraft, setEquipmentNeedsDraft] = useState<string>('');
 
   const [modifications, setModifications] = useState<{ added: string[]; removed: string[] } | null>(null);
 
@@ -184,6 +185,7 @@ export default function PublicVolunteerView() {
               setSelectedVolunteerId(newId);
               const vol = volunteers.find(v => v.id === newId);
               setIdeasDraft(vol?.ideas || '');
+              setEquipmentNeedsDraft(vol?.equipmentNeeds || '');
             }}
             className="w-full p-3 border border-white/10 rounded-xl bg-black/40 text-white focus:border-indigo-500 outline-none transition-colors shadow-inner"
           >
@@ -467,6 +469,27 @@ export default function PublicVolunteerView() {
               />
               <p className="text-xs text-slate-500 mt-2">Enregistrement automatique lorsque vous quittez la zone de texte.</p>
             </div>
+
+            {(() => {
+              const vol = volunteers.find(v => v.id === selectedVolunteerId);
+              if (vol && (vol.isOrganizer || vol.isReferent)) {
+                return (
+                  <div className="mt-8 bg-amber-500/10 border border-amber-500/20 rounded-2xl p-6">
+                    <h3 className="text-lg font-semibold text-amber-300 mb-2">🛒 Liste de courses / Besoins matériel</h3>
+                    <p className="text-sm text-amber-500/80 mb-4">En tant que responsable/référent, listez ici les besoins en matériel ou courses de votre poste. Cette liste sera automatiquement remontée dans les tâches de l'événement.</p>
+                    <textarea
+                      value={equipmentNeedsDraft}
+                      onChange={(e) => setEquipmentNeedsDraft(e.target.value)}
+                      onBlur={() => selectedVolunteerId && updateVolunteer(selectedVolunteerId, { equipmentNeeds: equipmentNeedsDraft })}
+                      placeholder="Ex : 2 rouleaux de scotch, 1 pack d'eau, barnum supplémentaire..."
+                      className="w-full bg-black/40 border border-amber-500/30 rounded-xl p-4 text-amber-100 placeholder-amber-500/50 focus:border-amber-400 outline-none resize-y min-h-[120px] transition-colors"
+                    />
+                    <p className="text-xs text-amber-500/60 mt-2">Enregistrement automatique lorsque vous quittez la zone de texte.</p>
+                  </div>
+                );
+              }
+              return null;
+            })()}
 
             {(organizers.length > 0 || referents.length > 0) && (
               <div className="mt-12 bg-black/20 border border-white/5 rounded-2xl p-6">
