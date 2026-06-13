@@ -117,7 +117,7 @@ function Layout({ children }: { children: React.ReactNode }) {
             🗺️ Carte
           </NavLink>
           <NavLink to="/todos" className={({isActive}) => `px-4 py-2 text-sm font-medium transition-colors rounded-xl flex items-center gap-2 ${isActive ? 'bg-white/10 text-white' : 'text-slate-400 hover:text-white hover:bg-white/5'}`}>
-            ✅ TdL
+            ✅ Tâches & Matériel
           </NavLink>
           <NavLink to="/ideas" className={({isActive}) => `px-4 py-2 text-sm font-medium transition-colors rounded-xl flex items-center gap-2 ${isActive ? 'bg-white/10 text-white' : 'text-slate-400 hover:text-white hover:bg-white/5'}`}>
             💡 Idées

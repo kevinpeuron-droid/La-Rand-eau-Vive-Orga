@@ -22,6 +22,7 @@ export interface Volunteer {
   group?: string; // Association partenaire
   notes?: string;
   ideas?: string;
+  equipmentNeeds?: string;
   isOrganizer: boolean;
   isReferent: boolean;
   availability: Availability[];
@@ -73,6 +74,7 @@ export interface EventEntity {
   categories: Category[];
   carteUrl?: string; // Link to the map
   archivedIdeas?: ArchivedIdea[];
+  archivedSupplies?: { id: string; role: string; volunteerName: string; text: string; date: string }[];
   createdAt: number;
   updatedAt: number;
 }

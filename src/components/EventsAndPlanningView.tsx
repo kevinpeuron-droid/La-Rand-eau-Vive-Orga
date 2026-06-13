@@ -128,6 +128,7 @@ export default function EventsAndPlanningView() {
   const [newEventName, setNewEventName] = useState('');
   const [duplicateEventId, setDuplicateEventId] = useState<string>('');
   const [expandedCategories, setExpandedCategories] = useState<Record<string, boolean>>({});
+  const [isIdeasExpanded, setIsIdeasExpanded] = useState<boolean>(false);
 
   const DAYS = ['Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi','Dimanche'];
 
@@ -899,19 +900,30 @@ export default function EventsAndPlanningView() {
 
             {selectedEvent.archivedIdeas && selectedEvent.archivedIdeas.length > 0 && (
               <div className="bg-white/5 backdrop-blur-lg border border-white/10 rounded-2xl p-6 shadow-xl mt-6">
-                <h2 className="text-xl font-bold text-white mb-4 flex items-center gap-2">
-                  <span>💡</span> Idées archivées ({selectedEvent.archivedIdeas.length})
-                </h2>
-                <div className="space-y-4">
-                  {selectedEvent.archivedIdeas.map((idea, idx) => (
-                    <div key={`idea-${idx}`} className="bg-black/20 border border-white/5 p-4 rounded-xl">
-                      <div className="flex items-center gap-2 mb-2 text-sm text-slate-300 font-medium">
-                        <span className="text-white">👤 {idea.volunteerName}</span>
-                      </div>
-                      <p className="text-indigo-200 text-sm whitespace-pre-wrap">{idea.text}</p>
-                    </div>
-                  ))}
+                <div 
+                  className="flex items-center justify-between cursor-pointer group"
+                  onClick={() => setIsIdeasExpanded(!isIdeasExpanded)}
+                >
+                  <h2 className="text-xl font-bold text-white flex items-center gap-2 group-hover:text-indigo-300 transition-colors">
+                    <span>💡</span> Idées archivées ({selectedEvent.archivedIdeas.length})
+                  </h2>
+                  <span className="text-slate-400 group-hover:text-white transition-colors">
+                    {isIdeasExpanded ? '▲' : '▼'}
+                  </span>
                 </div>
+                
+                {isIdeasExpanded && (
+                  <div className="space-y-4 mt-6 animate-in fade-in slide-in-from-top-2 duration-300">
+                    {selectedEvent.archivedIdeas.map((idea, idx) => (
+                      <div key={`idea-${idx}`} className="bg-black/20 border border-white/5 p-4 rounded-xl">
+                        <div className="flex items-center gap-2 mb-2 text-sm text-slate-300 font-medium">
+                          <span className="text-white">👤 {idea.volunteerName}</span>
+                        </div>
+                        <p className="text-indigo-200 text-sm whitespace-pre-wrap">{idea.text}</p>
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
             )}
           </div>
