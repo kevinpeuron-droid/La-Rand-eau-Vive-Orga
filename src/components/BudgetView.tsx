@@ -33,6 +33,20 @@ export default function BudgetView() {
   const [isAddingTx, setIsAddingTx] = useState(false);
   const [editingTxId, setEditingTxId] = useState<string | null>(null);
   const [txForm, setTxForm] = useState<Partial<Transaction>>({ type: 'DEPENSE', date: new Date().toISOString().split('T')[0], status: 'REALIZED' });
+  const [txFormCategory, setTxFormCategory] = useState<string>('');
+
+  // Part des Asso settings
+  const [partSettings, setPartSettings] = useState<{title: string, divider: number, expensesCategories: string[], incomeCategories: string[]}>(() => {
+    try {
+      return JSON.parse(localStorage.getItem('budgetPartSettings') || '{"title": "Part des Asso", "divider": 1, "expensesCategories": [], "incomeCategories": []}');
+    } catch {
+      return {title: "Part des Asso", divider: 1, expensesCategories: [], incomeCategories: []};
+    }
+  });
+  
+  useEffect(() => {
+    localStorage.setItem('budgetPartSettings', JSON.stringify(partSettings));
+  }, [partSettings]);
 
   // Contributions state
   const [isAddingContrib, setIsAddingContrib] = useState(false);
@@ -81,11 +95,32 @@ export default function BudgetView() {
     };
   }, [contributions]);
 
+  const [isEditingPartSettings, setIsEditingPartSettings] = useState(false);
+
+  const partsMath = useMemo(() => {
+    const inc = transactions.filter(t => {
+      if (!(t.type === 'RECETTE' || t.type === 'INCOME')) return false;
+      const cat = t.budgetLineId ? budgetLines.find(b => b.id === t.budgetLineId)?.category : t.category;
+      return cat && partSettings.incomeCategories.includes(cat);
+    }).reduce((acc, t) => acc + t.amount, 0);
+
+    const exp = transactions.filter(t => {
+      if (!(t.type === 'DEPENSE' || t.type === 'EXPENSE')) return false;
+      const cat = t.budgetLineId ? budgetLines.find(b => b.id === t.budgetLineId)?.category : t.category;
+      return cat && partSettings.expensesCategories.includes(cat);
+    }).reduce((acc, t) => acc + t.amount, 0);
+
+    const div = partSettings.divider || 1;
+    const result = (inc - exp) / div;
+    return { inc, exp, div, result };
+  }, [transactions, partSettings, budgetLines]);
+
   const sortedTransactions = [...transactions].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
   // === OPERATIONS FORM ===
   const resetTxForm = () => {
     setTxForm({ type: 'DEPENSE', date: new Date().toISOString().split('T')[0], status: 'REALIZED' });
+    setTxFormCategory('');
     setIsAddingTx(false);
     setEditingTxId(null);
   };
@@ -94,13 +129,14 @@ export default function BudgetView() {
     if (!txForm.description && !txForm.title) return alert('Veuillez spécifier un intitulé');
     if (!txForm.amount) return alert('Montant requis');
     if (editingTxId) {
-      await updateTransaction(editingTxId, txForm as unknown as Transaction);
+      await updateTransaction(editingTxId, { ...txForm, category: txFormCategory } as unknown as Transaction);
     } else {
       await addTransaction({
         ...txForm, 
         amount: Number(txForm.amount),
         type: txForm.type as any,
         date: txForm.date || new Date().toISOString().split('T')[0],
+        category: txFormCategory
       } as unknown as any);
     }
     resetTxForm();
@@ -457,6 +493,62 @@ export default function BudgetView() {
                 </h2>
               </div>
             </div>
+            
+            <div className="bg-white/5 border border-white/10 rounded-3xl p-6 shadow-xl relative overflow-hidden flex flex-col md:flex-row justify-between items-center gap-4">
+              {isEditingPartSettings ? (
+                <div className="w-full space-y-4">
+                  <div className="flex justify-between items-center border-b border-white/10 pb-2">
+                     <h3 className="text-lg font-bold text-indigo-400">Configuration calcul</h3>
+                     <button onClick={() => setIsEditingPartSettings(false)} className="text-slate-400 hover:text-white">✕ Fermer</button>
+                  </div>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div><label className="block text-xs text-slate-400 mb-1">Titre de la valeur</label><input type="text" value={partSettings.title} onChange={e=>setPartSettings({...partSettings, title: e.target.value})} className="w-full bg-black/40 border border-white/10 rounded-xl p-2 text-white text-sm outline-none" /></div>
+                    <div><label className="block text-xs text-slate-400 mb-1">Diviser par (ex: nombre d'assos)</label><input type="number" min="1" value={partSettings.divider} onChange={e=>setPartSettings({...partSettings, divider: Math.max(1, parseInt(e.target.value) || 1)})} className="w-full bg-black/40 border border-white/10 rounded-xl p-2 text-white text-sm outline-none" /></div>
+                    <div>
+                        <label className="block text-xs text-slate-400 mb-1">Recettes à inclure (Catégories)</label>
+                        <div className="max-h-32 overflow-y-auto space-y-1 bg-black/40 p-2 rounded-xl border border-white/10">
+                           {Array.from(new Set(budgetLines.filter(b => b.section === 'RECETTE').map(b=>b.category))).map(cat => (
+                              <label key={cat} className="flex items-center gap-2 text-sm text-slate-300">
+                                 <input type="checkbox" checked={partSettings.incomeCategories.includes(cat)} onChange={(e) => {
+                                    if(e.target.checked) setPartSettings({...partSettings, incomeCategories: [...partSettings.incomeCategories, cat]});
+                                    else setPartSettings({...partSettings, incomeCategories: partSettings.incomeCategories.filter(c => c !== cat)});
+                                 }} /> {cat}
+                              </label>
+                           ))}
+                        </div>
+                    </div>
+                    <div>
+                        <label className="block text-xs text-slate-400 mb-1">Charges à déduire (Catégories)</label>
+                        <div className="max-h-32 overflow-y-auto space-y-1 bg-black/40 p-2 rounded-xl border border-white/10">
+                           {Array.from(new Set(budgetLines.filter(b => b.section === 'DEPENSE').map(b=>b.category))).map(cat => (
+                              <label key={cat} className="flex items-center gap-2 text-sm text-slate-300">
+                                 <input type="checkbox" checked={partSettings.expensesCategories.includes(cat)} onChange={(e) => {
+                                    if(e.target.checked) setPartSettings({...partSettings, expensesCategories: [...partSettings.expensesCategories, cat]});
+                                    else setPartSettings({...partSettings, expensesCategories: partSettings.expensesCategories.filter(c => c !== cat)});
+                                 }} /> {cat}
+                              </label>
+                           ))}
+                        </div>
+                    </div>
+                  </div>
+                </div>
+              ) : (
+                <>
+                  <div>
+                    <h3 className="text-xl font-bold text-indigo-300 flex items-center gap-2">
+                       {partSettings.title || 'Part calculée'}
+                       <button onClick={() => setIsEditingPartSettings(true)} className="text-xs opacity-50 hover:opacity-100 transition-opacity" title="Modifier le calcul">⚙️</button>
+                    </h3>
+                    <p className="text-sm text-slate-400">Basé sur une sélection de recettes/dépenses, divisé par {partSettings.divider}</p>
+                  </div>
+                  <div className="text-right">
+                    <h2 className="text-3xl font-bold text-white bg-indigo-500/20 px-4 py-2 rounded-2xl border border-indigo-500/30">
+                       {partsMath.result >= 0 ? '+' : ''}{partsMath.result.toFixed(2)} €
+                    </h2>
+                  </div>
+                </>
+              )}
+            </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                <div className="bg-white/5 border border-white/10 rounded-2xl p-6 shadow-xl relative">
@@ -608,7 +700,14 @@ export default function BudgetView() {
                         <td className="p-4 text-right whitespace-nowrap">
                           <div className="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
                             <button 
-                              onClick={() => { setTxForm(tx as any); setEditingTxId(tx.id); setIsAddingTx(true); }}
+                              onClick={() => { 
+                                setTxForm(tx as any); 
+                                setEditingTxId(tx.id); 
+                                setIsAddingTx(true);
+                                const bl = budgetLines.find(b => b.id === tx.budgetLineId);
+                                if (bl) setTxFormCategory(bl.category);
+                                else setTxFormCategory('');
+                              }}
                               className="text-xs hover:text-indigo-400 p-1"
                             >✏️</button>
                             <button 
@@ -858,25 +957,36 @@ export default function BudgetView() {
                <form onSubmit={saveTx} className="space-y-4">
                   <div className="flex gap-4">
                      <label className="flex items-center justify-center gap-2 text-sm text-slate-300 cursor-pointer p-3 border border-white/10 rounded-xl bg-black/40 flex-1 hover:bg-black/60 transition-colors">
-                        <input type="radio" checked={txForm.type === 'RECETTE' || txForm.type === 'INCOME'} onChange={() => setTxForm({...txForm, type: 'RECETTE'})} className="accent-teal-500" />
+                        <input type="radio" checked={txForm.type === 'RECETTE' || txForm.type === 'INCOME'} onChange={() => { setTxForm({...txForm, type: 'RECETTE', budgetLineId: ''}); setTxFormCategory(''); }} className="accent-teal-500" />
                         ↑ Recette
                      </label>
                      <label className="flex items-center justify-center gap-2 text-sm text-slate-300 cursor-pointer p-3 border border-white/10 rounded-xl bg-black/40 flex-1 hover:bg-black/60 transition-colors">
-                        <input type="radio" checked={txForm.type === 'DEPENSE' || txForm.type === 'EXPENSE'} onChange={() => setTxForm({...txForm, type: 'DEPENSE'})} className="accent-rose-500" />
+                        <input type="radio" checked={txForm.type === 'DEPENSE' || txForm.type === 'EXPENSE'} onChange={() => { setTxForm({...txForm, type: 'DEPENSE', budgetLineId: ''}); setTxFormCategory(''); }} className="accent-rose-500" />
                         ↓ Dépense
                      </label>
                   </div>
                   <div><label className="block text-xs font-medium text-slate-400 mb-1">Date</label><input type="date" value={txForm.date || ''} onChange={e=>setTxForm({...txForm, date: e.target.value})} className="w-full bg-black/40 border border-white/10 rounded-xl p-3 text-white outline-none" required /></div>
                   <div><label className="block text-xs font-medium text-slate-400 mb-1">Montant (€)</label><input type="number" step="0.01" value={txForm.amount || ''} onChange={e=>setTxForm({...txForm, amount: parseFloat(e.target.value)})} className="w-full bg-black/40 border border-white/10 rounded-xl p-3 text-white outline-none" required /></div>
                   <div><label className="block text-xs font-medium text-slate-400 mb-1">Intitulé</label><input type="text" value={txForm.description || txForm.title || ''} onChange={e=>setTxForm({...txForm, description: e.target.value})} className="w-full bg-black/40 border border-white/10 rounded-xl p-3 text-white outline-none" required placeholder="Ex: Matériel..." /></div>
-                  <div>
-                     <label className="block text-xs font-medium text-slate-400 mb-1">Ligne de budget</label>
-                     <select value={txForm.budgetLineId || ''} onChange={e=>setTxForm({...txForm, budgetLineId: e.target.value})} className="w-full bg-black/40 border border-white/10 rounded-xl p-3 text-white outline-none">
-                        <option value="">-- Sans ligne spécifique --</option>
-                        {budgetLines.filter(b => b.section === (txForm.type === 'RECETTE' || txForm.type === 'INCOME' ? 'RECETTE' : 'DEPENSE')).map(b => (
-                           <option key={b.id} value={b.id}>{b.category} - {b.label}</option>
-                        ))}
-                     </select>
+                  <div className="grid grid-cols-2 gap-4">
+                     <div>
+                        <label className="block text-xs font-medium text-slate-400 mb-1">1. Catégorie principale</label>
+                        <select value={txFormCategory} onChange={e=>{setTxFormCategory(e.target.value); setTxForm({...txForm, budgetLineId: ''});}} className="w-full bg-black/40 border border-white/10 rounded-xl p-3 text-white outline-none">
+                           <option value="">-- Choisir --</option>
+                           {Array.from(new Set(budgetLines.filter(b => b.section === (txForm.type === 'RECETTE' || txForm.type === 'INCOME' ? 'RECETTE' : 'DEPENSE')).map(b => b.category))).map(cat => (
+                              <option key={cat} value={cat}>{cat}</option>
+                           ))}
+                        </select>
+                     </div>
+                     <div>
+                        <label className="block text-xs font-medium text-slate-400 mb-1">2. Sous-catégorie (Ligne)</label>
+                        <select value={txForm.budgetLineId || ''} onChange={e=>setTxForm({...txForm, budgetLineId: e.target.value})} className="w-full bg-black/40 border border-white/10 rounded-xl p-3 text-white outline-none" disabled={!txFormCategory}>
+                           <option value="">-- Choisir --</option>
+                           {budgetLines.filter(b => b.section === (txForm.type === 'RECETTE' || txForm.type === 'INCOME' ? 'RECETTE' : 'DEPENSE') && b.category === txFormCategory).map(b => (
+                              <option key={b.id} value={b.id}>{b.label}</option>
+                           ))}
+                        </select>
+                     </div>
                   </div>
                   <div>
                      <label className="block text-xs font-medium text-slate-400 mb-1">Statut d'avancement</label>
