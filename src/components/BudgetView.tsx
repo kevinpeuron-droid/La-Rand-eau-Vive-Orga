@@ -44,9 +44,21 @@ export default function BudgetView() {
     }
   });
   
+  const [partSettings2, setPartSettings2] = useState<{title: string, divider: number, expensesCategories: string[], incomeCategories: string[]}>(() => {
+    try {
+      return JSON.parse(localStorage.getItem('budgetPartSettings2') || '{"title": "Deuxième valeur", "divider": 1, "expensesCategories": [], "incomeCategories": []}');
+    } catch {
+      return {title: "Deuxième valeur", divider: 1, expensesCategories: [], incomeCategories: []};
+    }
+  });
+
   useEffect(() => {
     localStorage.setItem('budgetPartSettings', JSON.stringify(partSettings));
   }, [partSettings]);
+
+  useEffect(() => {
+    localStorage.setItem('budgetPartSettings2', JSON.stringify(partSettings2));
+  }, [partSettings2]);
 
   // Contributions state
   const [isAddingContrib, setIsAddingContrib] = useState(false);
@@ -96,6 +108,7 @@ export default function BudgetView() {
   }, [contributions]);
 
   const [isEditingPartSettings, setIsEditingPartSettings] = useState(false);
+  const [isEditingPartSettings2, setIsEditingPartSettings2] = useState(false);
 
   const partsMath = useMemo(() => {
     const inc = transactions.filter(t => {
@@ -114,6 +127,24 @@ export default function BudgetView() {
     const result = (inc - exp) / div;
     return { inc, exp, div, result };
   }, [transactions, partSettings, budgetLines]);
+
+  const partsMath2 = useMemo(() => {
+    const inc = transactions.filter(t => {
+      if (!(t.type === 'RECETTE' || t.type === 'INCOME')) return false;
+      const cat = t.budgetLineId ? budgetLines.find(b => b.id === t.budgetLineId)?.category : t.category;
+      return cat && partSettings2.incomeCategories.includes(cat);
+    }).reduce((acc, t) => acc + t.amount, 0);
+
+    const exp = transactions.filter(t => {
+      if (!(t.type === 'DEPENSE' || t.type === 'EXPENSE')) return false;
+      const cat = t.budgetLineId ? budgetLines.find(b => b.id === t.budgetLineId)?.category : t.category;
+      return cat && partSettings2.expensesCategories.includes(cat);
+    }).reduce((acc, t) => acc + t.amount, 0);
+
+    const div = partSettings2.divider || 1;
+    const result = (inc - exp) / div;
+    return { inc, exp, div, result };
+  }, [transactions, partSettings2, budgetLines]);
 
   const sortedTransactions = [...transactions].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
@@ -544,6 +575,62 @@ export default function BudgetView() {
                   <div className="text-right">
                     <h2 className="text-3xl font-bold text-white bg-indigo-500/20 px-4 py-2 rounded-2xl border border-indigo-500/30">
                        {partsMath.result >= 0 ? '+' : ''}{partsMath.result.toFixed(2)} €
+                    </h2>
+                  </div>
+                </>
+              )}
+            </div>
+
+            <div className="bg-white/5 border border-white/10 rounded-3xl p-6 shadow-xl relative overflow-hidden flex flex-col md:flex-row justify-between items-center gap-4">
+              {isEditingPartSettings2 ? (
+                <div className="w-full space-y-4">
+                  <div className="flex justify-between items-center border-b border-white/10 pb-2">
+                     <h3 className="text-lg font-bold text-fuchsia-400">Configuration calcul</h3>
+                     <button onClick={() => setIsEditingPartSettings2(false)} className="text-slate-400 hover:text-white">✕ Fermer</button>
+                  </div>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div><label className="block text-xs text-slate-400 mb-1">Titre de la valeur</label><input type="text" value={partSettings2.title} onChange={e=>setPartSettings2({...partSettings2, title: e.target.value})} className="w-full bg-black/40 border border-white/10 rounded-xl p-2 text-white text-sm outline-none" /></div>
+                    <div><label className="block text-xs text-slate-400 mb-1">Diviser par</label><input type="number" min="1" value={partSettings2.divider} onChange={e=>setPartSettings2({...partSettings2, divider: Math.max(1, parseInt(e.target.value) || 1)})} className="w-full bg-black/40 border border-white/10 rounded-xl p-2 text-white text-sm outline-none" /></div>
+                    <div>
+                        <label className="block text-xs text-slate-400 mb-1">Recettes à inclure (Catégories)</label>
+                        <div className="max-h-32 overflow-y-auto space-y-1 bg-black/40 p-2 rounded-xl border border-white/10">
+                           {Array.from(new Set(budgetLines.filter(b => b.section === 'RECETTE').map(b=>b.category))).map(cat => (
+                              <label key={cat} className="flex items-center gap-2 text-sm text-slate-300">
+                                 <input type="checkbox" checked={partSettings2.incomeCategories.includes(cat)} onChange={(e) => {
+                                    if(e.target.checked) setPartSettings2({...partSettings2, incomeCategories: [...partSettings2.incomeCategories, cat]});
+                                    else setPartSettings2({...partSettings2, incomeCategories: partSettings2.incomeCategories.filter(c => c !== cat)});
+                                 }} /> {cat}
+                              </label>
+                           ))}
+                        </div>
+                    </div>
+                    <div>
+                        <label className="block text-xs text-slate-400 mb-1">Charges à déduire (Catégories)</label>
+                        <div className="max-h-32 overflow-y-auto space-y-1 bg-black/40 p-2 rounded-xl border border-white/10">
+                           {Array.from(new Set(budgetLines.filter(b => b.section === 'DEPENSE').map(b=>b.category))).map(cat => (
+                              <label key={cat} className="flex items-center gap-2 text-sm text-slate-300">
+                                 <input type="checkbox" checked={partSettings2.expensesCategories.includes(cat)} onChange={(e) => {
+                                    if(e.target.checked) setPartSettings2({...partSettings2, expensesCategories: [...partSettings2.expensesCategories, cat]});
+                                    else setPartSettings2({...partSettings2, expensesCategories: partSettings2.expensesCategories.filter(c => c !== cat)});
+                                 }} /> {cat}
+                              </label>
+                           ))}
+                        </div>
+                    </div>
+                  </div>
+                </div>
+              ) : (
+                <>
+                  <div>
+                    <h3 className="text-xl font-bold text-fuchsia-300 flex items-center gap-2">
+                       {partSettings2.title || 'Part calculée'}
+                       <button onClick={() => setIsEditingPartSettings2(true)} className="text-xs opacity-50 hover:opacity-100 transition-opacity" title="Modifier le calcul">⚙️</button>
+                    </h3>
+                    <p className="text-sm text-slate-400">Basé sur une sélection de recettes/dépenses, divisé par {partSettings2.divider}</p>
+                  </div>
+                  <div className="text-right">
+                    <h2 className="text-3xl font-bold text-white bg-fuchsia-500/20 px-4 py-2 rounded-2xl border border-fuchsia-500/30">
+                       {partsMath2.result >= 0 ? '+' : ''}{partsMath2.result.toFixed(2)} €
                     </h2>
                   </div>
                 </>
