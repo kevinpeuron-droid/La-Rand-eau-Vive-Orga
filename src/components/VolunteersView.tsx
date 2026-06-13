@@ -415,19 +415,17 @@ function VolunteerCard({ volunteer: v, onUpdate, onDelete, allGroups }: any) {
             </label>
           </div>
 
-          {(isOrg || isRef) && (
-             <div className="mt-3 p-2.5 bg-amber-500/10 border border-amber-500/20 rounded-lg">
-                <h4 className="text-xs font-bold text-amber-300 flex items-center gap-1.5 mb-2">
-                   🛒 Liste de courses / Besoins matériel (Poste : {v.lastRole || "Non défini"})
-                </h4>
-                <textarea 
-                   defaultValue={v.equipmentNeeds || ''} 
-                   onBlur={e => onUpdate(v.id, { equipmentNeeds: e.target.value })} 
-                   className="w-full p-2 border border-amber-500/30 rounded-lg bg-black/40 text-amber-100 text-sm outline-none focus:border-amber-400 min-h-[60px]" 
-                   placeholder="Lister les besoins en matériel ou courses ici..."
-                />
-             </div>
-          )}
+          <div className="mt-3 p-2.5 bg-amber-500/10 border border-amber-500/20 rounded-lg">
+             <h4 className="text-xs font-bold text-amber-300 flex items-center gap-1.5 mb-2">
+                🛒 Liste de courses / Besoins matériel {v.lastRole ? `(Poste : ${v.lastRole})` : ''}
+             </h4>
+             <textarea 
+                defaultValue={v.equipmentNeeds || ''} 
+                onBlur={e => onUpdate(v.id, { equipmentNeeds: e.target.value })} 
+                className="w-full p-2 border border-amber-500/30 rounded-lg bg-black/40 text-amber-100 text-sm outline-none focus:border-amber-400 min-h-[60px]" 
+                placeholder="Lister les besoins en matériel ou courses ici..."
+             />
+          </div>
 
           <div className="mt-3 flex gap-2">
             <button onClick={() => { if(confirm('Supprimer ?')) onDelete(v.id); }} className="flex-1 bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 py-1.5 rounded-lg text-xs font-semibold transition-colors border border-rose-500/10 hover:border-rose-500/30">🗑️ Supprimer</button>

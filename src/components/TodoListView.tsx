@@ -45,7 +45,7 @@ export default function TodoListView() {
     setArchivingForVolId(null);
   };
 
-  const equipementVols = volunteers.filter(v => (v.isReferent || v.isOrganizer) && v.equipmentNeeds && v.equipmentNeeds.trim().length > 0);
+  const equipementVols = volunteers.filter(v => v.equipmentNeeds && v.equipmentNeeds.trim().length > 0);
 
   return (
     <div className="flex flex-col h-full gap-6 w-full">
@@ -78,7 +78,7 @@ export default function TodoListView() {
                   🛒 Besoins Actifs (En cours)
                </h2>
                {equipementVols.length === 0 ? (
-                 <p className="text-amber-500/50 italic p-4 bg-black/20 rounded-xl">Aucun besoin matériel signalé par les référents/organisateurs.</p>
+                 <p className="text-amber-500/50 italic p-4 bg-black/20 rounded-xl">Aucun besoin matériel signalé pour le moment.</p>
                ) : (
                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {equipementVols.map((v) => (
