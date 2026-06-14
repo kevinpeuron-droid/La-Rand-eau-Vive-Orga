@@ -23,6 +23,7 @@ export interface Volunteer {
   notes?: string;
   ideas?: string;
   equipmentNeeds?: string;
+  shoppingList?: string;
   isOrganizer: boolean;
   isReferent: boolean;
   availability: Availability[];
@@ -74,7 +75,7 @@ export interface EventEntity {
   categories: Category[];
   carteUrl?: string; // Link to the map
   archivedIdeas?: ArchivedIdea[];
-  archivedSupplies?: { id: string; role: string; volunteerName: string; text: string; date: string }[];
+  archivedSupplies?: { id: string; role: string; volunteerName: string; text: string; date: string; type: 'shopping' | 'equipment' }[];
   createdAt: number;
   updatedAt: number;
 }

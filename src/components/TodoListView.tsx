@@ -21,17 +21,21 @@ export default function TodoListView() {
     await updateEvent(evt.id, { categories: newCats });
   };
 
-  const handleArchiveSupplies = async (volunteerId: string, eventId: string) => {
+  const handleArchiveSupplies = async (volunteerId: string, eventId: string, type: 'shopping' | 'equipment') => {
     const vol = volunteers.find(v => v.id === volunteerId);
     const evt = events.find(e => e.id === eventId);
-    if (!vol || !evt || !vol.equipmentNeeds) return;
+    if (!vol || !evt) return;
+
+    if (type === 'equipment' && !vol.equipmentNeeds) return;
+    if (type === 'shopping' && !vol.shoppingList) return;
 
     const newSupply = {
       id: crypto.randomUUID(),
       role: vol.lastRole || 'Poste non défini',
       volunteerName: `${vol.firstName} ${vol.lastName}`,
-      text: vol.equipmentNeeds,
-      date: new Date().toISOString()
+      text: type === 'equipment' ? vol.equipmentNeeds! : vol.shoppingList!,
+      date: new Date().toISOString(),
+      type
     };
 
     const updatedSupplies = [...(evt.archivedSupplies || []), newSupply];
@@ -40,12 +44,17 @@ export default function TodoListView() {
     await updateEvent(eventId, { archivedSupplies: updatedSupplies });
     
     // Clear volunteer needs
-    await updateVolunteer(volunteerId, { equipmentNeeds: '' });
+    if (type === 'equipment') {
+      await updateVolunteer(volunteerId, { equipmentNeeds: '' });
+    } else {
+      await updateVolunteer(volunteerId, { shoppingList: '' });
+    }
     
     setArchivingForVolId(null);
   };
 
   const equipementVols = volunteers.filter(v => v.equipmentNeeds && v.equipmentNeeds.trim().length > 0);
+  const shoppingVols = volunteers.filter(v => v.shoppingList && v.shoppingList.trim().length > 0);
 
   return (
     <div className="flex flex-col h-full gap-6 w-full">
@@ -75,35 +84,34 @@ export default function TodoListView() {
            <div className="space-y-8 animate-in fade-in duration-300">
              <div className="bg-amber-500/5 backdrop-blur-xl border border-amber-500/20 p-6 rounded-3xl shadow-xl">
                <h2 className="text-2xl font-bold text-amber-400 mb-6 flex items-center gap-2">
-                  🛒 Besoins Actifs (En cours)
+                  🛒 Courses Actives (En cours)
                </h2>
-               {equipementVols.length === 0 ? (
-                 <p className="text-amber-500/50 italic p-4 bg-black/20 rounded-xl">Aucun besoin matériel signalé pour le moment.</p>
+               {shoppingVols.length === 0 ? (
+                 <p className="text-amber-500/50 italic p-4 bg-black/20 rounded-xl">Aucune liste de courses signalée pour le moment.</p>
                ) : (
                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {equipementVols.map((v) => (
-                       <div key={v.id} className="bg-black/40 border border-amber-500/10 rounded-2xl p-5 flex flex-col gap-4">
+                    {shoppingVols.map((v) => (
+                       <div key={`shop-${v.id}`} className="bg-black/40 border border-amber-500/10 rounded-2xl p-5 flex flex-col gap-4">
                           <div className="flex flex-col gap-1">
                              <h3 className="text-lg font-bold text-amber-200">{v.lastRole || 'Poste non défini'}</h3>
                              <p className="text-xs text-amber-500/70">Responsable : {v.firstName} {v.lastName}</p>
                           </div>
                           <div className="bg-white/5 border border-white/5 p-4 rounded-xl text-sm text-slate-300 whitespace-pre-wrap flex-1">
-                             {v.equipmentNeeds}
+                             {v.shoppingList}
                           </div>
-                          
                           <div className="mt-2 pt-4 border-t border-white/5 relative">
-                             {archivingForVolId === v.id ? (
+                             {archivingForVolId === `shop-${v.id}` ? (
                                 <div className="space-y-2">
                                    <label className="text-xs text-slate-400 block">Choisir l'événement pour archiver :</label>
                                    <div className="flex gap-2">
-                                     <select id={`archive-select-${v.id}`} className="flex-1 bg-black/50 border border-white/10 rounded-lg text-sm text-white p-2 outline-none">
+                                     <select id={`archive-select-shop-${v.id}`} className="flex-1 bg-black/50 border border-white/10 rounded-lg text-sm text-white p-2 outline-none">
                                         <option value="">-- Événement --</option>
                                         {events.map(e => <option key={e.id} value={e.id}>{e.name}</option>)}
                                      </select>
                                      <button 
                                         onClick={() => {
-                                          const sel = document.getElementById(`archive-select-${v.id}`) as HTMLSelectElement;
-                                          if(sel.value) handleArchiveSupplies(v.id, sel.value);
+                                          const sel = document.getElementById(`archive-select-shop-${v.id}`) as HTMLSelectElement;
+                                          if(sel.value) handleArchiveSupplies(v.id, sel.value, 'shopping');
                                         }}
                                         className="bg-amber-600 hover:bg-amber-500 text-white px-3 py-2 rounded-lg text-xs font-bold transition-colors"
                                      >Go</button>
@@ -112,8 +120,60 @@ export default function TodoListView() {
                                 </div>
                              ) : (
                                 <button 
-                                   onClick={() => setArchivingForVolId(v.id)}
+                                   onClick={() => setArchivingForVolId(`shop-${v.id}`)}
                                    className="w-full bg-white/5 hover:bg-white/10 border border-white/10 text-amber-300 py-2 rounded-xl text-sm font-semibold transition-colors flex items-center justify-center gap-2"
+                                >
+                                   📦 Archiver pour un événement...
+                                </button>
+                             )}
+                          </div>
+                       </div>
+                    ))}
+                 </div>
+               )}
+             </div>
+
+             <div className="bg-blue-500/5 backdrop-blur-xl border border-blue-500/20 p-6 rounded-3xl shadow-xl">
+               <h2 className="text-2xl font-bold text-blue-400 mb-6 flex items-center gap-2">
+                  📦 Besoins Matériel (En cours)
+               </h2>
+               {equipementVols.length === 0 ? (
+                 <p className="text-blue-500/50 italic p-4 bg-black/20 rounded-xl">Aucun besoin matériel signalé pour le moment.</p>
+               ) : (
+                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {equipementVols.map((v) => (
+                       <div key={`equip-${v.id}`} className="bg-black/40 border border-blue-500/10 rounded-2xl p-5 flex flex-col gap-4">
+                          <div className="flex flex-col gap-1">
+                             <h3 className="text-lg font-bold text-blue-200">{v.lastRole || 'Poste non défini'}</h3>
+                             <p className="text-xs text-blue-500/70">Responsable : {v.firstName} {v.lastName}</p>
+                          </div>
+                          <div className="bg-white/5 border border-white/5 p-4 rounded-xl text-sm text-slate-300 whitespace-pre-wrap flex-1">
+                             {v.equipmentNeeds}
+                          </div>
+                          
+                          <div className="mt-2 pt-4 border-t border-white/5 relative">
+                             {archivingForVolId === `equip-${v.id}` ? (
+                                <div className="space-y-2">
+                                   <label className="text-xs text-slate-400 block">Choisir l'événement pour archiver :</label>
+                                   <div className="flex gap-2">
+                                     <select id={`archive-select-equip-${v.id}`} className="flex-1 bg-black/50 border border-white/10 rounded-lg text-sm text-white p-2 outline-none">
+                                        <option value="">-- Événement --</option>
+                                        {events.map(e => <option key={e.id} value={e.id}>{e.name}</option>)}
+                                     </select>
+                                     <button 
+                                        onClick={() => {
+                                          const sel = document.getElementById(`archive-select-equip-${v.id}`) as HTMLSelectElement;
+                                          if(sel.value) handleArchiveSupplies(v.id, sel.value, 'equipment');
+                                        }}
+                                        className="bg-blue-600 hover:bg-blue-500 text-white px-3 py-2 rounded-lg text-xs font-bold transition-colors"
+                                     >Go</button>
+                                     <button onClick={() => setArchivingForVolId(null)} className="bg-white/10 hover:bg-white/20 text-white px-2 py-2 rounded-lg text-xs transition-colors">✕</button>
+                                   </div>
+                                </div>
+                             ) : (
+                                <button 
+                                   onClick={() => setArchivingForVolId(`equip-${v.id}`)}
+                                   className="w-full bg-white/5 hover:bg-white/10 border border-white/10 text-blue-300 py-2 rounded-xl text-sm font-semibold transition-colors flex items-center justify-center gap-2"
                                 >
                                    📦 Archiver pour un événement...
                                 </button>
@@ -143,7 +203,9 @@ export default function TodoListView() {
                              {evt.archivedSupplies?.map(supply => (
                                 <div key={supply.id} className="bg-black/40 border border-white/5 p-4 rounded-xl flex flex-col gap-2">
                                    <div className="flex justify-between items-start">
-                                      <p className="text-sm font-bold text-slate-200">{supply.role}</p>
+                                      <p className="text-sm font-bold text-slate-200">
+                                        {supply.type === 'shopping' ? '🛒' : '📦'} {supply.role}
+                                      </p>
                                       <p className="text-[10px] text-slate-500">{new Date(supply.date).toLocaleDateString()}</p>
                                    </div>
                                    <p className="text-xs text-slate-500">Par {supply.volunteerName}</p>

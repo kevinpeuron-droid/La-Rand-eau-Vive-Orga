@@ -415,16 +415,29 @@ function VolunteerCard({ volunteer: v, onUpdate, onDelete, allGroups }: any) {
             </label>
           </div>
 
-          <div className="mt-3 p-2.5 bg-amber-500/10 border border-amber-500/20 rounded-lg">
-             <h4 className="text-xs font-bold text-amber-300 flex items-center gap-1.5 mb-2">
-                🛒 Liste de courses / Besoins matériel {v.lastRole ? `(Poste : ${v.lastRole})` : ''}
-             </h4>
-             <textarea 
-                defaultValue={v.equipmentNeeds || ''} 
-                onBlur={e => onUpdate(v.id, { equipmentNeeds: e.target.value })} 
-                className="w-full p-2 border border-amber-500/30 rounded-lg bg-black/40 text-amber-100 text-sm outline-none focus:border-amber-400 min-h-[60px]" 
-                placeholder="Lister les besoins en matériel ou courses ici..."
-             />
+          <div className="mt-3 grid grid-cols-1 md:grid-cols-2 gap-3">
+            <div className="p-2.5 bg-amber-500/10 border border-amber-500/20 rounded-lg">
+               <h4 className="text-xs font-bold text-amber-300 flex items-center gap-1.5 mb-2">
+                  🛒 Liste de courses {v.lastRole ? `(Poste : ${v.lastRole})` : ''}
+               </h4>
+               <textarea 
+                  defaultValue={v.shoppingList || ''} 
+                  onBlur={e => onUpdate(v.id, { shoppingList: e.target.value })} 
+                  className="w-full p-2 border border-amber-500/30 rounded-lg bg-black/40 text-amber-100 text-sm outline-none focus:border-amber-400 min-h-[60px]" 
+                  placeholder="Lister les courses ici..."
+               />
+            </div>
+            <div className="p-2.5 bg-blue-500/10 border border-blue-500/20 rounded-lg">
+               <h4 className="text-xs font-bold text-blue-300 flex items-center gap-1.5 mb-2">
+                  📦 Besoins matériel {v.lastRole ? `(Poste : ${v.lastRole})` : ''}
+               </h4>
+               <textarea 
+                  defaultValue={v.equipmentNeeds || ''} 
+                  onBlur={e => onUpdate(v.id, { equipmentNeeds: e.target.value })} 
+                  className="w-full p-2 border border-blue-500/30 rounded-lg bg-black/40 text-blue-100 text-sm outline-none focus:border-blue-400 min-h-[60px]" 
+                  placeholder="Lister les besoins en matériel ici..."
+               />
+            </div>
           </div>
 
           <div className="mt-3 flex gap-2">

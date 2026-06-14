@@ -9,6 +9,7 @@ export default function PublicVolunteerView() {
   const [selectedVolunteerId, setSelectedVolunteerId] = useState<string>('');
   const [ideasDraft, setIdeasDraft] = useState<string>('');
   const [equipmentNeedsDraft, setEquipmentNeedsDraft] = useState<string>('');
+  const [shoppingListDraft, setShoppingListDraft] = useState<string>('');
 
   const [modifications, setModifications] = useState<{ added: string[]; removed: string[] } | null>(null);
 
@@ -186,6 +187,7 @@ export default function PublicVolunteerView() {
               const vol = volunteers.find(v => v.id === newId);
               setIdeasDraft(vol?.ideas || '');
               setEquipmentNeedsDraft(vol?.equipmentNeeds || '');
+              setShoppingListDraft(vol?.shoppingList || '');
             }}
             className="w-full p-3 border border-white/10 rounded-xl bg-black/40 text-white focus:border-indigo-500 outline-none transition-colors shadow-inner"
           >
@@ -474,17 +476,31 @@ export default function PublicVolunteerView() {
               const vol = volunteers.find(v => v.id === selectedVolunteerId);
               if (vol) {
                 return (
-                  <div className="mt-8 bg-amber-500/10 border border-amber-500/20 rounded-2xl p-6">
-                     <h3 className="text-lg font-semibold text-amber-300 mb-2">🛒 Liste de courses / Besoins matériel</h3>
-                     <p className="text-sm text-amber-500/80 mb-4">Si vous êtes responsable de poste, listez ici vos besoins en matériel ou courses. Cette liste remontera dans la gestion de l'événement.</p>
-                     <textarea
-                       value={equipmentNeedsDraft}
-                       onChange={(e) => setEquipmentNeedsDraft(e.target.value)}
-                       onBlur={() => selectedVolunteerId && updateVolunteer(selectedVolunteerId, { equipmentNeeds: equipmentNeedsDraft })}
-                       placeholder="Ex : 2 rouleaux de scotch, 1 pack d'eau, barnum supplémentaire..."
-                       className="w-full bg-black/40 border border-amber-500/30 rounded-xl p-4 text-amber-100 placeholder-amber-500/50 focus:border-amber-400 outline-none resize-y min-h-[120px] transition-colors"
-                     />
-                     <p className="text-xs text-amber-500/60 mt-2">Enregistrement automatique lorsque vous quittez la zone de texte.</p>
+                  <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="bg-amber-500/10 border border-amber-500/20 rounded-2xl p-6 flex flex-col h-full">
+                       <h3 className="text-lg font-semibold text-amber-300 mb-2">🛒 Liste de courses</h3>
+                       <p className="text-sm text-amber-500/80 mb-4 min-h-[40px]">Listez ici vos courses spécifiques. Elles remonteront dans la gestion globale.</p>
+                       <textarea
+                         value={shoppingListDraft}
+                         onChange={(e) => setShoppingListDraft(e.target.value)}
+                         onBlur={() => selectedVolunteerId && updateVolunteer(selectedVolunteerId, { shoppingList: shoppingListDraft })}
+                         placeholder="Ex : 1 pack d'eau, gobelets..."
+                         className="flex-1 w-full bg-black/40 border border-amber-500/30 rounded-xl p-4 text-amber-100 placeholder-amber-500/50 focus:border-amber-400 outline-none resize-y min-h-[120px] transition-colors"
+                       />
+                       <p className="text-[10px] text-amber-500/60 mt-2">Enregistrement automatique</p>
+                    </div>
+                    <div className="bg-blue-500/10 border border-blue-500/20 rounded-2xl p-6 flex flex-col h-full">
+                       <h3 className="text-lg font-semibold text-blue-300 mb-2">📦 Besoins matériel</h3>
+                       <p className="text-sm text-blue-500/80 mb-4 min-h-[40px]">Listez ici vos besoins logistiques ou en équipement pour le bon déroulement.</p>
+                       <textarea
+                         value={equipmentNeedsDraft}
+                         onChange={(e) => setEquipmentNeedsDraft(e.target.value)}
+                         onBlur={() => selectedVolunteerId && updateVolunteer(selectedVolunteerId, { equipmentNeeds: equipmentNeedsDraft })}
+                         placeholder="Ex : 2 barnums, rallonges, tables..."
+                         className="flex-1 w-full bg-black/40 border border-blue-500/30 rounded-xl p-4 text-blue-100 placeholder-blue-500/50 focus:border-blue-400 outline-none resize-y min-h-[120px] transition-colors"
+                       />
+                       <p className="text-[10px] text-blue-500/60 mt-2">Enregistrement automatique</p>
+                    </div>
                   </div>
                 );
               }
